@@ -10,6 +10,7 @@ from get_data.weather_get_data_strategy import WeatherCurrentDataStrategy
 # from get_data.weather_forecast_get_data_strategy import WeatherCurrentForecastDataStrategy
 from endpoint_class import Endpoint
 import functions_framework
+import base64
 
 
 GLOBAL_START_DATE=dt.datetime(2020, 12, 1, 0, 0)
@@ -55,5 +56,10 @@ def get_warsaw_temperature(_):
     temperature = '{:.2f}'.format(result)
 
     return (f"Current temperature in Warsaw: {temperature}", 200)
+
+@functions_framework.cloud_event
+def hello_pubsub(cloud_event):
+    # Print out the data from Pub/Sub, to prove that it worked
+    print(base64.b64decode(cloud_event.data["message"]["data"]))
 
 main()
