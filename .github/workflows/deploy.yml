@@ -37,6 +37,8 @@ jobs:
 
   unit_testing:
     runs-on: ubuntu-latest
+    env:
+      OPEN_WEATHER_API_KEY: ${{ secrets.OPEN_WEATHER_API_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
