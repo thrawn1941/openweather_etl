@@ -1,2 +1,8 @@
+requests
+python-dotenv
+datetime
+thread6
+abcplus
 pytest
 ruff
+functions_framework
