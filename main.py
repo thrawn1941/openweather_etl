@@ -56,7 +56,7 @@ def get_warsaw_temperature(_):
     app_weather = Endpoint(WeatherCurrentDataStrategy())
     app_weather.append_data('Warsaw', API_KEY)
     a = app_weather.collected_data.get('Warsaw')
-    result = a[0]['main']['temp'] - 273.15
+    result = a['main']['temp'] - 273.15
     temperature = '{:.2f}'.format(result)
 
     return (f"Current temperature in Warsaw: {temperature}", 200)
@@ -76,6 +76,7 @@ def get_temperature_data(_):
     app_weather = Endpoint(WeatherCurrentDataStrategy())
     gathered_data = app_weather.append_data_from_cities(API_KEY, *cities)
     result = json.dumps(gathered_data)
-    return result, 200
+    print(result)
+    return (result, 200)
 
 main()
