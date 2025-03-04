@@ -74,9 +74,9 @@ def get_temperature_data(_):
             cities.append(line.strip())
 
     app_weather = Endpoint(WeatherCurrentDataStrategy())
-    gathered_data = app_weather.append_data_from_cities(API_KEY, *cities)
+    app_weather.append_data_from_cities(API_KEY, *cities)
+    gathered_data = app_weather.collected_data
     result = json.dumps(gathered_data)
-    print(result)
     return (result, 200)
 
 main()
