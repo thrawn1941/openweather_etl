@@ -97,7 +97,7 @@ def export_temperature_to_bigquery(cloud_event):
         insert_rows.append(text)
 
     v = ", ".join(insert_rows)
-    full_insert = f"""INSERT INTO `totemic-client-447220-r1.city_temperature_data_set.cities_temperature_data` (ds, City, Temperature) VALUES ({v});"""
+    full_insert = f"""INSERT INTO `totemic-client-447220-r1.city_temperature_data_set.cities_temperature_data` (ds, City, Temperature) VALUES {v};"""
 
     try:
         client = bigquery.Client()
