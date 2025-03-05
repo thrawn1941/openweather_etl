@@ -12,7 +12,7 @@ from endpoint_class import Endpoint
 import functions_framework
 import base64
 import json
-
+from google.cloud import bigquery
 
 GLOBAL_START_DATE=dt.datetime(2020, 12, 1, 0, 0)
 GLOBAL_END_DATE=dt.datetime(2021, 1, 1, 0, 0)
@@ -79,4 +79,32 @@ def get_temperature_data(_):
     result = json.dumps(gathered_data)
     return (result, 200)
 
-main()
+@functions_framework.cloud_event
+def export_temperature_to_bigquery(cloud_event):
+    imported_data = base64.b64decode(cloud_event.data["message"]["data"])
+    if not imported_data:
+        print("No data provided!")
+        return
+
+    imported_data = json.loads(imported_data)
+    insert_rows = []
+    for city in imported_data.keys():
+        temp = round(imported_data[city]['main']['temp'] - 273.15, 2)
+        date = imported_data[city]['dt']
+        date = dt.datetime.fromtimestamp(date)
+        date = date.strftime("%Y-%m-%d %H:%M:%S")
+        text = f"('{date}', '{city}', {temp})"
+        insert_rows.append(text)
+
+    v = ", ".join(insert_rows)
+    full_insert = f"""INSERT INTO `totemic-client-447220-r1.city_temperature_data_set.cities_temperature_data` (ds, City, Temperature) VALUES ({v});"""
+
+    try:
+        client = bigquery.Client()
+        job = client.query(full_insert)
+        job.result()
+        print("Insert successful.")
+    except Exception as e:
+        print(f'Error occurred during data insert: {e}')
+
+# main()

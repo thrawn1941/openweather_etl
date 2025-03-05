@@ -7,3 +7,4 @@ pytest
 ruff
 functions_framework
 asyncio
+google-cloud-bigquery

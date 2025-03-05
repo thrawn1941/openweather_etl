@@ -124,3 +124,16 @@ jobs:
           --source . \
           --set-env-vars OPEN_WEATHER_API_KEY=${{ secrets.OPEN_WEATHER_API_KEY }} \
           --service-account=test-account@totemic-client-447220-r1.iam.gserviceaccount.com
+
+      - name: Deploy export_temperature_to_bigquery to Google Cloud Functions
+        run: |
+          gcloud functions deploy export_temperature_to_bigquery \
+          --allow-unauthenticated \
+          --gen2 \
+          --runtime python311 \
+          --trigger-topic openweather_current_weather \
+          --entry-point export_temperature_to_bigquery \
+          --region europe-central2 \
+          --source . \
+          --set-env-vars OPEN_WEATHER_API_KEY=${{ secrets.OPEN_WEATHER_API_KEY }} \
+          --service-account=test-account@totemic-client-447220-r1.iam.gserviceaccount.com
