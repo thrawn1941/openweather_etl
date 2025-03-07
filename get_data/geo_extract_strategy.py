@@ -1,5 +1,5 @@
 import requests
-from get_data.abstract_get_data_strategy import GetDataStrategy
+from get_data.abstract_extract_strategy import GetDataStrategy
 
 
 class GeoDirectDataStrategy(GetDataStrategy):

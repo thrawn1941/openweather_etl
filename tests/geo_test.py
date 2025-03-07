@@ -1,5 +1,5 @@
 import pytest
-from get_data.geo_get_data_strategy import GeoDirectDataStrategy
+from get_data.geo_extract_strategy import GeoDirectDataStrategy
 import os
 from dotenv import load_dotenv
 

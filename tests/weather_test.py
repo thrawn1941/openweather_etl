@@ -1,6 +1,6 @@
 import pytest
 import requests
-from get_data.weather_get_data_strategy import WeatherCurrentDataStrategy
+from get_data.weather_extract_strategy import WeatherCurrentDataStrategy
 import os
 from dotenv import load_dotenv
 
