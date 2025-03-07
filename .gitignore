@@ -3,3 +3,4 @@
 __pycache__/
 creds.json
 pubsub_test.py
+fake_main.py
