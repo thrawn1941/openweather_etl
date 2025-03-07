@@ -2,12 +2,12 @@ import datetime as dt
 import os
 from dotenv import load_dotenv
 from threading import Thread
-# from get_data.abstract_get_data_strategy import GetDataStrategy
-# from get_data.geo_get_data_strategy import GeoDirectDataStrategy
-from get_data.pollution_extract_strategy import AirPollutionDataStrategy
-# from get_data.pollution_history_get_data_strategy import AirPollutionHistoryDataStrategy
-from get_data.weather_extract_strategy import WeatherCurrentDataStrategy
-# from get_data.weather_forecast_get_data_strategy import WeatherCurrentForecastDataStrategy
+# from extract.abstract_get_data_strategy import GetDataStrategy
+# from extract.geo_get_data_strategy import GeoDirectDataStrategy
+from extract.pollution_extract_strategy import AirPollutionDataStrategy
+# from extract.pollution_history_get_data_strategy import AirPollutionHistoryDataStrategy
+from extract.weather_extract_strategy import WeatherCurrentDataStrategy
+# from extract.weather_forecast_get_data_strategy import WeatherCurrentForecastDataStrategy
 from endpoint_class import Endpoint
 import functions_framework
 import base64

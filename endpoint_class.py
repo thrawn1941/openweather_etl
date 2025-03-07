@@ -1,4 +1,4 @@
-from get_data.abstract_extract_strategy import GetDataStrategy
+from extract.abstract_extract_strategy import GetDataStrategy
 import asyncio
 
 class Endpoint:
