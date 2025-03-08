@@ -10,16 +10,17 @@ class Endpoint:
         self.id = 0 if len(Endpoint.id_list) == 0 else max(Endpoint.id_list) + 1
         Endpoint.id_list.append(self.id)
 
-    def print_data(self, city, api_key):
-        data = self.get_data_strategy.get_data(city, api_key)
-        print(data)
+    def print_data(self, city):
+        print(self.collected_data[city])
 
-    def append_data(self, city, api_key):
-        if self.collected_data.get(city) is None:
-            self.collected_data[city] = []
+    def print_all_data(self):
+        print(self.collected_data)
 
-        data = self.get_data_strategy.get_data(city, api_key)
-        self.collected_data[city] = data
+    def return_data(self, city):
+        return self.collected_data[city]
+
+    def return_all_data(self):
+        return self.collected_data
 
     def append_data_from_cities(self, api_key, *cities):
         if len(cities) < 1:

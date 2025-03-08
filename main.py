@@ -23,39 +23,13 @@ API_KEY = os.getenv('OPEN_WEATHER_API_KEY')
 
 
 def main():
-    app_pollution = Endpoint(AirPollutionDataStrategy())
-    app_weather = Endpoint(WeatherCurrentDataStrategy())
-
-    t1 = Thread(target=app_pollution.append_data, args=['Warsaw', API_KEY])
-    t2 = Thread(target=app_pollution.append_data, args=['London', API_KEY])
-
-    t1.start()
-    t2.start()
-    t1.join()
-    t2.join()
-
-    t1 = Thread(target=app_weather.append_data, args=['Warsaw', API_KEY])
-    t2 = Thread(target=app_weather.append_data, args=['London', API_KEY])
-
-    t1.start()
-    t2.start()
-    t1.join()
-    t2.join()
-
-    a = app_weather.collected_data.get('Warsaw')
-    b = app_weather.collected_data.get('London')
-    c = app_weather.get_temperature()
-    print(a)
-    print("---------------------------------------------")
-    print(b)
-    print("---------------------------------------------")
-    print(c)
+    pass
 
 @functions_framework.http
 def get_warsaw_temperature(_):
     app_weather = Endpoint(WeatherCurrentDataStrategy())
-    app_weather.append_data('Warsaw', API_KEY)
-    a = app_weather.collected_data.get('Warsaw')
+    app_weather.append_data_from_cities(API_KEY, 'Warsaw')
+    a = app_weather.return_data('Warsaw')
     result = a['main']['temp'] - 273.15
     temperature = '{:.2f}'.format(result)
 
@@ -107,4 +81,4 @@ def export_temperature_to_bigquery(cloud_event):
     except Exception as e:
         print(f'Error occurred during data insert: {e}')
 
-# main()
+main()
