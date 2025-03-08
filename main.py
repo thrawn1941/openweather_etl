@@ -1,10 +1,10 @@
 import datetime as dt
 import os
 from dotenv import load_dotenv
-from threading import Thread
+# from threading import Thread
 # from extract.abstract_get_data_strategy import GetDataStrategy
 # from extract.geo_get_data_strategy import GeoDirectDataStrategy
-from extract.pollution_extract_strategy import AirPollutionDataStrategy
+# from extract.pollution_extract_strategy import AirPollutionDataStrategy
 # from extract.pollution_history_get_data_strategy import AirPollutionHistoryDataStrategy
 from extract.weather_extract_strategy import WeatherCurrentDataStrategy
 # from extract.weather_forecast_get_data_strategy import WeatherCurrentForecastDataStrategy
