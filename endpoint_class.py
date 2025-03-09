@@ -37,16 +37,3 @@ class Endpoint:
             return results
 
         asyncio.run(gather_data())
-
-    def get_temperature(self):
-        from datetime import datetime
-        result = dict()
-        for key in self.collected_data.keys():
-            data = self.collected_data.get(key)
-            temp = round(data['main']['temp'] - 273.15, 2)
-            dt = data['dt']
-            dt = datetime.fromtimestamp(dt)
-            dt = dt.strftime("%Y-%m-%d %H:%M:%S")
-            result[key] = (temp, dt)
-
-        return result
