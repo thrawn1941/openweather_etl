@@ -1,5 +1,4 @@
 from transform.abstract_transform_strategy import TransformDataStrategy
-import asyncio
 
 class Transform:
     id_list = []

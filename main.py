@@ -63,7 +63,7 @@ def export_temperature_to_bigquery(cloud_event):
         return
 
     imported_data = json.loads(imported_data)
-    transform_app = Transform(imported_data, WeatherTransformStrategy())
+    transform_app = Transform(imported_data, WeatherTransformStrategy(imported_data))
     insert_rows = []
     temp_data = transform_app.transform_strategy.get_temperature()
     for city in temp_data.keys():
