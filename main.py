@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 # from extract.pollution_history_get_data_strategy import AirPollutionHistoryDataStrategy
 from extract.weather_extract_strategy import WeatherCurrentDataStrategy
 # from extract.weather_forecast_get_data_strategy import WeatherCurrentForecastDataStrategy
+from transform.weather_transform_strategy import WeatherTransformStrategy
+from transform_wrapper_class import Transform
 from endpoint_class import Endpoint
 import functions_framework
 import base64
@@ -61,13 +63,11 @@ def export_temperature_to_bigquery(cloud_event):
         return
 
     imported_data = json.loads(imported_data)
+    transform_app = Transform(imported_data, WeatherTransformStrategy())
     insert_rows = []
-    for city in imported_data.keys():
-        temp = round(imported_data[city]['main']['temp'] - 273.15, 2)
-        date = imported_data[city]['dt']
-        date = dt.datetime.fromtimestamp(date)
-        date = date.strftime("%Y-%m-%d %H:%M:%S")
-        text = f"('{date}', '{city}', {temp})"
+    temp_data = transform_app.transform_strategy.get_temperature()
+    for city in temp_data.keys():
+        text = f"('{temp_data[city][0]}', '{city}', {temp_data[city][1]})"
         insert_rows.append(text)
 
     v = ", ".join(insert_rows)
