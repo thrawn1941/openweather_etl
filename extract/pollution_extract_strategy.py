@@ -1,6 +1,6 @@
 import requests
-from get_data.abstract_get_data_strategy import GetDataStrategy
-from get_data.geo_get_data_strategy import GeoDirectDataStrategy
+from extract.abstract_extract_strategy import GetDataStrategy
+from extract.geo_extract_strategy import GeoDirectDataStrategy
 
 
 class AirPollutionDataStrategy(GetDataStrategy):

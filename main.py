@@ -1,13 +1,15 @@
 import datetime as dt
 import os
 from dotenv import load_dotenv
-from threading import Thread
-# from get_data.abstract_get_data_strategy import GetDataStrategy
-# from get_data.geo_get_data_strategy import GeoDirectDataStrategy
-from get_data.pollution_get_data_strategy import AirPollutionDataStrategy
-# from get_data.pollution_history_get_data_strategy import AirPollutionHistoryDataStrategy
-from get_data.weather_get_data_strategy import WeatherCurrentDataStrategy
-# from get_data.weather_forecast_get_data_strategy import WeatherCurrentForecastDataStrategy
+# from threading import Thread
+# from extract.abstract_get_data_strategy import GetDataStrategy
+# from extract.geo_get_data_strategy import GeoDirectDataStrategy
+# from extract.pollution_extract_strategy import AirPollutionDataStrategy
+# from extract.pollution_history_get_data_strategy import AirPollutionHistoryDataStrategy
+from extract.weather_extract_strategy import WeatherCurrentDataStrategy
+# from extract.weather_forecast_get_data_strategy import WeatherCurrentForecastDataStrategy
+from transform.weather_transform_strategy import WeatherTransformStrategy
+from transform_wrapper_class import Transform
 from endpoint_class import Endpoint
 import functions_framework
 import base64
@@ -23,39 +25,13 @@ API_KEY = os.getenv('OPEN_WEATHER_API_KEY')
 
 
 def main():
-    app_pollution = Endpoint(AirPollutionDataStrategy())
-    app_weather = Endpoint(WeatherCurrentDataStrategy())
-
-    t1 = Thread(target=app_pollution.append_data, args=['Warsaw', API_KEY])
-    t2 = Thread(target=app_pollution.append_data, args=['London', API_KEY])
-
-    t1.start()
-    t2.start()
-    t1.join()
-    t2.join()
-
-    t1 = Thread(target=app_weather.append_data, args=['Warsaw', API_KEY])
-    t2 = Thread(target=app_weather.append_data, args=['London', API_KEY])
-
-    t1.start()
-    t2.start()
-    t1.join()
-    t2.join()
-
-    a = app_weather.collected_data.get('Warsaw')
-    b = app_weather.collected_data.get('London')
-    c = app_weather.get_temperature()
-    print(a)
-    print("---------------------------------------------")
-    print(b)
-    print("---------------------------------------------")
-    print(c)
+    pass
 
 @functions_framework.http
 def get_warsaw_temperature(_):
     app_weather = Endpoint(WeatherCurrentDataStrategy())
-    app_weather.append_data('Warsaw', API_KEY)
-    a = app_weather.collected_data.get('Warsaw')
+    app_weather.append_data_from_cities(API_KEY, 'Warsaw')
+    a = app_weather.return_data('Warsaw')
     result = a['main']['temp'] - 273.15
     temperature = '{:.2f}'.format(result)
 
@@ -75,7 +51,7 @@ def get_temperature_data(_):
 
     app_weather = Endpoint(WeatherCurrentDataStrategy())
     app_weather.append_data_from_cities(API_KEY, *cities)
-    gathered_data = app_weather.collected_data
+    gathered_data = app_weather.return_all_data()
     result = json.dumps(gathered_data)
     return (result, 200)
 
@@ -87,13 +63,11 @@ def export_temperature_to_bigquery(cloud_event):
         return
 
     imported_data = json.loads(imported_data)
+    transform_app = Transform(imported_data, WeatherTransformStrategy(imported_data))
     insert_rows = []
-    for city in imported_data.keys():
-        temp = round(imported_data[city]['main']['temp'] - 273.15, 2)
-        date = imported_data[city]['dt']
-        date = dt.datetime.fromtimestamp(date)
-        date = date.strftime("%Y-%m-%d %H:%M:%S")
-        text = f"('{date}', '{city}', {temp})"
+    temp_data = transform_app.transform_strategy.get_temperature()
+    for city in temp_data.keys():
+        text = f"('{temp_data[city][0]}', '{city}', {temp_data[city][1]})"
         insert_rows.append(text)
 
     v = ", ".join(insert_rows)
@@ -107,4 +81,4 @@ def export_temperature_to_bigquery(cloud_event):
     except Exception as e:
         print(f'Error occurred during data insert: {e}')
 
-# main()
+main()
