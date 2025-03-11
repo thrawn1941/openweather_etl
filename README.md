@@ -3,6 +3,7 @@
 
 ## Temporary Badges
 ![Static Badge](https://img.shields.io/badge/Python-3.11-blue?logo=python)
+![Static Badge](https://img.shields.io/badge/ETL-yellow)
 ![Static Badge](https://img.shields.io/badge/CI%2FCD-green)
 ![Static Badge](https://img.shields.io/badge/pyTest-blue?logo=pytest)
 ![Static Badge](https://img.shields.io/badge/GCP-yellow?logo=google%20cloud)
