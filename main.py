@@ -1,20 +1,14 @@
 import datetime as dt
 import os
+import base64
+import json
+import functions_framework
 from dotenv import load_dotenv
-# from threading import Thread
-# from extract.abstract_get_data_strategy import GetDataStrategy
-# from extract.geo_get_data_strategy import GeoDirectDataStrategy
-# from extract.pollution_extract_strategy import AirPollutionDataStrategy
-# from extract.pollution_history_get_data_strategy import AirPollutionHistoryDataStrategy
 from extract.weather_extract_strategy import WeatherCurrentDataStrategy
-# from extract.weather_forecast_get_data_strategy import WeatherCurrentForecastDataStrategy
 from transform.weather_transform_strategy import WeatherTransformStrategy
 from transform_wrapper_class import Transform
 from endpoint_class import Endpoint
-import functions_framework
-import base64
-import json
-from google.cloud import bigquery
+from load.weather_load_strategy import WeatherLoadStrategy
 
 GLOBAL_START_DATE=dt.datetime(2020, 12, 1, 0, 0)
 GLOBAL_END_DATE=dt.datetime(2021, 1, 1, 0, 0)
@@ -63,22 +57,12 @@ def export_temperature_to_bigquery(cloud_event):
         return
 
     imported_data = json.loads(imported_data)
+
     transform_app = Transform(imported_data, WeatherTransformStrategy(imported_data))
-    insert_rows = []
     temp_data = transform_app.transform_strategy.get_temperature()
-    for city in temp_data.keys():
-        text = f"('{temp_data[city][0]}', '{city}', {temp_data[city][1]})"
-        insert_rows.append(text)
 
-    v = ", ".join(insert_rows)
-    full_insert = f"""INSERT INTO `totemic-client-447220-r1.city_temperature_data_set.cities_temperature_data` (ds, City, Temperature) VALUES {v};"""
-
-    try:
-        client = bigquery.Client()
-        job = client.query(full_insert)
-        job.result()
-        print("Insert successful.")
-    except Exception as e:
-        print(f'Error occurred during data insert: {e}')
+    load_app = WeatherLoadStrategy()
+    target_table ='totemic-client-447220-r1.city_temperature_data_set.cities_temperature_data'
+    load_app.load_temperatue_to_bigquery(temp_data, target_table)
 
 main()
