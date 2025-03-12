@@ -1,0 +1,31 @@
+name: Terraform deployment
+
+on:
+  push:
+    branches:
+      - 'feat/terraform'
+
+jobs:
+  deploy_terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: apply Terraform
+        run: |
+          terraform init
+          terraform plan
+          terraform apply -auto-approve
+        working-directory: ./terraform
+        env:
+          TF_VAR_gcp_credentials: ${{ secrets.GCP_API_KEY }}
+          TF_VAR_project_id: ${{ vars.GCP_PROJECT_ID }}

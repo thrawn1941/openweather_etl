@@ -2,6 +2,8 @@ name: Deployment actions
 
 on:
   push:
+    branches-ignore:
+      - 'feat/terraform'
 
 jobs:
   run_ruff:
