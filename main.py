@@ -22,21 +22,6 @@ def main():
     pass
 
 @functions_framework.http
-def get_warsaw_temperature(_):
-    app_weather = Endpoint(WeatherCurrentDataStrategy())
-    app_weather.append_data_from_cities(API_KEY, 'Warsaw')
-    a = app_weather.return_data('Warsaw')
-    result = a['main']['temp'] - 273.15
-    temperature = '{:.2f}'.format(result)
-
-    return (f"Current temperature in Warsaw: {temperature}", 200)
-
-@functions_framework.cloud_event
-def hello_pubsub(cloud_event):
-    # Print out the data from Pub/Sub, to prove that it worked
-    print(base64.b64decode(cloud_event.data["message"]["data"]))
-
-@functions_framework.http
 def get_temperature_data(_):
     cities = []
     with open("config", "r", encoding="utf-8") as f:
