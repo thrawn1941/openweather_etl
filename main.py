@@ -4,6 +4,9 @@ import base64
 import json
 import functions_framework
 from dotenv import load_dotenv
+from extract.geo_extract_strategy import GeoDirectDataStrategy
+from extract.pollution_extract_strategy import AirPollutionDataStrategy
+from extract.pollution_history_extract_strategy import AirPollutionHistoryDataStrategy
 from extract.weather_extract_strategy import WeatherCurrentDataStrategy
 from transform.weather_transform_strategy import WeatherTransformStrategy
 from transform_wrapper_class import Transform
@@ -21,19 +24,72 @@ API_KEY = os.getenv('OPEN_WEATHER_API_KEY')
 def main():
     pass
 
+### EXTRACT FUNCTIONS
+@functions_framework.http
+def get_geo_data(_):
+    app_weather = Endpoint(GeoDirectDataStrategy())
+    app_weather.append_data_from_cities(API_KEY)
+    gathered_data = app_weather.return_all_data()
+
+    result = json.dumps(gathered_data)
+    return result, 200
+
+@functions_framework.http
+def get_pollution_data(_):
+    app_weather = Endpoint(AirPollutionDataStrategy())
+    app_weather.append_data_from_cities(API_KEY)
+    gathered_data = app_weather.return_all_data()
+
+    result = json.dumps(gathered_data)
+    return result, 200
+
+@functions_framework.http
+def get_last_day_pollution_data(_):
+    app_weather = Endpoint(AirPollutionHistoryDataStrategy())
+    app_weather.append_last_n_days_pollution(API_KEY, 1)
+    gathered_data = app_weather.return_all_data()
+
+    result = json.dumps(gathered_data)
+    return result, 200
+
+@functions_framework.http
+def get_last_week_pollution_data(_):
+    app_weather = Endpoint(AirPollutionHistoryDataStrategy())
+    app_weather.append_last_n_days_pollution(API_KEY, 7)
+    gathered_data = app_weather.return_all_data()
+
+    result = json.dumps(gathered_data)
+    return result, 200
+
+@functions_framework.http
+def get_last_month_pollution_data(_):
+    app_weather = Endpoint(AirPollutionHistoryDataStrategy())
+    app_weather.append_last_n_days_pollution(API_KEY, 30)
+    gathered_data = app_weather.return_all_data()
+
+    result = json.dumps(gathered_data)
+    return result, 200
+
+@functions_framework.http
+def get_weather_data(_):
+    app_weather = Endpoint(WeatherCurrentDataStrategy())
+    app_weather.append_data_from_cities(API_KEY)
+    gathered_data = app_weather.return_all_data()
+
+    result = json.dumps(gathered_data)
+    return result, 200
+
 @functions_framework.http
 def get_temperature_data(_):
-    cities = []
-    with open("config", "r", encoding="utf-8") as f:
-        for line in f:
-            cities.append(line.strip())
-
     app_weather = Endpoint(WeatherCurrentDataStrategy())
-    app_weather.append_data_from_cities(API_KEY, *cities)
+    app_weather.append_data_from_cities(API_KEY)
     gathered_data = app_weather.return_all_data()
-    result = json.dumps(gathered_data)
-    return (result, 200)
 
+    result = json.dumps(gathered_data)
+    return result, 200
+
+
+### LOAD FUNCTIONS
 @functions_framework.cloud_event
 def export_temperature_to_bigquery(cloud_event):
     imported_data = base64.b64decode(cloud_event.data["message"]["data"])

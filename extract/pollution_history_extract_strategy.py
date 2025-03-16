@@ -1,17 +1,20 @@
 import requests
 from extract.abstract_extract_strategy import GetDataStrategy
 from extract.geo_extract_strategy import GeoDirectDataStrategy
-
+from datetime import datetime, timedelta
+from utils import string_data_to_timestamp_unix
 
 class AirPollutionHistoryDataStrategy(GetDataStrategy):
 
-    def __init__(self, start_date, end_date):
-        self.start_date = start_date
-        self.end_date = end_date
+    @property
+    def __name__(self):
+        return type(self).__name__
 
-    def get_data(self, city, api_key):
+    def get_data(self, city:str, api_key:str, days_back:int):
         lat, lon = GeoDirectDataStrategy.get_lat_and_lon(city, api_key)
-        pollution_url = f'http://api.openweathermap.org/data/2.5/air_pollution/history?lat={lat}&lon={lon}&start={self.start_date}&end={self.end_date}&appid={api_key}'
+        end_date = string_data_to_timestamp_unix(datetime.now().strftime("%d/%m/%Y"))
+        start_date = string_data_to_timestamp_unix((datetime.fromtimestamp(end_date) - timedelta(days=days_back)).strftime("%d/%m/%Y"))
+        pollution_url = f'http://api.openweathermap.org/data/2.5/air_pollution/history?lat={lat}&lon={lon}&start={start_date}&end={end_date}&appid={api_key}'
         pollution_data = requests.get(pollution_url).json()
 
         return pollution_data
