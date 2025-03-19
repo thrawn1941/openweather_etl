@@ -99,9 +99,9 @@ resource "google_cloudfunctions_function" "get_geo_data" {
 #   member = "allUsers"
 # }
 resource "google_cloudfunctions_function_iam_member" "invoker" {
-  project        = google_cloudfunctions_function.function.project
-  region         = google_cloudfunctions_function.function.region
-  cloud_function = google_cloudfunctions_function.function.name
+  project        = google_cloudfunctions_function.get_geo_data.project
+  region         = google_cloudfunctions_function.get_geo_data.region
+  cloud_function = google_cloudfunctions_function.get_geo_data.name
 
   role   = "roles/cloudfunctions.invoker"
   member = "user:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
