@@ -12,3 +12,8 @@ variable "gcp_credentials" {
   description="Google Cloud credentials in json format"
   sensitive=true
 }
+variable "open_weather_api_key" {
+  description = "API key for OpenWeather"
+  type        = string
+  sensitive   = true
+}

@@ -58,3 +58,51 @@ resource "google_workflows_workflow" "default" {
 EOF
 
 }
+resource "google_storage_bucket" "bucket" {
+  name     = "functions-bucket"
+  location = var.region
+}
+resource "google_storage_bucket_object" "archive" {
+  name   = "functions-source.zip"
+  bucket = google_storage_bucket.bucket.name
+  source = "."
+}
+# resource "google_storage_bucket_object" "archive" {
+#   name   = "get_geo_data-source.zip"
+#   bucket = google_storage_bucket.bucket.name
+#   source = "."
+# }
+resource "google_cloudfunctions_function" "get_geo_data" {
+  name        = "get_geo_data_tf"
+  description = "My function"
+  runtime     = "python311"
+
+
+  available_memory_mb   = 128
+  source_archive_bucket = google_storage_bucket.bucket.name
+  source_archive_object = google_storage_bucket_object.archive.name
+  trigger_http          = true
+  entry_point           = "get_geo_data"
+
+  environment_variables = {
+    OPEN_WEATHER_API_KEY = var.open_weather_api_key
+  }
+}
+
+# IAM entry for all users to invoke the function
+# resource "google_cloudfunctions_function_iam_member" "invoker" {
+#   project        = google_cloudfunctions_function.function.project
+#   region         = google_cloudfunctions_function.function.region
+#   cloud_function = google_cloudfunctions_function.function.name
+#
+#   role   = "roles/cloudfunctions.invoker"
+#   member = "allUsers"
+# }
+resource "google_cloudfunctions_function_iam_member" "invoker" {
+  project        = google_cloudfunctions_function.function.project
+  region         = google_cloudfunctions_function.function.region
+  cloud_function = google_cloudfunctions_function.function.name
+
+  role   = "roles/cloudfunctions.invoker"
+  member = "user:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
+}
