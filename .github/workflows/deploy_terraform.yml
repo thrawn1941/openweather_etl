@@ -23,6 +23,7 @@ jobs:
       - name: apply Terraform
         run: |
           terraform init
+          terraform import
           terraform plan
           terraform apply -auto-approve
         working-directory: ./terraform
