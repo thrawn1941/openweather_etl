@@ -23,7 +23,7 @@ jobs:
       - name: apply Terraform
         run: |
           terraform init
-          terraform import
+          terraform import google_workflows_workflow.default projects/totemic-client-447220-r1/locations/europe-central2/workflows/test-workflow
           terraform plan
           terraform apply -auto-approve
         working-directory: ./terraform
