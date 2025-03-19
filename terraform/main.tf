@@ -11,10 +11,6 @@ provider "google" {
   region=var.region
   credentials = var.gcp_credentials
 }
-resource "google_project_service" "default" {
-  service = "workflow.googleapis.com"
-  project = var.project_id
-}
 resource "google_workflows_workflow" "default" {
   name            = "test-workflow"
   region          = "europe-central2"
@@ -61,5 +57,4 @@ resource "google_workflows_workflow" "default" {
         return: $${results}
 EOF
 
-  depends_on = [google_project_service.default]
 }
