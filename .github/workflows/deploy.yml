@@ -88,40 +88,79 @@ jobs:
           echo '${{ secrets.GCP_API_KEY }}' | jq '.' > $HOME/gcloud-key.json
           gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
 
-      - name: Deploy get_warsaw_temperature to Google Cloud Functions
+      - name: Deploy get_geo_data to Google Cloud Functions
         run: |
-          gcloud functions deploy get_warsaw_temperature \
+          gcloud functions deploy get_geo_data \
           --allow-unauthenticated \
           --gen2 \
           --runtime python311 \
           --trigger-http \
-          --entry-point get_warsaw_temperature \
+          --entry-point get_geo_data \
           --region europe-central2 \
           --source . \
           --set-env-vars OPEN_WEATHER_API_KEY=${{ secrets.OPEN_WEATHER_API_KEY }} \
           --service-account=test-account@totemic-client-447220-r1.iam.gserviceaccount.com
 
-      - name: Deploy hello_pubsub to Google Cloud Functions
+      - name: Deploy get_pollution_data to Google Cloud Functions
         run: |
-          gcloud functions deploy hello_pubsub \
+          gcloud functions deploy get_pollution_data \
           --allow-unauthenticated \
           --gen2 \
           --runtime python311 \
-          --trigger-topic demo-topic \
-          --entry-point hello_pubsub \
+          --trigger-http \
+          --entry-point get_pollution_data \
           --region europe-central2 \
           --source . \
           --set-env-vars OPEN_WEATHER_API_KEY=${{ secrets.OPEN_WEATHER_API_KEY }} \
           --service-account=test-account@totemic-client-447220-r1.iam.gserviceaccount.com
 
-      - name: Deploy get_temperature_data to Google Cloud Functions
+      - name: Deploy get_last_day_pollution_data to Google Cloud Functions
         run: |
-          gcloud functions deploy get_temperature_data \
+          gcloud functions deploy get_last_day_pollution_data \
           --allow-unauthenticated \
           --gen2 \
           --runtime python311 \
           --trigger-http \
-          --entry-point get_temperature_data \
+          --entry-point get_last_day_pollution_data \
+          --region europe-central2 \
+          --source . \
+          --set-env-vars OPEN_WEATHER_API_KEY=${{ secrets.OPEN_WEATHER_API_KEY }} \
+          --service-account=test-account@totemic-client-447220-r1.iam.gserviceaccount.com
+
+      - name: Deploy get_last_week_pollution_data to Google Cloud Functions
+        run: |
+          gcloud functions deploy get_last_week_pollution_data \
+          --allow-unauthenticated \
+          --gen2 \
+          --runtime python311 \
+          --trigger-http \
+          --entry-point get_last_week_pollution_data \
+          --region europe-central2 \
+          --source . \
+          --set-env-vars OPEN_WEATHER_API_KEY=${{ secrets.OPEN_WEATHER_API_KEY }} \
+          --service-account=test-account@totemic-client-447220-r1.iam.gserviceaccount.com
+
+      - name: Deploy get_last_month_pollution_data to Google Cloud Functions
+        run: |
+          gcloud functions deploy get_last_month_pollution_data \
+          --allow-unauthenticated \
+          --gen2 \
+          --runtime python311 \
+          --trigger-http \
+          --entry-point get_last_month_pollution_data \
+          --region europe-central2 \
+          --source . \
+          --set-env-vars OPEN_WEATHER_API_KEY=${{ secrets.OPEN_WEATHER_API_KEY }} \
+          --service-account=test-account@totemic-client-447220-r1.iam.gserviceaccount.com
+
+      - name: Deploy get_weather_data to Google Cloud Functions
+        run: |
+          gcloud functions deploy get_weather_data \
+          --allow-unauthenticated \
+          --gen2 \
+          --runtime python311 \
+          --trigger-http \
+          --entry-point get_weather_data \
           --region europe-central2 \
           --source . \
           --set-env-vars OPEN_WEATHER_API_KEY=${{ secrets.OPEN_WEATHER_API_KEY }} \
