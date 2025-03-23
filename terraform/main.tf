@@ -65,7 +65,7 @@ resource "google_storage_bucket" "bucket_for_functions" {
 resource "google_storage_bucket_object" "archive" {
   name   = "functions-source.zip"
   bucket = google_storage_bucket.bucket_for_functions.name
-  source = "."
+  source = "./main.py"
 }
 # resource "google_storage_bucket_object" "archive" {
 #   name   = "get_geo_data-source.zip"
