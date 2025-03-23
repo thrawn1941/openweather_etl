@@ -10,7 +10,8 @@ class AirPollutionHistoryDataStrategy(GetDataStrategy):
     def __name__(self):
         return type(self).__name__
 
-    def get_data(self, city:str, api_key:str, days_back:int):
+    def get_data(self, *args):
+        city, api_key, days_back = args[0], args[1], args[2]
         lat, lon = GeoDirectDataStrategy.get_lat_and_lon(city, api_key)
         end_date = string_data_to_timestamp_unix(datetime.now().strftime("%d/%m/%Y"))
         start_date = string_data_to_timestamp_unix((datetime.fromtimestamp(end_date) - timedelta(days=days_back)).strftime("%d/%m/%Y"))

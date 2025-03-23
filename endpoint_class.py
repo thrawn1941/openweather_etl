@@ -23,60 +23,14 @@ class Endpoint:
     def return_all_data(self):
         return self.collected_data
 
-    def append_data_from_cities(self, api_key):
-        if self.get_data_strategy.__name__ in ['AirPollutionHistoryDataStrategy', 'WeatherCurrentForecastDataStrategy']:
-            raise Exception('Privided strategy cannot perform this action!')
+    def append_data_from_cities(self, api_key, days=0):
 
         cities = get_cities_from_config()
         if len(cities) < 1:
             raise Exception('The "cities" list should not be empty')
 
         async def async_get_city_data(city_name):
-            data = self.get_data_strategy.get_data(city_name, api_key)
-            self.collected_data[city_name] = data
-            return 1
-
-        async def gather_data():
-            tasks = [async_get_city_data(city) for city in cities]
-            results = await asyncio.gather(*tasks)
-            return results
-
-        asyncio.run(gather_data())
-
-    def append_last_n_days_pollution(self, api_key, n):
-        if self.get_data_strategy.__name__ != 'AirPollutionHistoryDataStrategy':
-            raise Exception('Privided strategy cannot perform this action!')
-
-        cities = get_cities_from_config()
-
-        if len(cities) < 1:
-            raise Exception('The "cities" list should not be empty')
-
-        async def async_get_city_data(city_name):
-            data = self.get_data_strategy.get_data(city_name, api_key, n)
-            self.collected_data[city_name] = data
-            return 1
-
-        async def gather_data():
-            tasks = [async_get_city_data(city) for city in cities]
-            results = await asyncio.gather(*tasks)
-            return results
-
-        asyncio.run(gather_data())
-
-    def append_n_days_weather_forecast(self, api_key, n):
-        if self.get_data_strategy.__name__ != 'WeatherCurrentForecastDataStrategy':
-            raise Exception('Privided strategy cannot perform this action!')
-
-        cities = get_cities_from_config()
-
-        if len(cities) < 1:
-            raise Exception('The "cities" list should not be empty')
-        if n > 16:
-            raise Exception('Forecast longer than 16 days is not supported!')
-
-        async def async_get_city_data(city_name):
-            data = self.get_data_strategy.get_data(city_name, api_key, n)
+            data = self.get_data_strategy.get_data(city_name, api_key, days)
             self.collected_data[city_name] = data
             return 1
 

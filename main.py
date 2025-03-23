@@ -46,7 +46,7 @@ def get_pollution_data(_):
 @functions_framework.http
 def get_last_day_pollution_data(_):
     app_weather = Endpoint(AirPollutionHistoryDataStrategy())
-    app_weather.append_last_n_days_pollution(API_KEY, 1)
+    app_weather.append_data_from_cities(API_KEY, 1)
     gathered_data = app_weather.return_all_data()
 
     result = json.dumps(gathered_data)
@@ -55,7 +55,7 @@ def get_last_day_pollution_data(_):
 @functions_framework.http
 def get_last_week_pollution_data(_):
     app_weather = Endpoint(AirPollutionHistoryDataStrategy())
-    app_weather.append_last_n_days_pollution(API_KEY, 7)
+    app_weather.append_data_from_cities(API_KEY, 7)
     gathered_data = app_weather.return_all_data()
 
     result = json.dumps(gathered_data)
@@ -64,7 +64,7 @@ def get_last_week_pollution_data(_):
 @functions_framework.http
 def get_last_month_pollution_data(_):
     app_weather = Endpoint(AirPollutionHistoryDataStrategy())
-    app_weather.append_last_n_days_pollution(API_KEY, 30)
+    app_weather.append_data_from_cities(API_KEY, 30)
     gathered_data = app_weather.return_all_data()
 
     result = json.dumps(gathered_data)
