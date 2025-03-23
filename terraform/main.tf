@@ -59,7 +59,7 @@ provider "google" {
 
 #}
 resource "google_storage_bucket" "bucket_for_functions" {
-  name     = "functions-bucket"
+  name     = "functions-bucket-spec-111"
   location = var.region
 }
 resource "google_storage_bucket_object" "archive" {
