@@ -64,7 +64,7 @@ resource "google_storage_bucket" "bucket_for_functions" {
 }
 resource "google_storage_bucket_object" "archive" {
   name   = "functions-source.zip"
-  bucket = google_storage_bucket.bucket.name
+  bucket = google_storage_bucket.bucket_for_functions.name
   source = "."
 }
 # resource "google_storage_bucket_object" "archive" {
@@ -79,7 +79,7 @@ resource "google_cloudfunctions_function" "get_geo_data" {
 
 
   available_memory_mb   = 128
-  source_archive_bucket = google_storage_bucket.bucket.name
+  source_archive_bucket = google_storage_bucket.bucket_for_functions.name
   source_archive_object = google_storage_bucket_object.archive.name
   trigger_http          = true
   entry_point           = "get_geo_data"
