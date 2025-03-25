@@ -104,5 +104,5 @@ resource "google_cloudfunctions_function_iam_member" "invoker" {
   cloud_function = google_cloudfunctions_function.get_geo_data.name
 
   role   = "roles/cloudfunctions.invoker"
-  member = "user:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
+  member = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
 }
