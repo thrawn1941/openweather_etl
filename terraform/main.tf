@@ -62,16 +62,16 @@ resource "google_storage_bucket" "bucket_for_functions" {
   name     = "functions-bucket-spec-111"
   location = var.region
 }
+data "archive_file" "function_source" {
+  type        = "zip"
+  source_dir  = var.functions_source_dir
+  output_path = "${path.module}/functions-source.zip"
+}
 resource "google_storage_bucket_object" "archive" {
   name   = "functions-source.zip"
   bucket = google_storage_bucket.bucket_for_functions.name
-  source = "./main.py"
+  source = data.archive_file.function_source.output_path
 }
-# resource "google_storage_bucket_object" "archive" {
-#   name   = "get_geo_data-source.zip"
-#   bucket = google_storage_bucket.bucket.name
-#   source = "."
-# }
 resource "google_cloudfunctions_function" "get_geo_data" {
   name        = "get_geo_data_tf"
   description = "My function"

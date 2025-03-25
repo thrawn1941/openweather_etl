@@ -17,3 +17,8 @@ variable "open_weather_api_key" {
   type        = string
   sensitive   = true
 }
+variable "functions_source_dir" {
+  description = "path to source code functions"
+  type        = string
+  default     = "../"
+}
