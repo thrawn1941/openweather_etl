@@ -29,3 +29,4 @@ jobs:
         env:
           TF_VAR_gcp_credentials: ${{ secrets.GCP_API_KEY }}
           TF_VAR_project_id: ${{ vars.GCP_PROJECT_ID }}
+          TF_VAR_open_weather_api_key: ${{ secrets.OPEN_WEATHER_API_KEY }}
