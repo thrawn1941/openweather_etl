@@ -28,9 +28,9 @@ jobs:
         run: |
           echo '${{ secrets.GCP_API_KEY }}' | jq '.' > $HOME/gcloud-key.json
           gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
-          var_x='credentials = '
+          var_x='"credentials = '
           var_x+=$HOME
-          var_x+='/gcloud-key.json'
+          var_x+='/gcloud-key.json"'
           echo $var_x >> ${{ github.workspace }}/terraform/backend.conf
 
       - name: Set up Terraform
