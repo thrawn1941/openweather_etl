@@ -35,10 +35,11 @@ jobs:
 
       - name: Terraform init
         run: |
+          echo '${{ secrets.GCP_API_KEY }}' | jq '.' > $HOME/gcloud-key.json
           terraform init -backend-config=backend.conf
         working-directory: ./terraform
-        #env:
-          #GOOGLE_APPLICATION_CREDENTIALS: ${HOME}/gcloud-key.json
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: "$HOME/gcloud-key.json"
 
       - name: Terraform validate
         run: |
