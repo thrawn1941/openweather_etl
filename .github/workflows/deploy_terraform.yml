@@ -39,7 +39,7 @@ jobs:
           terraform init -backend-config=backend.conf
         working-directory: ./terraform
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: "$HOME/gcloud-key.json"
+          GOOGLE_APPLICATION_CREDENTIALS: "${HOME}/gcloud-key.json"
 
       - name: Terraform validate
         run: |
