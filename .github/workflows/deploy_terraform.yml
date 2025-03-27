@@ -35,6 +35,7 @@ jobs:
 
       - name: Terraform init
         run: |
+          head -1 $HOME/gcloud-key.json
           terraform init -backend-config=backend.conf
         working-directory: ./terraform
         env:
