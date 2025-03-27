@@ -28,7 +28,7 @@ jobs:
         run: |
           echo '${{ secrets.GCP_API_KEY }}' | jq '.' > $HOME/gcloud-key.json
           gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
-          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud-key.json
+          export GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-key.json
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
