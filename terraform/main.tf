@@ -58,8 +58,22 @@ resource "google_workflows_workflow" "default" {
   EOF
 
 }
+resource "google_pubsub_topic" "geo_data_topic" {
+  name = "geo-data-topic"
+}
+resource "google_cloud_scheduler_job" "geo_data_schedule" {
+  name        = "geo-data-schedule"
+  description = "Trigger Cloud Function every hour"
+  schedule    = "0 * * * *"
+  time_zone   = "Europe/Warsaw"
+
+  pubsub_target {
+    topic_name = google_pubsub_topic.geo_data_topic.id
+    data       = base64encode("{}") # Możesz przesłać dowolne dane JSON w base64
+  }
+}
 resource "google_storage_bucket" "bucket_for_functions" {
-  name     = "functions-bucket-spec-111"
+  name     = "functions-bucket-openweather-etl"
   location = var.region
 }
 data "archive_file" "function_source" {
