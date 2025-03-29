@@ -86,22 +86,53 @@ resource "google_storage_bucket_object" "archive" {
   bucket = google_storage_bucket.bucket_for_functions.name
   source = data.archive_file.function_source.output_path
 }
-resource "google_cloudfunctions_function" "get_geo_data" {
+resource "google_cloudfunctions2_function" "get_geo_data" {
   name        = "get_geo_data_tf"
-  description = "My function"
-  runtime     = "python311"
+  description = "Function to extract geo data"
+  location    = var.region
 
+  build_config {
+    runtime = "python311"
+    entry_point = "get_geo_data"
+    source {
+      storage_source {
+        bucket = google_storage_bucket.bucket_for_functions.name
+        object = google_storage_bucket_object.archive.name
+      }
+    }
+  }
 
-  available_memory_mb   = 128
-  source_archive_bucket = google_storage_bucket.bucket_for_functions.name
-  source_archive_object = google_storage_bucket_object.archive.name
-  trigger_http          = true
-  entry_point           = "get_geo_data"
+  event_trigger {
+    trigger_region = var.region
+    event_type = "google.cloud.pubsub.topic.v1.messagePublished"
+    pubsub_topic = google_pubsub_topic.geo_data_topic.id
+    retry_policy = "RETRY_POLICY_UNSPECIFIED"
+  }
 
-  environment_variables = {
-    OPEN_WEATHER_API_KEY = var.open_weather_api_key
+  service_config {
+    max_instance_count = 1
+    available_memory   = "128Mi"
+    environment_variables = {
+      OPEN_WEATHER_API_KEY = var.open_weather_api_key
+    }
   }
 }
+# resource "google_cloudfunctions_function" "get_geo_data" {
+#   name        = "get_geo_data_tf"
+#   description = "My function"
+#   runtime     = "python311"
+#
+#
+#   available_memory_mb   = 128
+#   source_archive_bucket = google_storage_bucket.bucket_for_functions.name
+#   source_archive_object = google_storage_bucket_object.archive.name
+#   trigger_http          = true
+#   entry_point           = "get_geo_data"
+#
+#   environment_variables = {
+#     OPEN_WEATHER_API_KEY = var.open_weather_api_key
+#   }
+# }
 
 # IAM entry for all users to invoke the function
 # resource "google_cloudfunctions_function_iam_member" "invoker" {
