@@ -143,10 +143,10 @@ resource "google_cloudfunctions2_function" "get_geo_data" {
 #   role   = "roles/cloudfunctions.invoker"
 #   member = "allUsers"
 # }
-resource "google_cloudfunctions_function_iam_member" "invoker" {
-  project        = google_cloudfunctions_function.get_geo_data.project
-  region         = google_cloudfunctions_function.get_geo_data.region
-  cloud_function = google_cloudfunctions_function.get_geo_data.name
+resource "google_cloudfunctions2_function_iam_member" "invoker" {
+  project        = google_cloudfunctions2_function.get_geo_data.project
+  location       = google_cloudfunctions2_function.get_geo_data.location
+  cloud_function = google_cloudfunctions2_function.get_geo_data.name
 
   role   = "roles/cloudfunctions.invoker"
   member = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
