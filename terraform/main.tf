@@ -95,7 +95,7 @@ resource "google_workflows_workflow" "default" {
                   - publish_to_pubsub:
                       call: googleapis.pubsub.v1.projects.topics.publish
                       args:
-                        topic: $${"projects/totemic-client-447220-r1/topics/" + func}
+                        topic: $${"projects/totemic-client-447220-r1/topics/" + func + "-topic"}
                         body:
                           messages:
                             - data: $${base64.encode(text.encode(function_response.body))}
