@@ -11,6 +11,50 @@ provider "google" {
   region=var.region
   credentials = var.gcp_credentials
 }
+###FUNCTIONS
+resource "google_storage_bucket" "bucket_for_functions" {
+  name     = "functions-bucket-openweather-etl"
+  location = var.region
+}
+data "archive_file" "function_source" {
+  type        = "zip"
+  source_dir  = var.functions_source_dir
+  output_path = "${path.module}/functions-source.zip"
+}
+resource "google_storage_bucket_object" "archive" {
+  name   = "functions-source.zip"
+  bucket = google_storage_bucket.bucket_for_functions.name
+  source = data.archive_file.function_source.output_path
+}
+
+resource "google_cloudfunctions2_function" "extract_functions" {
+  for_each = toset(var.extract_functions)
+
+  name        = "${each.key}_tf"
+  description = "Function to extract geo data"
+  location    = var.region
+
+  build_config {
+    runtime = "python311"
+    entry_point = each.key
+    source {
+      storage_source {
+        bucket = google_storage_bucket.bucket_for_functions.name
+        object = google_storage_bucket_object.archive.name
+      }
+    }
+  }
+
+  service_config {
+    max_instance_count = 1
+    available_memory   = "128Mi"
+    environment_variables = {
+      OPEN_WEATHER_API_KEY = var.open_weather_api_key
+    }
+  }
+}
+#########################################################################################################
+
 resource "google_workflows_workflow" "default" {
   name            = "test-workflow"
   region          = "europe-central2"
@@ -72,51 +116,6 @@ resource "google_cloud_scheduler_job" "geo_data_schedule" {
     data       = base64encode("{}") # Możesz przesłać dowolne dane JSON w base64
   }
 }
-resource "google_storage_bucket" "bucket_for_functions" {
-  name     = "functions-bucket-openweather-etl"
-  location = var.region
-}
-data "archive_file" "function_source" {
-  type        = "zip"
-  source_dir  = var.functions_source_dir
-  output_path = "${path.module}/functions-source.zip"
-}
-resource "google_storage_bucket_object" "archive" {
-  name   = "functions-source.zip"
-  bucket = google_storage_bucket.bucket_for_functions.name
-  source = data.archive_file.function_source.output_path
-}
-resource "google_cloudfunctions2_function" "get_geo_data" {
-  name        = "get_geo_data_tf"
-  description = "Function to extract geo data"
-  location    = var.region
-
-  build_config {
-    runtime = "python311"
-    entry_point = "get_geo_data"
-    source {
-      storage_source {
-        bucket = google_storage_bucket.bucket_for_functions.name
-        object = google_storage_bucket_object.archive.name
-      }
-    }
-  }
-
-  event_trigger {
-    trigger_region = var.region
-    event_type = "google.cloud.pubsub.topic.v1.messagePublished"
-    pubsub_topic = google_pubsub_topic.geo_data_topic.id
-    retry_policy = "RETRY_POLICY_UNSPECIFIED"
-  }
-
-  service_config {
-    max_instance_count = 1
-    available_memory   = "128Mi"
-    environment_variables = {
-      OPEN_WEATHER_API_KEY = var.open_weather_api_key
-    }
-  }
-}
 # resource "google_cloudfunctions_function" "get_geo_data" {
 #   name        = "get_geo_data_tf"
 #   description = "My function"
@@ -134,19 +133,10 @@ resource "google_cloudfunctions2_function" "get_geo_data" {
 #   }
 # }
 
-# IAM entry for all users to invoke the function
-# resource "google_cloudfunctions_function_iam_member" "invoker" {
-#   project        = google_cloudfunctions_function.function.project
-#   region         = google_cloudfunctions_function.function.region
-#   cloud_function = google_cloudfunctions_function.function.name
-#
-#   role   = "roles/cloudfunctions.invoker"
-#   member = "allUsers"
-# }
 resource "google_cloudfunctions2_function_iam_member" "invoker" {
-  project        = google_cloudfunctions2_function.get_geo_data.project
-  location       = google_cloudfunctions2_function.get_geo_data.location
-  cloud_function = google_cloudfunctions2_function.get_geo_data.name
+  project        = google_cloudfunctions2_function.extract_functions.project
+  location       = google_cloudfunctions2_function.extract_functions.location
+  cloud_function = google_cloudfunctions2_function.extract_functions.name
 
   role   = "roles/cloudfunctions.invoker"
   member = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
