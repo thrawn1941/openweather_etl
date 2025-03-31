@@ -31,7 +31,7 @@ resource "google_cloudfunctions2_function" "extract_functions" {
   for_each = toset(var.extract_functions)
 
   name        = "${each.key}_tf"
-  description = "Function to extract geo data"
+  description = "Function for data extraction"
   location    = var.region
 
   build_config {
@@ -60,7 +60,42 @@ resource "google_pubsub_topic" "extract_functions_topics" {
   name = "${each.key}-topic"
 }
 #########################################################################################################
+##### LOAD FUNCTIONS
+resource "google_cloudfunctions2_function" "load_functions" {
+  for_each = tomap({"export_temperature_to_bigquery" = "get_weather_data"})
 
+  name        = "${each.key}_tf"
+  description = "Function for data load"
+  location    = var.region
+
+  build_config {
+    runtime = "python311"
+    entry_point = each.key
+    source {
+      storage_source {
+        bucket = google_storage_bucket.bucket_for_functions.name
+        object = google_storage_bucket_object.archive.name
+      }
+    }
+  }
+
+  event_trigger {
+    trigger_region = var.region
+    event_type = "google.cloud.pubsub.topic.v1.messagePublished"
+    pubsub_topic = google_pubsub_topic.extract_functions_topics[each.value].id
+    retry_policy = "RETRY_POLICY_UNSPECIFIED"
+  }
+
+  service_config {
+    max_instance_count = 1
+    available_memory   = "128Mi"
+    environment_variables = {
+      OPEN_WEATHER_API_KEY = var.open_weather_api_key
+    }
+  }
+}
+
+#########################################################################################################
 resource "google_workflows_workflow" "test_workflow" {
   name            = "test-workflow"
   region          = "europe-central2"
