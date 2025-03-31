@@ -11,7 +11,7 @@ provider "google" {
   region=var.region
   credentials = var.gcp_credentials
 }
-###FUNCTIONS
+##### FUNCTIONS ########################################
 resource "google_storage_bucket" "bucket_for_functions" {
   name     = "functions-bucket-openweather-etl"
   location = var.region
@@ -54,6 +54,12 @@ resource "google_cloudfunctions2_function" "extract_functions" {
   }
 }
 #########################################################################################################
+##### pubsub topics for each function
+resource "google_pubsub_topic" "extract_functions_topics" {
+  for_each = toset(var.extract_functions)
+  name = "${each.key}-topic"
+}
+#########################################################################################################
 
 resource "google_workflows_workflow" "default" {
   name            = "test-workflow"
@@ -82,14 +88,14 @@ resource "google_workflows_workflow" "default" {
                   - call_function:
                       call: http.get
                       args:
-                        url: $${"https://europe-central2-totemic-client-447220-r1.cloudfunctions.net/" + func}
+                        url: $${"https://europe-central2-totemic-client-447220-r1.cloudfunctions.net/" + func + "_tf"}
                         auth:
                           type: OIDC
                       result: function_response
                   - publish_to_pubsub:
                       call: googleapis.pubsub.v1.projects.topics.publish
                       args:
-                        topic: projects/totemic-client-447220-r1/topics/demo-topic
+                        topic: $${"projects/totemic-client-447220-r1/topics/" + func}
                         body:
                           messages:
                             - data: $${base64.encode(text.encode(function_response.body))}
