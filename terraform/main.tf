@@ -134,9 +134,11 @@ resource "google_cloud_scheduler_job" "geo_data_schedule" {
 # }
 
 resource "google_cloudfunctions2_function_iam_member" "invoker" {
-  project        = google_cloudfunctions2_function.extract_functions.project
-  location       = google_cloudfunctions2_function.extract_functions.location
-  cloud_function = google_cloudfunctions2_function.extract_functions.name
+  for_each = google_cloudfunctions2_function.extract_functions
+
+  project        = each.value.project
+  location       = each.value.location
+  cloud_function = each.value.name
 
   role   = "roles/cloudfunctions.invoker"
   member = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
