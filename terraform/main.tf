@@ -11,7 +11,7 @@ provider "google" {
   region=var.region
   credentials = var.gcp_credentials
 }
-##### FUNCTIONS ########################################
+##### EXTRACT FUNCTIONS ########################################
 resource "google_storage_bucket" "bucket_for_functions" {
   name     = "functions-bucket-openweather-etl"
   location = var.region
@@ -54,14 +54,14 @@ resource "google_cloudfunctions2_function" "extract_functions" {
   }
 }
 #########################################################################################################
-##### pubsub topics for each function
+##### pubsub topics for each extract function
 resource "google_pubsub_topic" "extract_functions_topics" {
   for_each = toset(var.extract_functions)
   name = "${each.key}-topic"
 }
 #########################################################################################################
 
-resource "google_workflows_workflow" "default" {
+resource "google_workflows_workflow" "test_workflow" {
   name            = "test-workflow"
   region          = "europe-central2"
   description     = "A test workflow"
@@ -108,18 +108,18 @@ resource "google_workflows_workflow" "default" {
   EOF
 
 }
-resource "google_pubsub_topic" "geo_data_topic" {
-  name = "geo-data-topic"
-}
-resource "google_cloud_scheduler_job" "geo_data_schedule" {
-  name        = "geo-data-schedule"
-  description = "Trigger Cloud Function every hour"
+
+resource "google_cloud_scheduler_job" "test_workflow" {
+  name        = "test-workflow-schedule"
+  description = "Trigger for the test-workflow"
   schedule    = "0 * * * *"
   time_zone   = "Europe/Warsaw"
-
-  pubsub_target {
-    topic_name = google_pubsub_topic.geo_data_topic.id
-    data       = base64encode("{}") # Możesz przesłać dowolne dane JSON w base64
+  http_target {
+    uri         = google_workflows_workflow.test_workflow.id
+    http_method = "POST"
+    oauth_token {
+      service_account_email = "test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
+    }
   }
 }
 # resource "google_cloudfunctions_function" "get_geo_data" {
