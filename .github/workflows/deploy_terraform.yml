@@ -2,8 +2,8 @@ name: Terraform deployment
 
 on:
   push:
-    branches:
-      - 'feat/terraform'
+    #branches:
+    #  - 'feat/terraform'
 
 jobs:
   deploy_terraform:
@@ -17,16 +17,66 @@ jobs:
         with:
           python-version: '3.8'
 
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          version: 'latest'
+          project_id: totemic-client-447220-r1
+          service_account_key: ${{ secrets.GCP_API_KEY }}
+
+      - name: Authenticate with service account
+        run: |
+          echo '${{ secrets.GCP_API_KEY }}' | jq '.' > $HOME/gcloud-key.json
+          gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
+          creds_path='credentials = "'
+          creds_path+=$HOME
+          creds_path+='/gcloud-key.json"'
+          echo $creds_path >> ${{ github.workspace }}/terraform/backend.conf
+
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
 
-      - name: apply Terraform
+      - name: Terraform init
         run: |
-          terraform init
+          terraform init -backend-config=backend.conf
+        working-directory: ./terraform
+
+      - name: Terraform validate
+        run: |
+          terraform validate
+        working-directory: ./terraform
+
+      - name: Terraform plan
+        run: |
           terraform plan
+        working-directory: ./terraform
+        env:
+          TF_VAR_gcp_credentials: ${{ secrets.GCP_API_KEY }}
+          TF_VAR_project_id: ${{ vars.GCP_PROJECT_ID }}
+          TF_VAR_open_weather_api_key: ${{ secrets.OPEN_WEATHER_API_KEY }}
+
+      - name: Terraform state pull
+        run: |
+          terraform state pull
+        working-directory: ./terraform
+
+      - name: Terraform apply
+        run: |
           terraform apply -auto-approve
         working-directory: ./terraform
         env:
           TF_VAR_gcp_credentials: ${{ secrets.GCP_API_KEY }}
           TF_VAR_project_id: ${{ vars.GCP_PROJECT_ID }}
           TF_VAR_open_weather_api_key: ${{ secrets.OPEN_WEATHER_API_KEY }}
+
+#      - name: apply Terraform
+#        run: |
+#          terraform init
+#          terraform validate
+#          terraform plan
+#          terraform apply -auto-approve
+#        working-directory: ./terraform
+#        env:
+#          TF_VAR_gcp_credentials: ${{ secrets.GCP_API_KEY }}
+#          TF_VAR_project_id: ${{ vars.GCP_PROJECT_ID }}
+#          TF_VAR_open_weather_api_key: ${{ secrets.OPEN_WEATHER_API_KEY }}
