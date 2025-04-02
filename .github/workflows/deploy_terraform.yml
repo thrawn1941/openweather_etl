@@ -2,8 +2,8 @@ name: Terraform deployment
 
 on:
   push:
-    branches:
-      - 'feat/terraform'
+    #branches:
+    #  - 'feat/terraform'
 
 jobs:
   deploy_terraform:
