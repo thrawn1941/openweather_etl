@@ -215,3 +215,21 @@ resource "google_cloudfunctions2_function_iam_member" "invoker" {
   role   = "roles/cloudfunctions.invoker"
   member = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
 }
+resource "google_cloudfunctions2_function_iam_member" "invoker_extract_bif" {
+  project        = google_cloudfunctions2_function.extract_last_month_function.project
+  location       = google_cloudfunctions2_function.extract_last_month_function.location
+  cloud_function = google_cloudfunctions2_function.extract_last_month_function.name
+
+  role   = "roles/cloudfunctions.invoker"
+  member = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
+}
+resource "google_cloudfunctions2_function_iam_member" "invoker_load_functions" {
+  for_each = google_cloudfunctions2_function.load_functions
+
+  project        = each.value.project
+  location       = each.value.location
+  cloud_function = each.value.name
+
+  role   = "roles/cloudfunctions.invoker"
+  member = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
+}

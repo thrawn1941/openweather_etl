@@ -71,7 +71,7 @@ def get_last_month_pollution_data(_):
     gathered_data = app_weather.return_all_data()
 
     result = json.dumps(gathered_data)
-    publish_message(API_KEY2, result, LAST_MONTH_TOPIC_ID)
+    publish_message(result, LAST_MONTH_TOPIC_ID)
 
 @functions_framework.http
 def get_weather_data(_):
