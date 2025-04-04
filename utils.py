@@ -18,10 +18,14 @@ def string_data_to_timestamp_unix(data: str) -> int:
     return int(datetime.strptime(data, "%d/%m/%Y").replace(tzinfo=timezone.utc).timestamp())
 
 def publish_message(data, target_topic):
-    publisher = pubsub_v1.PublisherClient()
-    topic_name = 'projects/{project_id}/topics/{topic}'.format(
-        project_id="totemic-client-447220-r1",
-        topic=target_topic,  # Set this to something appropriate.
-    )
-    future = publisher.publish(topic_name, data)
-    future.result()
+    try:
+        publisher = pubsub_v1.PublisherClient()
+        topic_name = 'projects/{project_id}/topics/{topic}'.format(
+            project_id="totemic-client-447220-r1",
+            topic=target_topic,  # Set this to something appropriate.
+        )
+        print(topic_name)
+        future = publisher.publish(topic_name, data)
+        future.result()
+    except Exception as e:
+        print(f"Error: {e}")
