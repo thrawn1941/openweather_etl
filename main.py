@@ -72,7 +72,7 @@ def get_last_month_pollution_data(_):
 
     result = json.dumps(gathered_data)
     publish_message(result, LAST_MONTH_TOPIC_ID)
-
+    print("message published!")
     return result, 200
 
 @functions_framework.http
