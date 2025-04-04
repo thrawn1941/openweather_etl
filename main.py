@@ -73,6 +73,8 @@ def get_last_month_pollution_data(_):
     result = json.dumps(gathered_data)
     publish_message(result, LAST_MONTH_TOPIC_ID)
 
+    return result, 200
+
 @functions_framework.http
 def get_weather_data(_):
     app_weather = Endpoint(WeatherCurrentDataStrategy())
