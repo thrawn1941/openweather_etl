@@ -18,9 +18,9 @@ def string_data_to_timestamp_unix(data: str) -> int:
     return int(datetime.strptime(data, "%d/%m/%Y").replace(tzinfo=timezone.utc).timestamp())
 
 def publish_message(api_key, data, target_topic):
-    publisher = pubsub_v1.PublisherClient.from_service_account_file(API_KEY)
+    publisher = pubsub_v1.PublisherClient.from_service_account_file(api_key)
     #topic_path = publisher.topic_path(PROJECT_ID, TOPIC_ID)
-    topic_path = publisher.topic_path("totemic-client-447220-r1", LAST_MONTH_TOPIC_ID)
+    topic_path = publisher.topic_path("totemic-client-447220-r1", target_topic)
 
     msg = publisher.publish(topic_path, data)
     print(f"Message send: {msg.result()}")
