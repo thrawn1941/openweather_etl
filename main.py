@@ -21,6 +21,7 @@ GLOBAL_FORECAST_DAYS=4
 load_dotenv()
 API_KEY = os.getenv('OPEN_WEATHER_API_KEY')
 LAST_MONTH_TOPIC_ID = os.getenv('LAST_MONTH_TOPIC_ID')
+API_KEY2 = os.getenv('ACCOUNT_API_KEY')
 
 
 def main():
@@ -70,7 +71,7 @@ def get_last_month_pollution_data(_):
     gathered_data = app_weather.return_all_data()
 
     result = json.dumps(gathered_data)
-    publish_message(API_KEY, result, LAST_MONTH_TOPIC_ID)
+    publish_message(API_KEY2, result, LAST_MONTH_TOPIC_ID)
 
 @functions_framework.http
 def get_weather_data(_):
