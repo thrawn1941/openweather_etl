@@ -12,6 +12,7 @@ from transform.weather_transform_strategy import WeatherTransformStrategy
 from transform_wrapper_class import Transform
 from endpoint_class import Endpoint
 from load.weather_load_strategy import WeatherLoadStrategy
+from utils import publish_message
 
 GLOBAL_START_DATE=dt.datetime(2020, 12, 1, 0, 0)
 GLOBAL_END_DATE=dt.datetime(2021, 1, 1, 0, 0)
@@ -19,6 +20,7 @@ GLOBAL_FORECAST_DAYS=4
 
 load_dotenv()
 API_KEY = os.getenv('OPEN_WEATHER_API_KEY')
+LAST_MONTH_TOPIC_ID = os.getenv('LAST_MONTH_TOPIC_ID')
 
 
 def main():
@@ -68,7 +70,7 @@ def get_last_month_pollution_data(_):
     gathered_data = app_weather.return_all_data()
 
     result = json.dumps(gathered_data)
-    return result, 200
+    publish_message(API_KEY, result, LAST_MONTH_TOPIC_ID)
 
 @functions_framework.http
 def get_weather_data(_):

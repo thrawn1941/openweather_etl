@@ -53,11 +53,41 @@ resource "google_cloudfunctions2_function" "extract_functions" {
     }
   }
 }
+### LAST_MONTH_FUNCTION
+resource "google_cloudfunctions2_function" "extract_last_month_function" {
+  name        = "get_last_month_pollution_data_tf"
+  description = "Function for data extraction"
+  location    = var.region
+
+  build_config {
+    runtime = "python311"
+    entry_point = "get_last_month_pollution_data"
+    source {
+      storage_source {
+        bucket = google_storage_bucket.bucket_for_functions.name
+        object = google_storage_bucket_object.archive.name
+      }
+    }
+  }
+
+  service_config {
+    max_instance_count = 1
+    available_memory   = "128Mi"
+    environment_variables = {
+      OPEN_WEATHER_API_KEY = var.open_weather_api_key
+      LAST_MONTH_TOPIC_ID = google_pubsub_topic.extract_last_month_function
+    }
+  }
+}
 #########################################################################################################
 ##### pubsub topics for each extract function
 resource "google_pubsub_topic" "extract_functions_topics" {
   for_each = toset(var.extract_functions)
   name = "${each.key}-topic"
+}
+### LAST_MONTH_TOPIC
+resource "google_pubsub_topic" "extract_last_month_function" {
+  name = "get_last_month_pollution_data"
 }
 #########################################################################################################
 ##### LOAD FUNCTIONS
