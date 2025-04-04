@@ -72,7 +72,7 @@ resource "google_cloudfunctions2_function" "extract_last_month_function" {
 
   service_config {
     max_instance_count = 1
-    available_memory   = "128Mi"
+    available_memory   = "256Mi"
     environment_variables = {
       OPEN_WEATHER_API_KEY = var.open_weather_api_key
       LAST_MONTH_TOPIC_ID = google_pubsub_topic.extract_last_month_function.id
