@@ -188,22 +188,19 @@ resource "google_cloud_scheduler_job" "test_workflow" {
     }
   }
 }
-# resource "google_cloudfunctions_function" "get_geo_data" {
-#   name        = "get_geo_data_tf"
-#   description = "My function"
-#   runtime     = "python311"
-#
-#
-#   available_memory_mb   = 128
-#   source_archive_bucket = google_storage_bucket.bucket_for_functions.name
-#   source_archive_object = google_storage_bucket_object.archive.name
-#   trigger_http          = true
-#   entry_point           = "get_geo_data"
-#
-#   environment_variables = {
-#     OPEN_WEATHER_API_KEY = var.open_weather_api_key
-#   }
-# }
+resource "google_cloud_scheduler_job" "extract_last_month_function" {
+  name        = "test-workflow-schedule"
+  description = "Trigger for the test-workflow"
+  schedule    = "0 * * * *"
+  time_zone   = "Europe/Warsaw"
+  http_target {
+    uri         = google_cloudfunctions2_function.extract_last_month_function.url
+    http_method = "POST"
+    oauth_token {
+      service_account_email = "test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
+    }
+  }
+}
 
 resource "google_cloudfunctions2_function_iam_member" "invoker" {
   for_each = google_cloudfunctions2_function.extract_functions
