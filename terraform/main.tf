@@ -189,8 +189,8 @@ resource "google_cloud_scheduler_job" "test_workflow" {
   }
 }
 resource "google_cloud_scheduler_job" "extract_last_month_function" {
-  name        = "test-workflow-schedule"
-  description = "Trigger for the test-workflow"
+  name        = "get-last-month-pollution-data-schedule"
+  description = "Trigger for the get_last_month_pollution_data"
   schedule    = "0 * * * *"
   time_zone   = "Europe/Warsaw"
   http_target {
