@@ -194,9 +194,9 @@ resource "google_cloud_scheduler_job" "extract_last_month_function" {
   schedule    = "0 * * * *"
   time_zone   = "Europe/Warsaw"
   http_target {
-    uri         = google_cloudfunctions2_function.extract_last_month_function.service_config[0].uri
+    uri         = google_cloudfunctions2_function.extract_last_month_function.url
     http_method = "POST"
-    oauth_token {
+    oidc_token {
       service_account_email = "test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
     }
   }
