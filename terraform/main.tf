@@ -194,7 +194,7 @@ resource "google_cloud_scheduler_job" "extract_last_month_function" {
   schedule    = "0 * * * *"
   time_zone   = "Europe/Warsaw"
   http_target {
-    uri         = google_cloudfunctions2_function.extract_last_month_function.url
+    uri         = google_cloudfunctions2_function.extract_last_month_function.service_config[0].uri
     http_method = "POST"
     oauth_token {
       service_account_email = "test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
@@ -212,7 +212,7 @@ resource "google_cloudfunctions2_function_iam_member" "invoker" {
   role   = "roles/cloudfunctions.invoker"
   member = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
 }
-resource "google_cloudfunctions2_function_iam_member" "invoker_extract_bif" {
+resource "google_cloudfunctions2_function_iam_member" "invoker_extract_last_month" {
   project        = google_cloudfunctions2_function.extract_last_month_function.project
   location       = google_cloudfunctions2_function.extract_last_month_function.location
   cloud_function = google_cloudfunctions2_function.extract_last_month_function.name
