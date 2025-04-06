@@ -9,12 +9,12 @@ class WeatherCurrentForecastDataStrategy(GetDataStrategy):
     def __name__(self):
         return type(self).__name__
 
-    def get_data(self, *args):
-        city, api_key, forecast_days = args[0], args[1], args[2]
+    def get_data(self, **kwargs):
+        city, api_key, forecast_days = kwargs.get('city'), kwargs.get('api_key'), kwargs.get('days')
         if forecast_days > 16:
             raise Exception("Forecasts longer than 16 days are not supported.")
 
-        lat, lon = GeoDirectDataStrategy.get_lat_and_lon(city, api_key)
+        lat, lon = GeoDirectDataStrategy.get_lat_and_lon(city=city, api_key=api_key)
         weather_url = f'https://api.openweathermap.org/data/2.5/forecast/daily?lat={lat}&lon={lon}&cnt={forecast_days}&appid={api_key}'
         print(weather_url)
         weather_data = requests.get(weather_url).json()

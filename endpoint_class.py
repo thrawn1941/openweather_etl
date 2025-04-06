@@ -30,7 +30,7 @@ class Endpoint:
             raise Exception('The "cities" list should not be empty')
 
         async def async_get_city_data(city_name):
-            data = self.get_data_strategy.get_data(city_name, api_key, days)
+            data = self.get_data_strategy.get_data(city=city_name, api_key=api_key, days=days)
             self.collected_data[city_name] = data
             return 1
 
