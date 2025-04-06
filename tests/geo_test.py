@@ -12,5 +12,5 @@ api_key = os.getenv('OPEN_WEATHER_API_KEY')
     ('New York City', (40.73061, -73.935242)),
 ])
 def test_weather_get_data(input1, expected_result):
-    result = GeoDirectDataStrategy().get_data(input1, api_key)
+    result = GeoDirectDataStrategy().get_data(city=input1, api_key=api_key)
     assert (result[0]['lat'], result[0]['lon']) == pytest.approx(expected_result, rel=0.1)

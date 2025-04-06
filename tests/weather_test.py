@@ -18,5 +18,5 @@ def get_test_data():
 
 
 def test_weather_get_data(get_test_data):
-    result = WeatherCurrentDataStrategy().get_data('Warsaw', api_key)
+    result = WeatherCurrentDataStrategy().get_data(city='Warsaw', api_key=api_key)
     assert result == get_test_data

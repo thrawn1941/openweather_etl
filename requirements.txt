@@ -8,3 +8,4 @@ ruff
 functions_framework
 asyncio
 google-cloud-bigquery
+google-cloud-pubsub
