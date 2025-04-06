@@ -38,31 +38,31 @@ resource "google_bigquery_table" "default" {
   },
   {
     "name": "pressure",
-    "type": "INT",
+    "type": "INT64",
     "mode": "NULLABLE",
     "description": "Temperature"
   },
   {
     "name": "humidity",
-    "type": "INT",
+    "type": "INT64",
     "mode": "NULLABLE",
     "description": "Temperature"
   },
   {
     "name": "sea_level",
-    "type": "INT",
+    "type": "INT64",
     "mode": "NULLABLE",
     "description": "Temperature"
   },
   {
     "name": "grnd_level",
-    "type": "INT",
+    "type": "INT64",
     "mode": "NULLABLE",
     "description": "Temperature"
   },
   {
     "name": "visibility",
-    "type": "INT",
+    "type": "INT64",
     "mode": "NULLABLE",
     "description": "Temperature"
   },
@@ -74,13 +74,13 @@ resource "google_bigquery_table" "default" {
   },
   {
     "name": "wind_deg",
-    "type": "INT",
+    "type": "INT64",
     "mode": "NULLABLE",
     "description": "Temperature"
   },
   {
     "name": "clouds_all",
-    "type": "INT",
+    "type": "INT64",
     "mode": "NULLABLE",
     "description": "Temperature"
   }
