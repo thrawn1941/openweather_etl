@@ -18,7 +18,7 @@ resource "google_bigquery_table" "default" {
   }
 
   labels = {
-    env = "Current weather data from openweathermap.org"
+    env = "current-weather"
   }
 
   schema = <<EOF
