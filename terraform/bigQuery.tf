@@ -61,31 +61,31 @@ resource "google_bigquery_table" "default" {
   },
   {
     "name": "pressure",
-    "type": "INT",
+    "type": "INT64",
     "mode": "NULLABLE",
     "description": "Pressure"
   },
   {
     "name": "humidity",
-    "type": "INT",
+    "type": "INT64",
     "mode": "NULLABLE",
     "description": "Humidity"
   },
   {
     "name": "sea_level",
-    "type": "INT",
+    "type": "INT64",
     "mode": "NULLABLE",
     "description": "Sea level"
   },
   {
     "name": "grnd_level",
-    "type": "INT",
+    "type": "INT64",
     "mode": "NULLABLE",
     "description": "Ground level"
   },
   {
     "name": "visibility",
-    "type": "INT",
+    "type": "INT64",
     "mode": "NULLABLE",
     "description": "Visibility"
   },
@@ -97,13 +97,13 @@ resource "google_bigquery_table" "default" {
   },
   {
     "name": "wind_deg",
-    "type": "INT",
+    "type": "INT64",
     "mode": "NULLABLE",
     "description": "Wind speed"
   },
   {
     "name": "clouds_all",
-    "type": "INT",
+    "type": "INT64",
     "mode": "NULLABLE",
     "description": "Clouds"
   }
