@@ -1,9 +1,8 @@
 resource "google_bigquery_dataset" "default" {
-  dataset_id                  = "foo"
-  friendly_name               = "test"
-  description                 = "This is a test description"
+  dataset_id                  = "openweather_etl"
+  friendly_name               = "openweather ETL"
+  description                 = "Data set to store data extracted from openweathermap.org"
   location                    = "EU"
-  default_table_expiration_ms = 3600000
 
   labels = {
     env = "default"
@@ -12,18 +11,30 @@ resource "google_bigquery_dataset" "default" {
 
 resource "google_bigquery_table" "default" {
   dataset_id = google_bigquery_dataset.default.dataset_id
-  table_id   = "test_weather"
+  table_id   = "weather"
 
   time_partitioning {
     type = "DAY"
   }
 
   labels = {
-    env = "default"
+    env = "Current weather data from openweathermap.org"
   }
 
   schema = <<EOF
 [
+  {
+    "name": "city",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "City"
+  },
+  {
+    "name": "ds",
+    "type": "DATETIME",
+    "mode": "REQUIRED",
+    "description": "Timestamp"
+  },
   {
     "name": "temp",
     "type": "NUMERIC",
@@ -34,49 +45,49 @@ resource "google_bigquery_table" "default" {
     "name": "feels_like",
     "type": "NUMERIC",
     "mode": "NULLABLE",
-    "description": "Temperature"
+    "description": "Feels like temperature"
   },
   {
     "name": "temp_min",
     "type": "NUMERIC",
     "mode": "NULLABLE",
-    "description": "Temperature"
+    "description": "Min. temperature"
   },
   {
     "name": "temp_max",
     "type": "NUMERIC",
     "mode": "NULLABLE",
-    "description": "Temperature"
+    "description": "Max. temperature"
   },
   {
     "name": "pressure",
-    "type": "INT64",
+    "type": "INT",
     "mode": "NULLABLE",
-    "description": "Temperature"
+    "description": "Pressure"
   },
   {
     "name": "humidity",
-    "type": "INT64",
+    "type": "INT",
     "mode": "NULLABLE",
-    "description": "Temperature"
+    "description": "Humidity"
   },
   {
     "name": "sea_level",
-    "type": "INT64",
+    "type": "INT",
     "mode": "NULLABLE",
-    "description": "Temperature"
+    "description": "Sea level"
   },
   {
     "name": "grnd_level",
-    "type": "INT64",
+    "type": "INT",
     "mode": "NULLABLE",
-    "description": "Temperature"
+    "description": "Ground level"
   },
   {
     "name": "visibility",
-    "type": "INT64",
+    "type": "INT",
     "mode": "NULLABLE",
-    "description": "Temperature"
+    "description": "Visibility"
   },
   {
     "name": "wind_speed",
@@ -86,15 +97,15 @@ resource "google_bigquery_table" "default" {
   },
   {
     "name": "wind_deg",
-    "type": "INT64",
+    "type": "INT",
     "mode": "NULLABLE",
-    "description": "Temperature"
+    "description": "Wind speed"
   },
   {
     "name": "clouds_all",
-    "type": "INT64",
+    "type": "INT",
     "mode": "NULLABLE",
-    "description": "Temperature"
+    "description": "Clouds"
   }
 ]
 EOF
