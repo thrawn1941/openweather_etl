@@ -13,6 +13,7 @@ from transform_wrapper_class import Transform
 from endpoint_class import Endpoint
 from load.weather_load_strategy import WeatherLoadStrategy
 from utils import publish_message
+from load_wrapper_class import Load
 
 GLOBAL_START_DATE=dt.datetime(2020, 12, 1, 0, 0)
 GLOBAL_END_DATE=dt.datetime(2021, 1, 1, 0, 0)
@@ -110,5 +111,20 @@ def export_temperature_to_bigquery(cloud_event):
     load_app = WeatherLoadStrategy()
     target_table ='totemic-client-447220-r1.city_temperature_data_set.cities_temperature_data'
     load_app.load_temperatue_to_bigquery(temp_data, target_table)
+
+@functions_framework.cloud_event
+def export_weather_to_bigquery(cloud_event):
+    imported_data = base64.b64decode(cloud_event.data["message"]["data"])
+    if not imported_data:
+        print("No data provided!")
+        return
+
+    imported_data = json.loads(imported_data)
+
+    transform_app = Transform(imported_data, WeatherTransformStrategy(imported_data))
+    temp_data = transform_app.return_data_for_bigquery()
+
+    load_app = Load(temp_data, WeatherLoadStrategy())
+    load_app.load_to_bigquery()
 
 main()

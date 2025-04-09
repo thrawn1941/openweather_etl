@@ -1,0 +1,14 @@
+from load.abstract_load_strategy import LoadDataStrategy
+
+class Load:
+    id_list = []
+
+    def __init__(self, data, load_strategy: LoadDataStrategy):
+        self.load_strategy = load_strategy
+        self.data = data
+
+        self.id = 0 if len(Load.id_list) == 0 else max(Load.id_list) + 1
+        Load.id_list.append(self.id)
+
+    def load_to_bigquery(self):
+        self.load_strategy.load_data_to_bigquery(self.data, 'totemic-client-447220-r1.openweather_etl.weather')
