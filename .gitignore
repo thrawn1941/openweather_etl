@@ -7,3 +7,5 @@ fake_main.py
 .terraform
 .terraform.lock.hcl
 .terraform/*
+terraform/infra/*
+terraform/modules/*
