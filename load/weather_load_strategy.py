@@ -11,7 +11,7 @@ class WeatherLoadStrategy(LoadDataStrategy):
         client = bigquery.Client()
 
         errors = client.insert_rows_json(
-            table_name, data
+            table_name, [data]
         )
         if not errors:
             print("Rows have been added.")
