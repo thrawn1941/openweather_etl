@@ -12,7 +12,7 @@ class TransformDataStrategy(ABC):
             raise Exception('Data provided in wrong format! It should be dict.')
 
     @abstractmethod
-    def fake_transform(self):
+    def transform_data(self):
         pass
 
     def get_data_schema(self):
