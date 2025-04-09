@@ -1,6 +1,6 @@
 from load.abstract_load_strategy import LoadDataStrategy
 from google.cloud import bigquery
-import json
+# import json
 
 
 class WeatherLoadStrategy(LoadDataStrategy):
