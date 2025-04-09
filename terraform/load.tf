@@ -1,5 +1,8 @@
 resource "google_cloudfunctions2_function" "load_functions" {
-  for_each = tomap({"export_temperature_to_bigquery" = "get_weather_data"})
+  for_each = tomap({
+    "export_temperature_to_bigquery" = "get_weather_data",
+    "export_weather_to_bigquery" = "get_weather_data"
+  })
 
   name        = "${each.key}_tf"
   description = "Function for data load"
