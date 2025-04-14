@@ -9,3 +9,4 @@ fake_main.py
 .terraform/*
 terraform/infra/*
 terraform/modules/*
+notebook_for_testing.ipynb
