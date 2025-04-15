@@ -36,16 +36,8 @@ variable "bq_weather_schema" {
       type = "RECORD"
       mode = "NULLABLE"
       fields = [
-        {
-          name = "lon"
-          type = "FLOAT"
-          mode = "NULLABLE"
-        },
-        {
-          name = "lat"
-          type = "FLOAT"
-          mode = "NULLABLE"
-        }
+        { name = "lon", type = "FLOAT", mode = "NULLABLE" },
+        { name = "lat", type = "FLOAT", mode = "NULLABLE" }
       ]
     },
     {
@@ -53,26 +45,10 @@ variable "bq_weather_schema" {
       type = "RECORD"
       mode = "REPEATED"
       fields = [
-        {
-          name = "id"
-          type = "INTEGER"
-          mode = "NULLABLE"
-        },
-        {
-          name = "main"
-          type = "STRING"
-          mode = "NULLABLE"
-        },
-        {
-          name = "description"
-          type = "STRING"
-          mode = "NULLABLE"
-        },
-        {
-          name = "icon"
-          type = "STRING"
-          mode = "NULLABLE"
-        }
+        { name = "id", type = "INTEGER", mode = "NULLABLE" },
+        { name = "main", type = "STRING", mode = "NULLABLE" },
+        { name = "description", type = "STRING", mode = "NULLABLE" },
+        { name = "icon", type = "STRING", mode = "NULLABLE" }
       ]
     },
     {
@@ -85,26 +61,14 @@ variable "bq_weather_schema" {
       type = "RECORD"
       mode = "NULLABLE"
       fields = [
-        {
-          name = "temp"
-          type = "FLOAT"
-          mode = "NULLABLE"
-        },
-        {
-          name = "feels_like"
-          type = "FLOAT"
-          mode = "NULLABLE"
-        },
-        {
-          name = "temp_min"
-          type = "FLOAT"
-          mode = "NULLABLE"
-        },
-        {
-          name = "temp_max"
-          type = "FLOAT"
-          mode = "NULLABLE"
-        }
+        { name = "temp", type = "FLOAT", mode = "NULLABLE" },
+        { name = "feels_like", type = "FLOAT", mode = "NULLABLE" },
+        { name = "temp_min", type = "FLOAT", mode = "NULLABLE" },
+        { name = "temp_max", type = "FLOAT", mode = "NULLABLE" },
+        { name = "pressure", type = "INTEGER", mode = "NULLABLE" },
+        { name = "humidity", type = "INTEGER", mode = "NULLABLE" },
+        { name = "sea_level", type = "INTEGER", mode = "NULLABLE" },
+        { name = "grnd_level", type = "INTEGER", mode = "NULLABLE" }
       ]
     },
     {
@@ -117,21 +81,9 @@ variable "bq_weather_schema" {
       type = "RECORD"
       mode = "NULLABLE"
       fields = [
-        {
-          name = "speed"
-          type = "FLOAT"
-          mode = "NULLABLE"
-        },
-        {
-          name = "deg"
-          type = "INTEGER"
-          mode = "NULLABLE"
-        },
-        {
-          name = "gust"
-          type = "FLOAT"
-          mode = "NULLABLE"
-        }
+        { name = "speed", type = "FLOAT", mode = "NULLABLE" },
+        { name = "deg", type = "INTEGER", mode = "NULLABLE" },
+        { name = "gust", type = "FLOAT", mode = "NULLABLE" }
       ]
     },
     {
@@ -139,11 +91,7 @@ variable "bq_weather_schema" {
       type = "RECORD"
       mode = "NULLABLE"
       fields = [
-        {
-          name = "all"
-          type = "INTEGER"
-          mode = "NULLABLE"
-        }
+        { name = "all", type = "INTEGER", mode = "NULLABLE" }
       ]
     },
     {
@@ -156,31 +104,11 @@ variable "bq_weather_schema" {
       type = "RECORD"
       mode = "NULLABLE"
       fields = [
-        {
-          name = "type"
-          type = "INTEGER"
-          mode = "NULLABLE"
-        },
-        {
-          name = "id"
-          type = "INTEGER"
-          mode = "NULLABLE"
-        },
-        {
-          name = "country"
-          type = "STRING"
-          mode = "NULLABLE"
-        },
-        {
-          name = "sunrise"
-          type = "INTEGER"
-          mode = "NULLABLE"
-        },
-        {
-          name = "sunset"
-          type = "INTEGER"
-          mode = "NULLABLE"
-        }
+        { name = "type", type = "INTEGER", mode = "NULLABLE" },
+        { name = "id", type = "INTEGER", mode = "NULLABLE" },
+        { name = "country", type = "STRING", mode = "NULLABLE" },
+        { name = "sunrise", type = "INTEGER", mode = "NULLABLE" },
+        { name = "sunset", type = "INTEGER", mode = "NULLABLE" }
       ]
     },
     {
