@@ -14,3 +14,8 @@ class Load:
         data = self.data
         for city in data.keys():
             self.load_strategy.load_data_to_bigquery(self.data[city], 'totemic-client-447220-r1.openweather_etl.weather')
+
+    def load_raw_to_bigquery(self):
+        data = self.data
+        for city in data.keys():
+            self.load_strategy.load_data_to_bigquery(self.data[city], 'totemic-client-447220-r1.openweather_etl.weather_raw')

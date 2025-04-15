@@ -127,4 +127,16 @@ def export_weather_to_bigquery(cloud_event):
     load_app = Load(temp_data, WeatherLoadStrategy())
     load_app.load_to_bigquery()
 
+@functions_framework.cloud_event
+def export_raw_weather_to_bigquery(cloud_event):
+    imported_data = base64.b64decode(cloud_event.data["message"]["data"])
+    if not imported_data:
+        print("No data provided!")
+        return
+
+    imported_data = json.loads(imported_data)
+
+    load_app = Load(imported_data, WeatherLoadStrategy())
+    load_app.load_raw_to_bigquery()
+
 main()
