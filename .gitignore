@@ -10,3 +10,4 @@ fake_main.py
 terraform/infra/*
 terraform/modules/*
 notebook_for_testing.ipynb
+.ipynb_checkpoints/
