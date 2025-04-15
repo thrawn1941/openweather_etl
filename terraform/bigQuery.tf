@@ -112,7 +112,7 @@ EOF
 
 }
 
-resource "google_bigquery_table" "default" {
+resource "google_bigquery_table" "weather_raw" {
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "weather_raw"
   schema = jsonencode(var.bq_weather_schema)
