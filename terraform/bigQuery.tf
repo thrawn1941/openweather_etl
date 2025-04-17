@@ -113,7 +113,12 @@ EOF
 }
 
 resource "google_bigquery_table" "weather_raw" {
+  for_each = tomap({
+    "weather_raw" = var.bq_weather_schema,
+    "pollution_raw" = var.bq_pollution_schema
+  })
+
   dataset_id = google_bigquery_dataset.default.dataset_id
-  table_id   = "weather_raw"
-  schema = jsonencode(var.bq_weather_schema)
+  table_id   = each.key
+  schema = jsonencode(each.value)
 }

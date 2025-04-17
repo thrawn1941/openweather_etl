@@ -12,6 +12,8 @@ from transform.weather_transform_strategy import WeatherTransformStrategy
 from transform_wrapper_class import Transform
 from endpoint_class import Endpoint
 from load.weather_load_strategy import WeatherLoadStrategy
+from load.pollution_load_strategy import PollutionLoadStrategy
+from load.geo_load_strategy import GeoLoadStrategy
 from utils import publish_message
 from load_wrapper_class import Load
 
@@ -129,14 +131,32 @@ def export_weather_to_bigquery(cloud_event):
 
 @functions_framework.cloud_event
 def export_raw_weather_to_bigquery(cloud_event):
-    imported_data = base64.b64decode(cloud_event.data["message"]["data"])
+    imported_data = json.loads(base64.b64decode(cloud_event.data["message"]["data"]))
     if not imported_data:
         print("No data provided!")
         return
 
-    imported_data = json.loads(imported_data)
+    load_app = Load(data=imported_data, target_table='totemic-client-447220-r1.openweather_etl.weather_raw', load_strategy=WeatherLoadStrategy())
+    load_app.load_raw_to_bigquery()
 
-    load_app = Load(imported_data, WeatherLoadStrategy())
+@functions_framework.cloud_event
+def export_raw_pollution_to_bigquery(cloud_event):
+    imported_data = json.loads(base64.b64decode(cloud_event.data["message"]["data"]))
+    if not imported_data:
+        print("No data provided!")
+        return
+
+    load_app = Load(data=imported_data, target_table='totemic-client-447220-r1.openweather_etl.pollution_raw', load_strategy=PollutionLoadStrategy())
+    load_app.load_raw_to_bigquery()
+
+@functions_framework.cloud_event
+def export_raw_geo_to_bigquery(cloud_event):
+    imported_data = json.loads(base64.b64decode(cloud_event.data["message"]["data"]))
+    if not imported_data:
+        print("No data provided!")
+        return
+
+    load_app = Load(data=imported_data, target_table='totemic-client-447220-r1.openweather_etl.geo_raw', load_strategy=GeoLoadStrategy())
     load_app.load_raw_to_bigquery()
 
 main()
