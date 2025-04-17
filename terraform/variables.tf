@@ -133,6 +133,68 @@ variable "bq_weather_schema" {
     }
   ]
 }
+variable "bq_pollution_schema" {
+  type = any
+  description = "Schema for BigQuery table that contains raw pollution data"
+  default = [
+    {
+      name = "coord"
+      type = "RECORD"
+      mode = "NULLABLE"
+      fields = [
+        {
+          name = "lon"
+          type = "FLOAT"
+          mode = "NULLABLE"
+        },
+        {
+          name = "lat"
+          type = "FLOAT"
+          mode = "NULLABLE"
+        }
+      ]
+    },
+    {
+      name = "list"
+      type = "RECORD"
+      mode = "REPEATED"
+      fields = [
+        {
+          name = "main"
+          type = "RECORD"
+          mode = "NULLABLE"
+          fields = [
+            {
+              name = "aqi"
+              type = "INTEGER"
+              mode = "NULLABLE"
+            }
+          ]
+        },
+        {
+          name = "components"
+          type = "RECORD"
+          mode = "NULLABLE"
+          fields = [
+            { name = "co", type = "FLOAT", mode = "NULLABLE" },
+            { name = "no", type = "FLOAT", mode = "NULLABLE" },
+            { name = "no2", type = "FLOAT", mode = "NULLABLE" },
+            { name = "o3", type = "FLOAT", mode = "NULLABLE" },
+            { name = "so2", type = "FLOAT", mode = "NULLABLE" },
+            { name = "pm2_5", type = "FLOAT", mode = "NULLABLE" },
+            { name = "pm10", type = "FLOAT", mode = "NULLABLE" },
+            { name = "nh3", type = "FLOAT", mode = "NULLABLE" }
+          ]
+        },
+        {
+          name = "dt"
+          type = "TIMESTAMP"
+          mode = "NULLABLE"
+        }
+      ]
+    }
+  ]
+}
 variable "bq_geo_schema" {
   type = any
   description = "Schema for BigQuery table that contains raw geo data"
