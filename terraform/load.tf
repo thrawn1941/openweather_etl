@@ -3,6 +3,8 @@ resource "google_cloudfunctions2_function" "load_functions" {
     "export_temperature_to_bigquery" = "get_weather_data",
     "export_weather_to_bigquery" = "get_weather_data",
     "export_raw_weather_to_bigquery" = "get_weather_data",
+    "export_raw_pollution_to_bigquery" = "get_pollution_data",
+    "export_raw_geo_to_bigquery" = "get_geo_data"
   })
 
   name        = "${each.key}_tf"
