@@ -362,6 +362,7 @@ variable "bq_geo_schema" {
         { name = "xh", type = "STRING", mode = "NULLABLE" },
         { name = "ascii", type = "STRING", mode = "NULLABLE" },
         { name = "lg", type = "STRING", mode = "NULLABLE" },
+        { name = "ty", type = "STRING", mode = "NULLABLE" },
         { name = "feature_name", type = "STRING", mode = "NULLABLE" }
       ]
     },
