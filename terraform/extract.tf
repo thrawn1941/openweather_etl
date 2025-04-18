@@ -137,7 +137,7 @@ resource "google_workflows_workflow" "geo_workflow" {
         - call_function:
             call: http.get
             args:
-              url: https://europe-central2-totemic-client-447220-r1.cloudfunctions.net/export_raw_geo_to_bigquery_tf
+              url: https://europe-central2-totemic-client-447220-r1.cloudfunctions.net/get_geo_data_tf
               auth:
                 type: OIDC
             result: function_response
