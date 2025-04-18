@@ -9,7 +9,7 @@ resource "google_bigquery_dataset" "default" {
   }
 }
 
-resource "google_bigquery_table" "default" {
+resource "google_bigquery_table" "weather" {
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "weather"
 
@@ -106,6 +106,45 @@ resource "google_bigquery_table" "default" {
     "type": "INT64",
     "mode": "NULLABLE",
     "description": "Clouds"
+  }
+]
+EOF
+
+}
+resource "google_bigquery_table" "geo" {
+  dataset_id = google_bigquery_dataset.default.dataset_id
+  table_id   = "geo"
+  schema = <<EOF
+[
+  {
+    "name": "city",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "City"
+  },
+  {
+    "name": "state",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "State"
+  },
+  {
+    "name": "country",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "Country"
+  },
+  {
+    "name": "lat",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Latitude"
+  },
+  {
+    "name": "lon",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Longitude"
   }
 ]
 EOF
