@@ -356,7 +356,11 @@ variable "bq_geo_schema" {
         { name = "ig", type = "STRING", mode = "NULLABLE" },
         { name = "fj", type = "STRING", mode = "NULLABLE" },
         { name = "av", type = "STRING", mode = "NULLABLE" },
-        { name = "vo", type = "STRING", mode = "NULLABLE" }
+        { name = "vo", type = "STRING", mode = "NULLABLE" },
+        { name = "za", type = "STRING", mode = "NULLABLE" },
+        { name = "iu", type = "STRING", mode = "NULLABLE" },
+        { name = "xh", type = "STRING", mode = "NULLABLE" },
+        { name = "feature_name", type = "STRING", mode = "NULLABLE" }
       ]
     },
     {
