@@ -172,7 +172,7 @@ resource "google_cloud_scheduler_job" "test_workflow" {
 resource "google_cloud_scheduler_job" "extract_last_month_function" {
   name        = "get-last-month-pollution-data-schedule"
   description = "Trigger for the get_last_month_pollution_data"
-  schedule    = "0 * * * *"
+  schedule    = "0 0 1 * *"
   time_zone   = "Europe/Warsaw"
   http_target {
     uri         = google_cloudfunctions2_function.extract_last_month_function.url
