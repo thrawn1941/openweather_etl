@@ -36,6 +36,10 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
 
+      #- name: Copy terraform infra to root
+      #  run: |
+      #    cp -r ./terraform/infra/functions/* ./terraform
+
       - name: Terraform init
         run: |
           terraform init -backend-config=backend.conf

@@ -12,7 +12,7 @@ class TransformDataStrategy(ABC):
             raise Exception('Data provided in wrong format! It should be dict.')
 
     @abstractmethod
-    def fake_transform(self):
+    def transform_data(self):
         pass
 
     def get_data_schema(self):
@@ -29,7 +29,10 @@ class TransformDataStrategy(ABC):
                 if key_type is dict:
                     result += get_dict_struct(k, dictionary[k], level + 1)
                 elif key_type is list:
-                    result += get_list_struct('nameless list', dictionary[k], level + 1)
+                    if k is not None:
+                        result += get_list_struct(k, dictionary[k], level + 1)
+                    else:
+                        result += get_list_struct('nameless list', dictionary[k], level + 1)
                 else:
                     result += f'{indentation}{k} - {key_type.__name__}\n'
             return result

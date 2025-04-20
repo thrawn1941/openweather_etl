@@ -1,9 +1,9 @@
-from abc import ABC, abstractmethod
+from load.abstract_load_strategy import LoadDataStrategy
 from google.cloud import bigquery
 
-class LoadDataStrategy(ABC):
 
-    @abstractmethod
+class GeoLoadStrategy(LoadDataStrategy):
+
     def dummy_load(self, data, table_name):
         pass
 
@@ -13,7 +13,7 @@ class LoadDataStrategy(ABC):
         client = bigquery.Client()
 
         errors = client.insert_rows_json(
-            table_name, [data]
+            table_name, data
         )
         if not errors:
             print("Rows have been added.")

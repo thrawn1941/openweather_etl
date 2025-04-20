@@ -1,5 +1,11 @@
 resource "google_cloudfunctions2_function" "load_functions" {
-  for_each = tomap({"export_temperature_to_bigquery" = "get_weather_data"})
+  for_each = tomap({
+    "export_temperature_to_bigquery" = "get_weather_data",
+    "export_weather_to_bigquery" = "get_weather_data",
+    "export_raw_weather_to_bigquery" = "get_weather_data",
+    "export_raw_pollution_to_bigquery" = "get_pollution_data",
+    "export_raw_geo_to_bigquery" = "get_geo_data"
+  })
 
   name        = "${each.key}_tf"
   description = "Function for data load"
@@ -25,7 +31,7 @@ resource "google_cloudfunctions2_function" "load_functions" {
 
   service_config {
     max_instance_count = 1
-    available_memory   = "128Mi"
+    available_memory   = "256Mi"
     environment_variables = {
       OPEN_WEATHER_API_KEY = var.open_weather_api_key
     }

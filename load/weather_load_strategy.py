@@ -1,10 +1,9 @@
 from load.abstract_load_strategy import LoadDataStrategy
 from google.cloud import bigquery
 
-
 class WeatherLoadStrategy(LoadDataStrategy):
 
-    def load_to_bigquery(self, data, table_name):
+    def dummy_load(self, data, table_name):
         pass
 
     def load_temperatue_to_bigquery(self, data, table_name):
