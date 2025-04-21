@@ -114,7 +114,6 @@ EOF
 resource "google_bigquery_table" "geo" {
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "geo"
-  deletion_protection = false
   schema = <<EOF
 [
   {
