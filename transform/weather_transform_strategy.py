@@ -3,11 +3,11 @@ from utils import temp_to_celcius, timestamp_to_string_data
 
 class WeatherTransformStrategy(TransformDataStrategy):
 
-    def transform_data(self):
-        cities = self.data.keys()
+    def transform_data(self, data):
+        cities = data.keys()
         result = dict()
         for city in cities:
-            city_data = self.data.get(city)
+            city_data = data.get(city)
             ds = timestamp_to_string_data(city_data['dt'], "%Y-%m-%d %H:%M:%S")
             temp = temp_to_celcius(city_data['main']['temp'])
             feels_like = temp_to_celcius(city_data['main']['feels_like'])
@@ -40,14 +40,14 @@ class WeatherTransformStrategy(TransformDataStrategy):
             }
         return result
 
-    def get_cities_list(self):
-        return list(self.data.keys())
+    def get_cities_list(self, data):
+        return list(data.keys())
 
-    def get_temperature(self):
-        cities = self.data.keys()
+    def get_temperature(self, data):
+        cities = data.keys()
         result = dict()
         for city in cities:
-            city_data = self.data.get(city)
+            city_data = data.get(city)
             temp = temp_to_celcius(city_data['main']['temp'])
             dt = timestamp_to_string_data(city_data['dt'], "%Y-%m-%d %H:%M:%S")
             result[city] =  (dt, temp)

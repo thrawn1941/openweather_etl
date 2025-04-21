@@ -107,7 +107,7 @@ def export_temperature_to_bigquery(cloud_event):
 
     imported_data = json.loads(imported_data)
 
-    transform_app = Transform(imported_data, WeatherTransformStrategy(imported_data))
+    transform_app = Transform(imported_data, WeatherTransformStrategy())
     temp_data = transform_app.transform_strategy.get_temperature()
 
     load_app = WeatherLoadStrategy()
@@ -123,10 +123,10 @@ def export_weather_to_bigquery(cloud_event):
 
     imported_data = json.loads(imported_data)
 
-    transform_app = Transform(imported_data, WeatherTransformStrategy(imported_data))
+    transform_app = Transform(imported_data, WeatherTransformStrategy())
     temp_data = transform_app.return_data_for_bigquery()
 
-    load_app = Load(temp_data, WeatherLoadStrategy())
+    load_app = Load(temp_data, 'totemic-client-447220-r1.openweather_etl.weather', WeatherLoadStrategy())
     load_app.load_to_bigquery()
 
 @functions_framework.cloud_event

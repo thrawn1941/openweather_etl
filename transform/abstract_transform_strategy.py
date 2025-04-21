@@ -2,21 +2,12 @@ from abc import ABC, abstractmethod
 
 class TransformDataStrategy(ABC):
 
-    def __init__(self, data):
-        if type(data) is dict:
-            if len(data) < 1:
-                raise Exception('Empty dict provided!')
-            else:
-                self.data = data
-        else:
-            raise Exception('Data provided in wrong format! It should be dict.')
-
     @abstractmethod
-    def transform_data(self):
+    def transform_data(self, data):
         pass
 
-    def get_data_schema(self):
-        lvl = list(self.data.keys())
+    def get_data_schema(self, data):
+        lvl = list(data.keys())
         txt = ''
 
         def get_dict_struct(name, dictionary, level):
@@ -52,18 +43,18 @@ class TransformDataStrategy(ABC):
             return result
 
         for key in lvl:
-            tp = type(self.data[key])
+            tp = type(data[key])
             if tp is dict:
-                txt += get_dict_struct(key, self.data[key], 1)
+                txt += get_dict_struct(key, data[key], 1)
             elif tp is list:
-                txt += get_list_struct(key, self.data[key], 1)
+                txt += get_list_struct(key, data[key], 1)
             else:
                 txt += f'{key} - {tp.__name__}\n'
 
         return txt
 
-    def print_data(self):
-        print(self.data)
+    def print_data(self, data):
+        print(data)
 
-    def print_schema(self):
-        print(self.get_data_schema())
+    def print_schema(self, data):
+        print(self.get_data_schema(data))
