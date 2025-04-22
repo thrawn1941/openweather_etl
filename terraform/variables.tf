@@ -96,7 +96,7 @@ variable "bq_weather_schema" {
     },
     {
       name = "dt"
-      type = "INTEGER"
+      type = "DATETIME"
       mode = "NULLABLE"
     },
     {
@@ -387,4 +387,18 @@ variable "bq_geo_schema" {
       mode = "NULLABLE"
     }
   ]
+}
+variable "geo_query" {
+  type=string
+  description="query for geo data"
+  default=<<-EOT
+  SELECT
+    name as city,
+    ANY_VALUE(lat) as lat,
+    ANY_VALUE(lon) as lon,
+    ANY_VALUE(country) as country,
+    ANY_VALUE(state) as state
+  FROM `totemic-client-447220-r1.openweather_etl.geo_raw`
+  GROUP BY name
+  EOT
 }

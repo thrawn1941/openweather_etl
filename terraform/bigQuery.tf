@@ -35,6 +35,6 @@ resource "google_bigquery_data_transfer_config" "geo" {
   params = {
     destination_table_name_template = "geo"
     write_disposition               = "WRITE_TRUNCATE"
-    query                           = "SELECT  name as city, ANY_VALUE(lat) as lat, ANY_VALUE(lon) as lon, ANY_VALUE(country) as country, ANY_VALUE(state) as state FROM `totemic-client-447220-r1.openweather_etl.geo_raw` GROUP BY name"
+    query                           = var.geo_query
   }
 }
