@@ -50,6 +50,6 @@ resource "google_bigquery_data_transfer_config" "weather" {
     query                           = var.weather_query
   }
   schedule_options {
-    start_time           = "2025-04-23 01:00:00"
+    start_time           = "2025-04-23T01:00:00Z"
   }
 }
