@@ -244,7 +244,7 @@ resource "google_bigquery_table" "geo_raw" {
 }
 resource "google_bigquery_data_transfer_config" "geo_test" {
   display_name           = "geo_test"
-  location               = "europe-central2"
+  location               = "EU"
   data_source_id         = "scheduled_query"
   schedule               = "30 * * * *"
   destination_dataset_id = google_bigquery_dataset.default.dataset_id
