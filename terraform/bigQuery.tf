@@ -38,3 +38,18 @@ resource "google_bigquery_data_transfer_config" "geo" {
     query                           = var.geo_query
   }
 }
+resource "google_bigquery_data_transfer_config" "weather" {
+  display_name           = "weather"
+  location               = "EU"
+  data_source_id         = "scheduled_query"
+  schedule               = "every 60 minutes"
+  destination_dataset_id = google_bigquery_dataset.default.dataset_id
+  params = {
+    destination_table_name_template = "weather"
+    write_disposition               = "WRITE_TRUNCATE"
+    query                           = var.weather_query
+  }
+  schedule_options {
+    start_time           = "2025-04-23 01:00:00"
+  }
+}
