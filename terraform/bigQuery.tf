@@ -242,3 +242,15 @@ resource "google_bigquery_table" "geo_raw" {
   table_id   = "geo_raw"
   schema = jsonencode(var.bq_geo_schema)
 }
+resource "google_bigquery_data_transfer_config" "geo_test" {
+  display_name           = "geo_test"
+  location               = "europe-central2"
+  data_source_id         = "scheduled_query"
+  schedule               = "30 * * * *"
+  destination_dataset_id = google_bigquery_dataset.default.dataset_id
+  params = {
+    destination_table_name_template = "geo_test"
+    write_disposition               = "WRITE_TRUNCATE_DATA"
+    query                           = "SELECT  name as city, ANY_VALUE(lat) as lat, ANY_VALUE(lon) as lon, ANY_VALUE(country) as country, ANY_VALUE(state) as state FROM `totemic-client-447220-r1.openweather_etl.geo_raw` GROUP BY name"
+  }
+}
