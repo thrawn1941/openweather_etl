@@ -250,7 +250,7 @@ resource "google_bigquery_data_transfer_config" "geo_test" {
   destination_dataset_id = google_bigquery_dataset.default.dataset_id
   params = {
     destination_table_name_template = "geo_test"
-    write_disposition               = "WRITE_TRUNCATE_DATA"
+    write_disposition               = "WRITE_TRUNCATE"
     query                           = "SELECT  name as city, ANY_VALUE(lat) as lat, ANY_VALUE(lon) as lon, ANY_VALUE(country) as country, ANY_VALUE(state) as state FROM `totemic-client-447220-r1.openweather_etl.geo_raw` GROUP BY name"
   }
 }
