@@ -246,7 +246,7 @@ resource "google_bigquery_data_transfer_config" "geo_test" {
   display_name           = "geo_test"
   location               = "EU"
   data_source_id         = "scheduled_query"
-  schedule               = "30 * * * *"
+  schedule               = "every 1 hour"
   destination_dataset_id = google_bigquery_dataset.default.dataset_id
   params = {
     destination_table_name_template = "geo_test"
