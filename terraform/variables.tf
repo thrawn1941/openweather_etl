@@ -96,7 +96,7 @@ variable "bq_weather_schema" {
     },
     {
       name = "dt"
-      type = "DATETIME"
+      type = "INTEGER"
       mode = "NULLABLE"
     },
     {
