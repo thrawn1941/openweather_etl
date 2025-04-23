@@ -444,6 +444,7 @@ WITH pre_select AS (
   ON ROUND(p.coord.lon, 2) = ROUND(g.lon, 2) AND ROUND(p.coord.lat, 2)=ROUND(g.lat, 2)
 )
 SELECT
+  city,
   coord.lon,
   coord.lat,
   `list`[SAFE_OFFSET(0)].main.aqi,
