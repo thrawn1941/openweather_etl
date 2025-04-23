@@ -53,3 +53,18 @@ resource "google_bigquery_data_transfer_config" "weather" {
     start_time           = "2025-04-23T11:10:00Z"
   }
 }
+resource "google_bigquery_data_transfer_config" "pollution" {
+  display_name           = "pollution"
+  location               = "EU"
+  data_source_id         = "scheduled_query"
+  schedule               = "every 60 minutes"
+  destination_dataset_id = google_bigquery_dataset.default.dataset_id
+  params = {
+    destination_table_name_template = "pollution"
+    write_disposition               = "WRITE_APPEND"
+    query                           = var.pollution_query
+  }
+  schedule_options {
+    start_time           = "2025-04-23T12:10:00Z"
+  }
+}
