@@ -8,8 +8,6 @@ from extract.geo_extract_strategy import GeoDirectDataStrategy
 from extract.pollution_extract_strategy import AirPollutionDataStrategy
 from extract.pollution_history_extract_strategy import AirPollutionHistoryDataStrategy
 from extract.weather_extract_strategy import WeatherCurrentDataStrategy
-from transform.weather_transform_strategy import WeatherTransformStrategy
-from transform_wrapper_class import Transform
 from endpoint import Endpoint
 from load.weather_load_strategy import WeatherLoadStrategy
 from load.pollution_load_strategy import PollutionLoadStrategy
