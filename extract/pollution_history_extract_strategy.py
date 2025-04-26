@@ -11,11 +11,11 @@ class AirPollutionHistoryDataStrategy(GetDataStrategy):
         return type(self).__name__
 
     def get_data(self, **kwargs):
-        city, api_key, days_back = kwargs.get('city'), kwargs.get('api_key'), kwargs.get('days')
+        city, api_key, start_date, end_date = kwargs.get('city'), kwargs.get('api_key'), kwargs.get('start_date'), kwargs.get('end_date')
         lat, lon = GeoDirectDataStrategy.get_lat_and_lon(city=city, api_key=api_key)
-        end_date = string_data_to_timestamp_unix(datetime.now().strftime("%d/%m/%Y"))
-        start_date = string_data_to_timestamp_unix((datetime.fromtimestamp(end_date) - timedelta(days=days_back)).strftime("%d/%m/%Y"))
+        end_date = string_data_to_timestamp_unix(end_date)
+        start_date = string_data_to_timestamp_unix(start_date)
         pollution_url = f'http://api.openweathermap.org/data/2.5/air_pollution/history?lat={lat}&lon={lon}&start={start_date}&end={end_date}&appid={api_key}'
         pollution_data = requests.get(pollution_url).json()
-
         return pollution_data
+

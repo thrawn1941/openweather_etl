@@ -23,7 +23,7 @@ GLOBAL_FORECAST_DAYS=4
 
 load_dotenv()
 API_KEY = os.getenv('OPEN_WEATHER_API_KEY')
-LAST_MONTH_TOPIC_ID = os.getenv('LAST_MONTH_TOPIC_ID')
+HISTORICAL_POLLUTION_TOPIC_ID = os.getenv('HISTORICAL_POLLUTION_TOPIC_ID')
 API_KEY2 = os.getenv('ACCOUNT_API_KEY')
 
 
@@ -50,31 +50,20 @@ def get_pollution_data(_):
     return result, 200
 
 @functions_framework.http
-def get_last_day_pollution_data(_):
+def get_historical_pollution_data(request):
+    request_args = request.args
+    if request_args and 'start_date' in request_args and 'end_date' in request_args:
+        start_date = request_args['start_date']
+        end_date = request_args['end_date']
+    else:
+        return 'End date or start date not provided', 400
+
     app_weather = Endpoint(AirPollutionHistoryDataStrategy())
-    app_weather.append_data_from_cities(API_KEY, 1)
+    app_weather.append_data_from_cities(api_key=API_KEY, start_date=start_date, end_date=end_date)
     gathered_data = app_weather.return_all_data()
 
     result = json.dumps(gathered_data)
-    return result, 200
-
-@functions_framework.http
-def get_last_week_pollution_data(_):
-    app_weather = Endpoint(AirPollutionHistoryDataStrategy())
-    app_weather.append_data_from_cities(API_KEY, 7)
-    gathered_data = app_weather.return_all_data()
-
-    result = json.dumps(gathered_data)
-    return result, 200
-
-@functions_framework.http
-def get_last_month_pollution_data(_):
-    app_weather = Endpoint(AirPollutionHistoryDataStrategy())
-    app_weather.append_data_from_cities(API_KEY, 30)
-    gathered_data = app_weather.return_all_data()
-
-    result = json.dumps(gathered_data)
-    publish_message(result, LAST_MONTH_TOPIC_ID)
+    publish_message(result, HISTORICAL_POLLUTION_TOPIC_ID)
     print("message published!")
     return result, 200
 

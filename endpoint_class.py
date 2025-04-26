@@ -23,14 +23,14 @@ class Endpoint:
     def return_all_data(self):
         return self.collected_data
 
-    def append_data_from_cities(self, api_key, days=0):
+    def append_data_from_cities(self, api_key, start_date=0, end_date=0, forecast_days=0):
 
         cities = get_cities_from_config()
         if len(cities) < 1:
             raise Exception('The "cities" list should not be empty')
 
         async def async_get_city_data(city_name):
-            data = self.get_data_strategy.get_data(city=city_name, api_key=api_key, days=days)
+            data = self.get_data_strategy.get_data(city=city_name, api_key=api_key, start_date=start_date, end_date=end_date, forecast_days=forecast_days)
             self.collected_data[city_name] = data
             return 1
 

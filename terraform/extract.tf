@@ -39,15 +39,15 @@ resource "google_cloudfunctions2_function" "extract_functions" {
     }
   }
 }
-### LAST_MONTH_FUNCTION
-resource "google_cloudfunctions2_function" "extract_last_month_function" {
-  name        = "get_last_month_pollution_data_tf"
+### historical_pollution_data
+resource "google_cloudfunctions2_function" "extract_historical_pollution" {
+  name        = "get_historical_pollution_data_tf"
   description = "Function for data extraction"
   location    = var.region
 
   build_config {
     runtime = "python311"
-    entry_point = "get_last_month_pollution_data"
+    entry_point = "get_historical_pollution_data"
     source {
       storage_source {
         bucket = google_storage_bucket.bucket_for_functions.name
@@ -61,7 +61,7 @@ resource "google_cloudfunctions2_function" "extract_last_month_function" {
     available_memory   = "256Mi"
     environment_variables = {
       OPEN_WEATHER_API_KEY = var.open_weather_api_key
-      LAST_MONTH_TOPIC_ID = google_pubsub_topic.extract_last_month_function.id
+      get_historical_pollution_data = google_pubsub_topic.extract_historical_pollution.id
       ACCOUNT_API_KEY = var.gcp_credentials
     }
   }
@@ -72,9 +72,9 @@ resource "google_pubsub_topic" "extract_functions_topics" {
   for_each = toset(var.extract_functions)
   name = "${each.key}-topic"
 }
-### LAST_MONTH_TOPIC
-resource "google_pubsub_topic" "extract_last_month_function" {
-  name = "get_last_month_pollution_data"
+### historical_pollution_data
+resource "google_pubsub_topic" "extract_historical_pollution" {
+  name = "get_historical_pollution_data"
 }
 #########################################################################################################
 ##### workflow for extract functions

@@ -10,7 +10,7 @@ class WeatherCurrentForecastDataStrategy(GetDataStrategy):
         return type(self).__name__
 
     def get_data(self, **kwargs):
-        city, api_key, forecast_days = kwargs.get('city'), kwargs.get('api_key'), kwargs.get('days')
+        city, api_key, forecast_days = kwargs.get('city'), kwargs.get('api_key'), kwargs.get('forecast_days')
         if forecast_days > 16:
             raise Exception("Forecasts longer than 16 days are not supported.")
 
