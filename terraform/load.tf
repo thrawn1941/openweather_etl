@@ -39,7 +39,7 @@ resource "google_cloudfunctions2_function" "load_functions" {
 }
 resource "google_cloudfunctions2_function" "load_functions2" {
   for_each = tomap({
-    "export_raw_pollution_to_bigquery2" = "get_pollution_data",
+    "export_raw_pollution_to_bigquery2" = "export_raw_pollution_to_bigquery",
   })
 
   name        = "${each.key}_tf"
@@ -48,7 +48,7 @@ resource "google_cloudfunctions2_function" "load_functions2" {
 
   build_config {
     runtime = "python311"
-    entry_point = each.key
+    entry_point = each.value
     source {
       storage_source {
         bucket = google_storage_bucket.bucket_for_functions.name
