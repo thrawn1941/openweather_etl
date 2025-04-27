@@ -89,8 +89,6 @@ resource "google_workflows_workflow" "test_workflow" {
         assign:
             - results : {} # result from each iteration keyed by table name
             - functions:
-                - get_last_day_pollution_data
-                - get_last_week_pollution_data
                 - get_pollution_data
                 - get_weather_data
     - runQueries:

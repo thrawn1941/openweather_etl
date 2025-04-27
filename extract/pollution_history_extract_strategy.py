@@ -1,7 +1,6 @@
 import requests
 from extract.abstract_extract_strategy import GetDataStrategy
 from extract.geo_extract_strategy import GeoDirectDataStrategy
-from datetime import datetime, timedelta
 from utils import string_data_to_timestamp_unix
 
 class AirPollutionHistoryDataStrategy(GetDataStrategy):

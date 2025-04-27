@@ -25,7 +25,7 @@ variable "functions_source_dir" {
 variable "extract_functions" {
   type = list(string)
   description = "List of the extraction functions to export"
-  default = ["get_geo_data", "get_pollution_data", "get_last_day_pollution_data", "get_last_week_pollution_data", "get_weather_data"]
+  default = ["get_geo_data", "get_pollution_data", "get_weather_data"]
 }
 variable "bq_weather_schema" {
   type = any
