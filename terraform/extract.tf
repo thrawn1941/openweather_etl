@@ -167,13 +167,13 @@ resource "google_cloud_scheduler_job" "test_workflow" {
     }
   }
 }
-resource "google_cloud_scheduler_job" "extract_last_month_function" {
+resource "google_cloud_scheduler_job" "extract_historical_pollution" {
   name        = "get-last-month-pollution-data-schedule"
   description = "Trigger for the get_last_month_pollution_data"
   schedule    = "0 0 1 * *"
   time_zone   = "Europe/Warsaw"
   http_target {
-    uri         = google_cloudfunctions2_function.extract_last_month_function.url
+    uri         = google_cloudfunctions2_function.extract_historical_pollution.url
     http_method = "POST"
     oidc_token {
       service_account_email = "test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
@@ -193,9 +193,9 @@ resource "google_cloudfunctions2_function_iam_member" "invoker" {
   member = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
 }
 resource "google_cloudfunctions2_function_iam_member" "invoker_extract_last_month" {
-  project        = google_cloudfunctions2_function.extract_last_month_function.project
-  location       = google_cloudfunctions2_function.extract_last_month_function.location
-  cloud_function = google_cloudfunctions2_function.extract_last_month_function.name
+  project        = google_cloudfunctions2_function.extract_historical_pollution.project
+  location       = google_cloudfunctions2_function.extract_historical_pollution.location
+  cloud_function = google_cloudfunctions2_function.extract_historical_pollution.name
 
   role   = "roles/cloudfunctions.invoker"
   member = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
