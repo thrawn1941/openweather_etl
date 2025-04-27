@@ -23,7 +23,6 @@ GLOBAL_FORECAST_DAYS=4
 
 load_dotenv()
 API_KEY = os.getenv('OPEN_WEATHER_API_KEY')
-HISTORICAL_POLLUTION_TOPIC_ID = os.getenv('HISTORICAL_POLLUTION_TOPIC_ID')
 API_KEY2 = os.getenv('ACCOUNT_API_KEY')
 
 
@@ -63,7 +62,7 @@ def get_historical_pollution_data(request):
     gathered_data = app_weather.return_all_data()
 
     result = json.dumps(gathered_data)
-    publish_message(result, HISTORICAL_POLLUTION_TOPIC_ID)
+    publish_message(result, 'projects/totemic-client-447220-r1/topics/get_historical_pollution_data')
     print("message published!")
     return result, 200
 

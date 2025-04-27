@@ -167,19 +167,6 @@ resource "google_cloud_scheduler_job" "test_workflow" {
     }
   }
 }
-resource "google_cloud_scheduler_job" "extract_historical_pollution" {
-  name        = "get-last-month-pollution-data-schedule"
-  description = "Trigger for the get_last_month_pollution_data"
-  schedule    = "0 0 1 * *"
-  time_zone   = "Europe/Warsaw"
-  http_target {
-    uri         = google_cloudfunctions2_function.extract_historical_pollution.url
-    http_method = "POST"
-    oidc_token {
-      service_account_email = "test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
-    }
-  }
-}
 #########################################################################################################
 ##### invoker permissions for extract functions
 resource "google_cloudfunctions2_function_iam_member" "invoker" {
