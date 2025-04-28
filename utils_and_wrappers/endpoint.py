@@ -1,5 +1,5 @@
 from extract.abstract_extract_strategy import GetDataStrategy
-from utils import get_cities_from_config
+from utils_and_wrappers.utils import get_cities_from_config
 import asyncio
 
 class Endpoint:
