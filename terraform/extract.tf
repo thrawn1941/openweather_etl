@@ -66,6 +66,33 @@ resource "google_cloudfunctions2_function" "extract_historical_pollution" {
     }
   }
 }
+### historical_weather_data
+resource "google_cloudfunctions2_function" "extract_historical_weather" {
+  name        = "get_historical_weather_data_tf"
+  description = "Function for data extraction"
+  location    = var.region
+
+  build_config {
+    runtime = "python311"
+    entry_point = "get_historical_weather_data"
+    source {
+      storage_source {
+        bucket = google_storage_bucket.bucket_for_functions.name
+        object = google_storage_bucket_object.archive.name
+      }
+    }
+  }
+
+  service_config {
+    max_instance_count = 1
+    available_memory   = "256Mi"
+    environment_variables = {
+      OPEN_WEATHER_API_KEY = var.open_weather_api_key
+      get_historical_weather_data = google_pubsub_topic.extract_historical_weather.id
+      ACCOUNT_API_KEY = var.gcp_credentials
+    }
+  }
+}
 #########################################################################################################
 ##### pubsub topics for each extract function
 resource "google_pubsub_topic" "extract_functions_topics" {
