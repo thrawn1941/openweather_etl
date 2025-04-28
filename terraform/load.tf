@@ -60,7 +60,7 @@ resource "google_cloudfunctions2_function" "load_functions2" {
   event_trigger {
     trigger_region = var.region
     event_type = "google.cloud.pubsub.topic.v1.messagePublished"
-    pubsub_topic = "projects/totemic-client-447220-r1/topics/get_historical_pollution_data"
+    pubsub_topic = google_pubsub_topic.extract_historical_pollution.id
     retry_policy = "RETRY_POLICY_UNSPECIFIED"
   }
 
@@ -69,6 +69,43 @@ resource "google_cloudfunctions2_function" "load_functions2" {
     available_memory   = "256Mi"
     environment_variables = {
       OPEN_WEATHER_API_KEY = var.open_weather_api_key
+      HISTORICAL_POLLUTION_PUBSUB_TOPIC = google_pubsub_topic.extract_historical_pollution.id
+    }
+  }
+}
+resource "google_cloudfunctions2_function" "load_functions3" {
+  for_each = tomap({
+    "export_raw_weather_to_bigquery2" = "export_raw_weather_to_bigquery",
+  })
+
+  name        = "${each.key}_tf"
+  description = "Function for data load"
+  location    = var.region
+
+  build_config {
+    runtime = "python311"
+    entry_point = each.value
+    source {
+      storage_source {
+        bucket = google_storage_bucket.bucket_for_functions.name
+        object = google_storage_bucket_object.archive.name
+      }
+    }
+  }
+
+  event_trigger {
+    trigger_region = var.region
+    event_type = "google.cloud.pubsub.topic.v1.messagePublished"
+    pubsub_topic = google_pubsub_topic.extract_historical_pollution.id
+    retry_policy = "RETRY_POLICY_UNSPECIFIED"
+  }
+
+  service_config {
+    max_instance_count = 1
+    available_memory   = "256Mi"
+    environment_variables = {
+      OPEN_WEATHER_API_KEY = var.open_weather_api_key
+      HISTORICAL_WEATHER_PUBSUB_TOPIC = google_pubsub_topic.extract_historical_weather.id
     }
   }
 }
@@ -86,6 +123,16 @@ resource "google_cloudfunctions2_function_iam_member" "invoker_load_functions" {
 }
 resource "google_cloudfunctions2_function_iam_member" "invoker_load_functions2" {
   for_each = google_cloudfunctions2_function.load_functions2
+
+  project        = each.value.project
+  location       = each.value.location
+  cloud_function = each.value.name
+
+  role   = "roles/cloudfunctions.invoker"
+  member = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
+}
+resource "google_cloudfunctions2_function_iam_member" "invoker_load_functions3" {
+  for_each = google_cloudfunctions2_function.load_functions3
 
   project        = each.value.project
   location       = each.value.location
