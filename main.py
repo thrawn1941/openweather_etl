@@ -1,4 +1,3 @@
-import datetime as dt
 import os
 import base64
 import json
@@ -8,19 +7,13 @@ from extract.geo_extract_strategy import GeoDirectDataStrategy
 from extract.pollution_extract_strategy import AirPollutionDataStrategy
 from extract.pollution_history_extract_strategy import AirPollutionHistoryDataStrategy
 from extract.weather_extract_strategy import WeatherCurrentDataStrategy
+from endpoint import Endpoint
 from extract.weather_history_extract_strategy import WeatherHistoryDataStrategy
-from transform.weather_transform_strategy import WeatherTransformStrategy
-from transform_wrapper_class import Transform
-from endpoint_class import Endpoint
 from load.weather_load_strategy import WeatherLoadStrategy
 from load.pollution_load_strategy import PollutionLoadStrategy
 from load.geo_load_strategy import GeoLoadStrategy
 from utils import publish_message
 from load_wrapper_class import Load
-
-GLOBAL_START_DATE=dt.datetime(2020, 12, 1, 0, 0)
-GLOBAL_END_DATE=dt.datetime(2021, 1, 1, 0, 0)
-GLOBAL_FORECAST_DAYS=4
 
 load_dotenv()
 API_KEY = os.getenv('OPEN_WEATHER_API_KEY')
@@ -106,37 +99,6 @@ def get_temperature_data(_):
 
 
 ### LOAD FUNCTIONS
-@functions_framework.cloud_event
-def export_temperature_to_bigquery(cloud_event):
-    imported_data = base64.b64decode(cloud_event.data["message"]["data"])
-    if not imported_data:
-        print("No data provided!")
-        return
-
-    imported_data = json.loads(imported_data)
-
-    transform_app = Transform(imported_data, WeatherTransformStrategy())
-    temp_data = transform_app.transform_strategy.get_temperature()
-
-    load_app = WeatherLoadStrategy()
-    target_table ='totemic-client-447220-r1.city_temperature_data_set.cities_temperature_data'
-    load_app.load_temperatue_to_bigquery(temp_data, target_table)
-
-@functions_framework.cloud_event
-def export_weather_to_bigquery(cloud_event):
-    imported_data = base64.b64decode(cloud_event.data["message"]["data"])
-    if not imported_data:
-        print("No data provided!")
-        return
-
-    imported_data = json.loads(imported_data)
-
-    transform_app = Transform(imported_data, WeatherTransformStrategy())
-    temp_data = transform_app.return_data_for_bigquery()
-
-    load_app = Load(temp_data, 'totemic-client-447220-r1.openweather_etl.weather', WeatherLoadStrategy())
-    load_app.load_to_bigquery()
-
 @functions_framework.cloud_event
 def export_raw_weather_to_bigquery(cloud_event):
     imported_data = json.loads(base64.b64decode(cloud_event.data["message"]["data"]))

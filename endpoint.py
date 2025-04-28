@@ -5,8 +5,8 @@ import asyncio
 class Endpoint:
     id_list = []
 
-    def __init__(self, get_data_strategy: GetDataStrategy):
-        self.get_data_strategy = get_data_strategy
+    def __init__(self, extract_strategy: GetDataStrategy):
+        self.extract_strategy = extract_strategy
         self.collected_data = dict()
         self.id = 0 if len(Endpoint.id_list) == 0 else max(Endpoint.id_list) + 1
         Endpoint.id_list.append(self.id)
@@ -30,7 +30,7 @@ class Endpoint:
             raise Exception('The "cities" list should not be empty')
 
         async def async_get_city_data(city_name):
-            data = self.get_data_strategy.get_data(city=city_name, api_key=api_key, start_date=start_date, end_date=end_date, forecast_days=forecast_days)
+            data = self.extract_strategy.get_data(city=city_name, api_key=api_key, start_date=start_date, end_date=end_date, forecast_days=forecast_days)
             self.collected_data[city_name] = data
             return 1
 
@@ -40,3 +40,6 @@ class Endpoint:
             return results
 
         asyncio.run(gather_data())
+
+    def print_data_schema(self):
+        self.extract_strategy.print_schema(self.collected_data)
