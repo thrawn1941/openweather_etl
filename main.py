@@ -7,13 +7,13 @@ from extract.geo_extract_strategy import GeoDirectDataStrategy
 from extract.pollution_extract_strategy import AirPollutionDataStrategy
 from extract.pollution_history_extract_strategy import AirPollutionHistoryDataStrategy
 from extract.weather_extract_strategy import WeatherCurrentDataStrategy
-from endpoint import Endpoint
+from utils_and_wrappers.endpoint import Endpoint
 from extract.weather_history_extract_strategy import WeatherHistoryDataStrategy
 from load.weather_load_strategy import WeatherLoadStrategy
 from load.pollution_load_strategy import PollutionLoadStrategy
 from load.geo_load_strategy import GeoLoadStrategy
-from utils import publish_message
-from load_wrapper_class import Load
+from utils_and_wrappers.utils import publish_message
+from utils_and_wrappers.load import Load
 
 load_dotenv()
 API_KEY = os.getenv('OPEN_WEATHER_API_KEY')
