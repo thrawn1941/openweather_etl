@@ -146,7 +146,7 @@ def export_hist_pollution_to_bigquery(cloud_event):
         output=[]
         for record in records:
             x = dict()
-            x['list'] = record
+            x['list'] = [record]
             x['coord'] = lon_lat
             output.append(x)
         dataframes[city] = output
