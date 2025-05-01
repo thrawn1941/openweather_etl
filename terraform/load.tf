@@ -39,7 +39,7 @@ resource "google_cloudfunctions2_function" "load_functions" {
 }
 resource "google_cloudfunctions2_function" "load_functions2" {
   for_each = tomap({
-    "export_raw_pollution_to_bigquery2" = "export_raw_pollution_to_bigquery",
+    "export_bcp_pollution_to_bigquery" = "export_bcp_pollution_to_bigquery",
   })
 
   name        = "${each.key}_tf"
@@ -69,13 +69,12 @@ resource "google_cloudfunctions2_function" "load_functions2" {
     available_memory   = "256Mi"
     environment_variables = {
       OPEN_WEATHER_API_KEY = var.open_weather_api_key
-      HISTORICAL_POLLUTION_PUBSUB_TOPIC = google_pubsub_topic.extract_historical_pollution.id
     }
   }
 }
 resource "google_cloudfunctions2_function" "load_functions3" {
   for_each = tomap({
-    "export_raw_weather_to_bigquery2" = "export_raw_weather_to_bigquery",
+    "export_hist_pollution_to_bigquery" = "export_hist_pollution_to_bigquery",
   })
 
   name        = "${each.key}_tf"
@@ -105,7 +104,6 @@ resource "google_cloudfunctions2_function" "load_functions3" {
     available_memory   = "256Mi"
     environment_variables = {
       OPEN_WEATHER_API_KEY = var.open_weather_api_key
-      HISTORICAL_WEATHER_PUBSUB_TOPIC = google_pubsub_topic.extract_historical_weather.id
     }
   }
 }

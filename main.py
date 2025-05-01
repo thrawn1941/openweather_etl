@@ -2,6 +2,7 @@ import os
 import base64
 import json
 import functions_framework
+import pandas as pd
 from dotenv import load_dotenv
 from extract.geo_extract_strategy import GeoDirectDataStrategy
 from extract.pollution_extract_strategy import AirPollutionDataStrategy
@@ -118,6 +119,37 @@ def export_raw_pollution_to_bigquery(cloud_event):
 
     load_app = Load(data=imported_data, target_table='totemic-client-447220-r1.openweather_etl.pollution_raw', load_strategy=PollutionLoadStrategy())
     load_app.load_raw_to_bigquery()
+
+@functions_framework.cloud_event
+def export_bcp_pollution_to_bigquery(cloud_event):
+    imported_data = json.loads(base64.b64decode(cloud_event.data["message"]["data"]))
+    if not imported_data:
+        print("No data provided!")
+        return
+
+    load_app = Load(data=imported_data, target_table='totemic-client-447220-r1.openweather_etl.pollution_raw_backup', load_strategy=PollutionLoadStrategy())
+    load_app.load_raw_to_bigquery()
+
+@functions_framework.cloud_event
+def export_hist_pollution_to_bigquery(cloud_event):
+    imported_data = json.loads(base64.b64decode(cloud_event.data["message"]["data"]))
+    if not imported_data:
+        print("No data provided!")
+        return
+
+    ### zmiana struktury danych (lat i lon dla każdego rekordu) i przepakowanie do dataframe'ów
+    dataframes = dict()
+    for city in imported_data.keys():
+        records = imported_data[city]["list"]
+        df = pd.json_normalize(records)
+        #df = df.assign(lon=imported_data[city]["coord"]["lon"])
+        #df = df.assign(lat=imported_data[city]["coord"]["lat"])
+        lon_lat = {"lon": imported_data[city]["coord"]["lon"], "lat": imported_data[city]["coord"]["lat"]}
+        df["coord"] = [lon_lat] * len(df)
+        dataframes[city] = df
+
+    load_app = Load(data=dataframes, target_table='totemic-client-447220-r1.openweather_etl.pollution_raw', load_strategy=PollutionLoadStrategy())
+    load_app.load_raw_to_bigquery(data_format='dataframe')
 
 @functions_framework.cloud_event
 def export_raw_geo_to_bigquery(cloud_event):
