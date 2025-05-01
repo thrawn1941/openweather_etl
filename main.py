@@ -2,7 +2,7 @@ import os
 import base64
 import json
 import functions_framework
-import pandas as pd
+#import pandas as pd
 from dotenv import load_dotenv
 from extract.geo_extract_strategy import GeoDirectDataStrategy
 from extract.pollution_extract_strategy import AirPollutionDataStrategy
