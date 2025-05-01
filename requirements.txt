@@ -8,5 +8,6 @@ ruff
 functions_framework
 asyncio
 google-cloud-bigquery
+google-cloud-bigquery[pandas]
 google-cloud-pubsub
 pandas
