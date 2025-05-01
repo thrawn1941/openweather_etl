@@ -101,7 +101,7 @@ resource "google_cloudfunctions2_function" "load_functions3" {
 
   service_config {
     max_instance_count = 1
-    available_memory   = "256Mi"
+    available_memory   = "512Mi"
     environment_variables = {
       OPEN_WEATHER_API_KEY = var.open_weather_api_key
     }
