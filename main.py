@@ -138,17 +138,25 @@ def export_hist_pollution_to_bigquery(cloud_event):
         return
 
     ### zmiana struktury danych (lat i lon dla każdego rekordu) i przepakowanie do dataframe'ów
-    dataframes = dict()
+    #dataframes = dict()
     for city in imported_data.keys():
+        records = imported_data[city]["list"]
+        lon_lat = {"lon": imported_data[city]["coord"]["lon"], "lat": imported_data[city]["coord"]["lat"]}
+        imported_data[city]["coord"] = [lon_lat] * len(records)
+        """
         records = imported_data[city]["list"]
         lon_lat = {"lon": imported_data[city]["coord"]["lon"], "lat": imported_data[city]["coord"]["lat"]}
         df = pd.DataFrame()
         df["coord"] = [lon_lat] * len(records)
         df["list"] = [record for record in records]
         dataframes[city] = df
+        """
 
-    load_app = Load(data=dataframes, target_table='totemic-client-447220-r1.openweather_etl.pollution_raw', load_strategy=PollutionLoadStrategy())
-    load_app.load_raw_to_bigquery(data_format='dataframe')
+    #load_app = Load(data=dataframes, target_table='totemic-client-447220-r1.openweather_etl.pollution_raw', load_strategy=PollutionLoadStrategy())
+    #load_app.load_raw_to_bigquery(data_format='dataframe')
+    load_app = Load(data=imported_data, target_table='totemic-client-447220-r1.openweather_etl.pollution_raw',
+                    load_strategy=PollutionLoadStrategy())
+    load_app.load_raw_to_bigquery()
 
 @functions_framework.cloud_event
 def export_raw_geo_to_bigquery(cloud_event):
