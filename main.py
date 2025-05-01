@@ -141,11 +141,10 @@ def export_hist_pollution_to_bigquery(cloud_event):
     dataframes = dict()
     for city in imported_data.keys():
         records = imported_data[city]["list"]
-        df = pd.json_normalize(records)
-        #df = df.assign(lon=imported_data[city]["coord"]["lon"])
-        #df = df.assign(lat=imported_data[city]["coord"]["lat"])
         lon_lat = {"lon": imported_data[city]["coord"]["lon"], "lat": imported_data[city]["coord"]["lat"]}
-        df["coord"] = [lon_lat] * len(df)
+        df = pd.DataFrame()
+        df["coord"] = [lon_lat] * len(records)
+        df["list"] = [record for record in records]
         dataframes[city] = df
 
     load_app = Load(data=dataframes, target_table='totemic-client-447220-r1.openweather_etl.pollution_raw', load_strategy=PollutionLoadStrategy())
