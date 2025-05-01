@@ -7,7 +7,7 @@ class GeoLoadStrategy(LoadDataStrategy):
     def dummy_load(self, data, table_name):
         pass
 
-    def load_data_to_bigquery(self, data, table_name):
+    def load_data_to_bigquery(self, data, table_name, data_format):
         ### just for one city; function assumes that data is just a dict for one city
         #data = json.dumps(data)
         client = bigquery.Client()

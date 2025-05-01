@@ -12,6 +12,7 @@ from utils_and_wrappers.endpoint import Endpoint
 from extract.weather_history_extract_strategy import WeatherHistoryDataStrategy
 from load.weather_load_strategy import WeatherLoadStrategy
 from load.pollution_load_strategy import PollutionLoadStrategy
+from load.pollution_history_load_strategy import PollutionHistoryLoadStrategy
 from load.geo_load_strategy import GeoLoadStrategy
 from utils_and_wrappers.utils import publish_message
 from utils_and_wrappers.load import Load
@@ -138,11 +139,17 @@ def export_hist_pollution_to_bigquery(cloud_event):
         return
 
     ### zmiana struktury danych (lat i lon dla każdego rekordu) i przepakowanie do dataframe'ów
-    #dataframes = dict()
+    dataframes = dict()
     for city in imported_data.keys():
         records = imported_data[city]["list"]
         lon_lat = {"lon": imported_data[city]["coord"]["lon"], "lat": imported_data[city]["coord"]["lat"]}
-        imported_data[city]["coord"] = [lon_lat] * len(records)
+        output=[]
+        for record in records:
+            x = dict()
+            x['list'] = record
+            x['coord'] = lon_lat
+            output.append(x)
+        dataframes[city] = output
         """
         records = imported_data[city]["list"]
         lon_lat = {"lon": imported_data[city]["coord"]["lon"], "lat": imported_data[city]["coord"]["lat"]}
@@ -154,8 +161,8 @@ def export_hist_pollution_to_bigquery(cloud_event):
 
     #load_app = Load(data=dataframes, target_table='totemic-client-447220-r1.openweather_etl.pollution_raw', load_strategy=PollutionLoadStrategy())
     #load_app.load_raw_to_bigquery(data_format='dataframe')
-    load_app = Load(data=imported_data, target_table='totemic-client-447220-r1.openweather_etl.pollution_raw',
-                    load_strategy=PollutionLoadStrategy())
+    load_app = Load(data=dataframes, target_table='totemic-client-447220-r1.openweather_etl.pollution_raw',
+                    load_strategy=PollutionHistoryLoadStrategy())
     load_app.load_raw_to_bigquery()
 
 @functions_framework.cloud_event
