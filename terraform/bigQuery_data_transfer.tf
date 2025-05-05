@@ -1,37 +1,3 @@
-resource "google_bigquery_dataset" "default" {
-  dataset_id                  = "openweather_etl"
-  friendly_name               = "openweather ETL"
-  description                 = "Data set to store data extracted from openweathermap.org"
-  location                    = "EU"
-
-  labels = {
-    env = "default"
-  }
-}
-
-resource "google_bigquery_table" "weather_raw" {
-  dataset_id = google_bigquery_dataset.default.dataset_id
-  table_id   = "weather_raw"
-  schema = jsonencode(var.bq_weather_schema)
-}
-
-resource "google_bigquery_table" "pollution_raw" {
-  dataset_id = google_bigquery_dataset.default.dataset_id
-  table_id   = "pollution_raw"
-  schema = jsonencode(var.bq_pollution_schema)
-}
-
-resource "google_bigquery_table" "pollution_raw_backup" {
-  dataset_id = google_bigquery_dataset.default.dataset_id
-  table_id   = "pollution_raw_backup"
-  schema = jsonencode(var.bq_pollution_schema)
-}
-
-resource "google_bigquery_table" "geo_raw" {
-  dataset_id = google_bigquery_dataset.default.dataset_id
-  table_id   = "geo_raw"
-  schema = jsonencode(var.bq_geo_schema)
-}
 resource "google_bigquery_data_transfer_config" "geo" {
   display_name           = "geo"
   location               = "EU"

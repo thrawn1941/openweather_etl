@@ -1,7 +1,86 @@
+resource "google_cloudfunctions2_function" "extract_functions" {
+  for_each = toset(var.extract_functions)
+
+  name        = "${each.key}_tf"
+  description = "Function for data extraction"
+  location    = var.region
+
+  build_config {
+    runtime = "python311"
+    entry_point = each.key
+    source {
+      storage_source {
+        bucket = google_storage_bucket.bucket_for_functions.name
+        object = google_storage_bucket_object.archive.name
+      }
+    }
+  }
+
+  service_config {
+    max_instance_count = 1
+    available_memory   = "128Mi"
+    environment_variables = {
+      OPEN_WEATHER_API_KEY = var.open_weather_api_key
+    }
+  }
+}
+### historical_pollution_data
+resource "google_cloudfunctions2_function" "extract_historical_pollution" {
+  name        = "get_historical_pollution_data_tf"
+  description = "Function for data extraction"
+  location    = var.region
+
+  build_config {
+    runtime = "python311"
+    entry_point = "get_historical_pollution_data"
+    source {
+      storage_source {
+        bucket = google_storage_bucket.bucket_for_functions.name
+        object = google_storage_bucket_object.archive.name
+      }
+    }
+  }
+
+  service_config {
+    max_instance_count = 1
+    available_memory   = "256Mi"
+    environment_variables = {
+      OPEN_WEATHER_API_KEY = var.open_weather_api_key
+      get_historical_pollution_data = google_pubsub_topic.extract_historical_pollution.id
+      ACCOUNT_API_KEY = var.gcp_credentials
+    }
+  }
+}
+### historical_weather_data
+resource "google_cloudfunctions2_function" "extract_historical_weather" {
+  name        = "get_historical_weather_data_tf"
+  description = "Function for data extraction"
+  location    = var.region
+
+  build_config {
+    runtime = "python311"
+    entry_point = "get_historical_weather_data"
+    source {
+      storage_source {
+        bucket = google_storage_bucket.bucket_for_functions.name
+        object = google_storage_bucket_object.archive.name
+      }
+    }
+  }
+
+  service_config {
+    max_instance_count = 1
+    available_memory   = "256Mi"
+    environment_variables = {
+      OPEN_WEATHER_API_KEY = var.open_weather_api_key
+      get_historical_weather_data = google_pubsub_topic.extract_historical_weather.id
+      ACCOUNT_API_KEY = var.gcp_credentials
+    }
+  }
+}
+
 resource "google_cloudfunctions2_function" "load_functions" {
   for_each = tomap({
-    "export_temperature_to_bigquery" = "get_weather_data",
-    "export_weather_to_bigquery" = "get_weather_data",
     "export_raw_weather_to_bigquery" = "get_weather_data",
     "export_raw_pollution_to_bigquery" = "get_pollution_data",
     "export_raw_geo_to_bigquery" = "get_geo_data"
@@ -106,36 +185,4 @@ resource "google_cloudfunctions2_function" "load_functions3" {
       OPEN_WEATHER_API_KEY = var.open_weather_api_key
     }
   }
-}
-#########################################################################################################
-##### invoker permissions for load functions
-resource "google_cloudfunctions2_function_iam_member" "invoker_load_functions" {
-  for_each = google_cloudfunctions2_function.load_functions
-
-  project        = each.value.project
-  location       = each.value.location
-  cloud_function = each.value.name
-
-  role   = "roles/cloudfunctions.invoker"
-  member = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
-}
-resource "google_cloudfunctions2_function_iam_member" "invoker_load_functions2" {
-  for_each = google_cloudfunctions2_function.load_functions2
-
-  project        = each.value.project
-  location       = each.value.location
-  cloud_function = each.value.name
-
-  role   = "roles/cloudfunctions.invoker"
-  member = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
-}
-resource "google_cloudfunctions2_function_iam_member" "invoker_load_functions3" {
-  for_each = google_cloudfunctions2_function.load_functions3
-
-  project        = each.value.project
-  location       = each.value.location
-  cloud_function = each.value.name
-
-  role   = "roles/cloudfunctions.invoker"
-  member = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
 }
