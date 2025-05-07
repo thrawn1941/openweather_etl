@@ -30,7 +30,6 @@ variable "extract_functions" {
 variable "bq_weather_schema" {
   type = any
   description = "Schema for BigQuery table that contains raw weather data"
-  default = jsondecode(file("$path.module/support_files/bq_weather_schema.json"))
 }
 variable "bq_pollution_schema" {
   type = any
