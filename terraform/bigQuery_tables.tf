@@ -1,7 +1,9 @@
+
+
 resource "google_bigquery_table" "weather_raw" {
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "weather_raw"
-  schema = jsondecode(file("${path.module}/support_files/bq_weather_schema.json"))
+  schema = jsondecode(bq_weather_schema)
 }
 
 resource "google_bigquery_table" "pollution_raw" {
