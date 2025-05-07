@@ -1,1 +1,0 @@
-bq_weather_schema = jsondecode(file("${path.module}/support_files/bq_weather_schema.json"))
