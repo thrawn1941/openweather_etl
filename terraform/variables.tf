@@ -27,10 +27,10 @@ variable "extract_functions" {
   description = "List of the extraction functions to export"
   default = ["get_geo_data", "get_pollution_data", "get_weather_data"]
 }
-variable "bq_weather_schema" {
-  type = any
-  description = "Schema for BigQuery table that contains raw weather data"
-}
+#variable "bq_weather_schema" {
+#  type = any
+#  description = "Schema for BigQuery table that contains raw weather data"
+#}
 variable "bq_pollution_schema" {
   type = any
   description = "Schema for BigQuery table that contains raw pollution data"
