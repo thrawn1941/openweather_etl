@@ -52,7 +52,6 @@ jobs:
 
       - name: Terraform plan
         run: |
-          terraform force-unlock 1746620739763507 -auto-approve
           terraform plan
         working-directory: ./terraform
         env:
