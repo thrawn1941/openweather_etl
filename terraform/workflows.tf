@@ -1,8 +1,8 @@
 ##### workflow for extract functions
-resource "google_workflows_workflow" "test_workflow" {
-  name            = "test-workflow"
+resource "google_workflows_workflow" "openweather_workflow" {
+  name            = "openweather-workflow"
   region          = "europe-central2"
-  description     = "A test workflow"
+  description     = "A workflow to run openweather extract functions"
   service_account = "test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
 
   source_contents = <<-EOF
