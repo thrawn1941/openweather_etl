@@ -105,21 +105,3 @@ resource "google_cloudfunctions2_function" "load_functions3" {
     }
   }
 }
-
-module "extract_functions" {
-  source = "./modules/extract_functions"
-
-  function_name_in_gcp         = "my-function"
-  function_description         = "Generic description"
-  location                     = var.region
-  function_name_in_source_code = "get_weather_data"
-  storage_bucket_name          = google_storage_bucket.bucket_for_functions.name
-  storage_bucket_object_name   = google_storage_bucket_object.archive.name
-  instances                    = 1
-  memory                       = "256Mi"
-  env_vars                     = {
-    OPEN_WEATHER_API_KEY = var.open_weather_api_key
-  }
-  role_type                    = "roles/cloudfunctions.invoker"
-  service_account              = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
-}
