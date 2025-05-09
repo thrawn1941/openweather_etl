@@ -24,7 +24,7 @@ resource "google_cloudfunctions2_function" "load_functions" {
     trigger_region = var.region
     event_type = "google.cloud.pubsub.topic.v1.messagePublished"
     #pubsub_topic = google_pubsub_topic.extract_functions_topics[each.value].id
-    pubsub_topic = google_pubsub_topic.extract_historical_pollution.id
+    pubsub_topic = google_pubsub_topic.extract_historical_pollution.id #placeholder
     retry_policy = "RETRY_POLICY_UNSPECIFIED"
   }
 
