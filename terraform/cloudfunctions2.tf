@@ -197,7 +197,7 @@ module "extract_functions" {
   storage_bucket_name          = google_storage_bucket.bucket_for_functions.name
   storage_bucket_object_name   = google_storage_bucket_object.archive.name
   instances                    = 1
-  memory                       = "128Mi"
+  memory                       = "256Mi"
   env_vars                     = {
     OPEN_WEATHER_API_KEY = var.open_weather_api_key
   }
