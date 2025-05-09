@@ -2,8 +2,8 @@
         assign:
             - results : {} # result from each iteration keyed by table name
             - functions:
-                - get_pollution_data
-                - get_weather_data
+                - extract_pollution_data
+                - extract_weather_data
     - runQueries:
         parallel:
             shared: [results]
@@ -14,7 +14,7 @@
                   - call_function:
                       call: http.get
                       args:
-                        url: ${"https://europe-central2-totemic-client-447220-r1.cloudfunctions.net/" + func + "_tf"}
+                        url: ${"https://europe-central2-totemic-client-447220-r1.cloudfunctions.net/" + func}
                         auth:
                           type: OIDC
                       result: function_response

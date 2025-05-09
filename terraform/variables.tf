@@ -23,9 +23,18 @@ variable "functions_source_dir" {
   default     = "../"
 }
 variable "extract_functions" {
-  type = list(string)
-  description = "List of the extraction functions to export"
-  default = ["get_geo_data", "get_pollution_data", "get_weather_data"]
+  type = map(object({
+    function_description         = string
+    location                     = string
+    function_name_in_source_code = string
+    storage_bucket_name          = string
+    storage_bucket_object_name   = string
+    instances                    = string
+    memory                       = string
+    env_vars                     = map(string)
+    role_type                    = string
+    service_account              = string
+  }))
 }
 #variable "bq_weather_schema" {
 #  type = any
@@ -358,4 +367,14 @@ SELECT
 FROM pre_select
 QUALIFY ROW_NUMBER() OVER (PARTITION BY city ORDER BY `list`[SAFE_OFFSET(0)].dt DESC) = 1
   EOT
+}
+variable "functions_invoker_role" {
+  type=string
+  description="Invoker role for functions"
+  default = "roles/cloudfunctions.invoker"
+}
+variable "service_account" {
+  type=string
+  description="Service account"
+  default = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
 }
