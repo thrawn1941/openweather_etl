@@ -22,36 +22,6 @@ variable "functions_source_dir" {
   type        = string
   default     = "../"
 }
-variable "extract_functions" {
-  type = map(object({
-    function_description         = string
-    location                     = string
-    function_name_in_source_code = string
-    storage_bucket_name          = string
-    storage_bucket_object_name   = string
-    instances                    = number
-    memory                       = string
-    env_vars                     = map(string)
-    role_type                    = string
-    service_account              = string
-  }))
-  default = {
-    extract_geo_data = {
-      function_description         = "Function for geo data extraction"
-      location                     = var.region
-      function_name_in_source_code = "get_geo_data"
-      storage_bucket_name          = google_storage_bucket.bucket_for_functions.name
-      storage_bucket_object_name   = google_storage_bucket_object.archive.name
-      instances                    = 1
-      memory                       = "128Mi"
-      env_vars = {
-        OPEN_WEATHER_API_KEY = var.open_weather_api_key
-      }
-      role_type       = var.functions_invoker_role
-      service_account = var.service_account
-    }
-  }
-}
 #variable "bq_weather_schema" {
 #  type = any
 #  description = "Schema for BigQuery table that contains raw weather data"
