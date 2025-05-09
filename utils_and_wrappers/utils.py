@@ -3,7 +3,7 @@ from google.cloud import pubsub_v1
 
 def get_cities_from_config() -> list[str]:
     cities = []
-    with open("../config/config_cities", "r", encoding="utf-8") as f:
+    with open("./config/config_cities", "r", encoding="utf-8") as f:
         for line in f:
             cities.append(line.strip())
     return cities
