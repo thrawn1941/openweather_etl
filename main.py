@@ -21,7 +21,6 @@ load_dotenv()
 API_KEY = os.getenv('OPEN_WEATHER_API_KEY')
 API_KEY2 = os.getenv('ACCOUNT_API_KEY')
 historical_pollution_pubsub_topic = os.getenv('HISTORICAL_POLLUTION_PUBSUB_TOPIC')
-historical_weather_pubsub_topic = os.getenv('HISTORICAL_WEATHER_PUBSUB_TOPIC')
 
 def main():
     pass
@@ -60,24 +59,6 @@ def get_historical_pollution_data(request):
 
     result = json.dumps(gathered_data)
     publish_message(result, historical_pollution_pubsub_topic)
-    print("message published!")
-    return result, 200
-
-@functions_framework.http
-def get_historical_weather_data(request):
-    request_args = request.args
-    if request_args and 'start_date' in request_args and 'end_date' in request_args:
-        start_date = request_args['start_date']
-        end_date = request_args['end_date']
-    else:
-        return 'End date or start date not provided', 400
-
-    app_weather = Endpoint(WeatherHistoryDataStrategy())
-    app_weather.append_data_from_cities(api_key=API_KEY, start_date=start_date, end_date=end_date)
-    gathered_data = app_weather.return_all_data()
-
-    result = json.dumps(gathered_data)
-    publish_message(result, historical_weather_pubsub_topic)
     print("message published!")
     return result, 200
 
