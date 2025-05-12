@@ -52,7 +52,7 @@ locals {
       memory                          = "256Mi"
       env_vars                        = {
         OPEN_WEATHER_API_KEY = var.open_weather_api_key
-        get_historical_pollution_data = google_pubsub_topic.extract_historical_pollution.id
+        get_historical_pollution_data = "projects/${var.project_id}/topics/extract_historical_pollution_data-topic"
         ACCOUNT_API_KEY = var.gcp_credentials
       }
       role_type                       = var.functions_invoker_role

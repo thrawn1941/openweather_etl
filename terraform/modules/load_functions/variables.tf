@@ -14,13 +14,17 @@ variable "function_description" {
   type=string
   description="Function's description"
 }
-variable "location" {
+variable "region" {
   type=string
-  description="Function's location"
+  description="Function's region"
 }
 variable "function_name_in_source_code" {
   type=string
   description="Function's name in source code"
+}
+variable "pubsub_topic_id" {
+  type=string
+  description="PubSub topic that triggers a function"
 }
 variable "instances" {
   type=number
