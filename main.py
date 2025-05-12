@@ -9,7 +9,6 @@ from extract.pollution_extract_strategy import AirPollutionDataStrategy
 from extract.pollution_history_extract_strategy import AirPollutionHistoryDataStrategy
 from extract.weather_extract_strategy import WeatherCurrentDataStrategy
 from utils_and_wrappers.endpoint import Endpoint
-from extract.weather_history_extract_strategy import WeatherHistoryDataStrategy
 from load.weather_load_strategy import WeatherLoadStrategy
 from load.pollution_load_strategy import PollutionLoadStrategy
 from load.pollution_history_load_strategy import PollutionHistoryLoadStrategy
