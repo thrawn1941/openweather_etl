@@ -8,7 +8,7 @@ locals {
       storage_bucket_object_name      = google_storage_bucket_object.archive.name
       pubsub_topic_id                 = "projects/${var.project_id}/topics/extract_weather_data-topic"
       instances                       = 1
-      memory                          = "256Mi"
+      memory                          = "512Mi"
       env_vars                        = {
         OPEN_WEATHER_API_KEY = var.open_weather_api_key
       }
@@ -23,7 +23,7 @@ locals {
       storage_bucket_object_name      = google_storage_bucket_object.archive.name
       pubsub_topic_id                 = "projects/${var.project_id}/topics/extract_pollution_data-topic"
       instances                       = 1
-      memory                          = "256Mi"
+      memory                          = "512Mi"
       env_vars                        = {
         OPEN_WEATHER_API_KEY = var.open_weather_api_key
       }
@@ -38,7 +38,7 @@ locals {
       storage_bucket_object_name      = google_storage_bucket_object.archive.name
       pubsub_topic_id                 = "projects/${var.project_id}/topics/extract_geo_data-topic"
       instances                       = 1
-      memory                          = "256Mi"
+      memory                          = "512Mi"
       env_vars                        = {
         OPEN_WEATHER_API_KEY = var.open_weather_api_key
       }
@@ -53,7 +53,7 @@ locals {
       storage_bucket_object_name      = google_storage_bucket_object.archive.name
       pubsub_topic_id                 = "projects/${var.project_id}/topics/extract_historical_pollution_data-topic"
       instances                       = 1
-      memory                          = "256Mi"
+      memory                          = "512Mi"
       env_vars                        = {
         OPEN_WEATHER_API_KEY = var.open_weather_api_key
       }
