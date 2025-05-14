@@ -91,7 +91,7 @@ def export_raw_weather_to_bigquery(cloud_event):
 
     load_app = Load(data=imported_data, target_table='totemic-client-447220-r1.openweather_etl.weather_raw', load_strategy=WeatherLoadStrategy())
     load_app.load_raw_to_bigquery()
-"""
+
 @functions_framework.cloud_event
 def export_raw_pollution_to_bigquery(cloud_event):
     imported_data = json.loads(base64.b64decode(cloud_event.data["message"]["data"]))
@@ -105,6 +105,7 @@ def export_raw_pollution_to_bigquery(cloud_event):
 @create_load_function(target_table='totemic-client-447220-r1.openweather_etl.pollution_raw', load_strategy=PollutionLoadStrategy())
 def export_raw_pollution_to_bigquery(data):
     return data
+"""
 
 @functions_framework.cloud_event
 def export_bcp_pollution_to_bigquery(cloud_event):
@@ -166,4 +167,3 @@ def export_raw_geo_to_bigquery(cloud_event):
     load_app.load_raw_to_bigquery()
 
 main()
-#reload
