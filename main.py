@@ -95,6 +95,7 @@ def export_raw_weather_to_bigquery(cloud_event):
 """
 @create_load_function(target_table='totemic-client-447220-r1.openweather_etl.weather_raw', load_strategy=WeatherLoadStrategy())
 def export_raw_weather_to_bigquery(d):
+    print("debug")
     return d
 
 @functions_framework.cloud_event
