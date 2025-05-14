@@ -4,7 +4,7 @@ from utils_and_wrappers.load import Load
 def create_load_function(target_table, load_strategy):
     def wrapper(func):
         def inner(*args):
-            imported_data = json.loads(base64.b64decode(args[0].data["data"]))
+            imported_data = json.loads(base64.b64decode(args[0]["data"]))
             if not imported_data:
                 print("No data provided!")
                 return
