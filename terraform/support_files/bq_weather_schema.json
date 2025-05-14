@@ -55,6 +55,14 @@
       ]
     },
     {
+      "name": "rain",
+      "type": "RECORD",
+      "mode": "NULLABLE",
+      "fields": [
+        { "name": "1h", "type": "FLOAT", "mode": "NULLABLE" }
+      ]
+    },
+    {
       "name": "clouds",
       "type": "RECORD",
       "mode": "NULLABLE",
