@@ -7,7 +7,7 @@ class LoadDataStrategy(ABC):
     def dummy_load(self, data, table_name):
         pass
 
-    def load_data_to_bigquery(self, data, table_name, data_format):
+    def load_data_to_bigquery(self, data, table_name, data_format='dict'):
         ### just for one city; function assumes that data is just a dict for one city
         #data = json.dumps(data)
         client = bigquery.Client()
@@ -29,3 +29,6 @@ class LoadDataStrategy(ABC):
             print(f"Loaded {job.output_rows} into {table_name}")
         else:
             print('Incorrect data format. Currently available data formats: dict, dataframe')
+
+    def transform_before_load(self, data):
+        return data
