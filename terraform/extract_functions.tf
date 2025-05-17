@@ -80,4 +80,5 @@ module "extract_functions" {
   env_vars                     = each.value.env_vars
   role_type                    = each.value.role_type
   service_account              = each.value.service_account
+  create_pubsub                = each.value.create_pubsub
 }
