@@ -51,7 +51,3 @@ variable "create_pubsub" {
   type=bool
   description="Determines whether a PubSub topic related to the function should be created"
 }
-variable "function_depends_on" {
-  type = any
-  description="Source files required to deploy the function"
-}

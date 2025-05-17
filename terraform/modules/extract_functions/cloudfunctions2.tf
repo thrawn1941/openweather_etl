@@ -20,5 +20,4 @@ resource "google_cloudfunctions2_function" "default_extract" {
     available_memory   = var.memory
     environment_variables = var.env_vars
   }
-  depends_on = [var.function_depends_on]
 }
