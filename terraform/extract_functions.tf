@@ -14,7 +14,7 @@ locals {
       role_type                    = var.functions_invoker_role
       service_account              = var.service_account
       create_pubsub                = true
-      function_depends_on          = google_storage_bucket_object.archive
+      function_depends_on          = google_storage_bucket.bucket_for_functions
     }
     extract_pollution_data = {
       function_description         = "Function for pollution data extraction"
@@ -30,7 +30,7 @@ locals {
       role_type                    = var.functions_invoker_role
       service_account              = var.service_account
       create_pubsub                = true
-      function_depends_on          = google_storage_bucket_object.archive
+      function_depends_on          = google_storage_bucket.bucket_for_functions
     }
     extract_weather_data = {
       function_description         = "Function for weather data extraction"
@@ -46,7 +46,7 @@ locals {
       role_type                    = var.functions_invoker_role
       service_account              = var.service_account
       create_pubsub                = true
-      function_depends_on          = google_storage_bucket_object.archive
+      function_depends_on          = google_storage_bucket.bucket_for_functions
     }
     extract_historical_pollution_data = {
       function_description            = "Function for weather data extraction"
@@ -64,7 +64,7 @@ locals {
       role_type                       = var.functions_invoker_role
       service_account                 = var.service_account
       create_pubsub                   = true
-      function_depends_on          = google_storage_bucket_object.archive
+      function_depends_on             = google_storage_bucket.bucket_for_functions
     }
 
   }
