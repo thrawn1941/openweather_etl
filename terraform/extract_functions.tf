@@ -13,7 +13,7 @@ locals {
       }
       role_type                    = var.functions_invoker_role
       service_account              = var.service_account
-      create_pubsub                = True
+      create_pubsub                = true
     }
     extract_pollution_data = {
       function_description         = "Function for pollution data extraction"
@@ -28,7 +28,7 @@ locals {
       }
       role_type                    = var.functions_invoker_role
       service_account              = var.service_account
-      create_pubsub                = True
+      create_pubsub                = true
     }
     extract_weather_data = {
       function_description         = "Function for weather data extraction"
@@ -43,7 +43,7 @@ locals {
       }
       role_type                    = var.functions_invoker_role
       service_account              = var.service_account
-      create_pubsub                = True
+      create_pubsub                = true
     }
     extract_historical_pollution_data = {
       function_description            = "Function for weather data extraction"
@@ -60,7 +60,7 @@ locals {
       }
       role_type                       = var.functions_invoker_role
       service_account                 = var.service_account
-      create_pubsub                   = True
+      create_pubsub                   = true
     }
 
   }
