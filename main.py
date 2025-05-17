@@ -40,7 +40,7 @@ def get_pollution_data(_):
     app_weather = Endpoint(AirPollutionDataStrategy())
     app_weather.append_data_from_cities(API_KEY)
     gathered_data = app_weather.return_all_data()
-
+    print("DEPENDS ON TEST !!!111!!")
     result = json.dumps(gathered_data)
     return result, 200
 
