@@ -16,7 +16,7 @@ def create_load_function(target_table, load_strategy):
                 print("No data provided!")
                 return
 
-            imported_data=func(imported_data)
+            func()
             load_app = Load(data=imported_data, target_table=target_table,load_strategy=load_strategy)
             load_app.load_raw_to_bigquery()
         return inner

@@ -364,3 +364,8 @@ variable "service_account" {
   description="Service account"
   default = "serviceAccount:test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
 }
+variable "main_py_version" {
+  type=number
+  description="Crude versioning for .zip file"
+  default = 1
+}

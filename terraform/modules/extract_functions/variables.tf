@@ -47,4 +47,7 @@ variable "service_account" {
   type=string
   description="Service account used in function_iam_member"
 }
-
+variable "create_pubsub" {
+  type=bool
+  description="Determines whether a PubSub topic related to the function should be created"
+}

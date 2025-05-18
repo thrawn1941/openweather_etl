@@ -1,8 +1,6 @@
 import os
-import base64
 import json
 import functions_framework
-#import pandas as pd
 from dotenv import load_dotenv
 from extract.geo_extract_strategy import GeoDirectDataStrategy
 from extract.pollution_extract_strategy import AirPollutionDataStrategy
@@ -14,7 +12,6 @@ from load.pollution_load_strategy import PollutionLoadStrategy
 from load.pollution_history_load_strategy import PollutionHistoryLoadStrategy
 from load.geo_load_strategy import GeoLoadStrategy
 from utils_and_wrappers.utils import publish_message
-from utils_and_wrappers.load import Load
 from utils_and_wrappers.functions_generator import create_load_function
 
 load_dotenv()
@@ -40,7 +37,7 @@ def get_pollution_data(_):
     app_weather = Endpoint(AirPollutionDataStrategy())
     app_weather.append_data_from_cities(API_KEY)
     gathered_data = app_weather.return_all_data()
-
+    print("TESTING create before destroy !!!11")
     result = json.dumps(gathered_data)
     return result, 200
 
@@ -71,16 +68,6 @@ def get_weather_data(_):
     result = json.dumps(gathered_data)
     return result, 200
 
-@functions_framework.http
-def get_temperature_data(_):
-    app_weather = Endpoint(WeatherCurrentDataStrategy())
-    app_weather.append_data_from_cities(API_KEY)
-    gathered_data = app_weather.return_all_data()
-
-    result = json.dumps(gathered_data)
-    return result, 200
-
-
 ### LOAD FUNCTIONS
 """
 @functions_framework.cloud_event
@@ -94,82 +81,23 @@ def export_raw_weather_to_bigquery(cloud_event):
     load_app.load_raw_to_bigquery()
 """
 @create_load_function(target_table='totemic-client-447220-r1.openweather_etl.weather_raw', load_strategy=WeatherLoadStrategy())
-def export_raw_weather_to_bigquery(d):
-    print("debug")
-    return d
+def export_raw_weather_to_bigquery():
+    print("Loading raw weather data...")
 
-@functions_framework.cloud_event
-def export_raw_pollution_to_bigquery(cloud_event):
-    imported_data = json.loads(base64.b64decode(cloud_event.data["message"]["data"]))
-    if not imported_data:
-        print("No data provided!")
-        return
-
-    load_app = Load(data=imported_data, target_table='totemic-client-447220-r1.openweather_etl.pollution_raw', load_strategy=PollutionLoadStrategy())
-    load_app.load_raw_to_bigquery()
-"""
 @create_load_function(target_table='totemic-client-447220-r1.openweather_etl.pollution_raw', load_strategy=PollutionLoadStrategy())
-def export_raw_pollution_to_bigquery(data):
-    return data
-"""
+def export_raw_pollution_to_bigquery():
+    print("Loading raw pollution data...")
 
-@functions_framework.cloud_event
-def export_bcp_pollution_to_bigquery(cloud_event):
-    imported_data = json.loads(base64.b64decode(cloud_event.data["message"]["data"]))
-    if not imported_data:
-        print("No data provided!")
-        return
+@create_load_function(target_table='totemic-client-447220-r1.openweather_etl.pollution_raw_backup', load_strategy=PollutionLoadStrategy())
+def export_bcp_pollution_to_bigquery():
+    print("Loading raw pollution historical data...")
 
-    load_app = Load(data=imported_data, target_table='totemic-client-447220-r1.openweather_etl.pollution_raw_backup', load_strategy=PollutionLoadStrategy())
-    load_app.load_raw_to_bigquery()
+@create_load_function(target_table='totemic-client-447220-r1.openweather_etl.pollution_raw', load_strategy=PollutionHistoryLoadStrategy())
+def export_hist_pollution_to_bigquery():
+    print("Loading pollution historical data...")
 
-@functions_framework.cloud_event
-def export_hist_pollution_to_bigquery(cloud_event):
-    imported_data = json.loads(base64.b64decode(cloud_event.data["message"]["data"]))
-    if not imported_data:
-        print("No data provided!")
-        return
-
-    ### zmiana struktury danych (lat i lon dla każdego rekordu) i przepakowanie do dataframe'ów
-    dataframes = dict()
-    for city in imported_data.keys():
-        records = imported_data[city]["list"]
-        lon_lat = {"lon": imported_data[city]["coord"]["lon"], "lat": imported_data[city]["coord"]["lat"]}
-        output=[]
-        for record in records:
-            x = dict()
-            x['list'] = [record]
-            x['coord'] = lon_lat
-            output.append(x)
-        dataframes[city] = output
-        """
-        records = imported_data[city]["list"]
-        lon_lat = {"lon": imported_data[city]["coord"]["lon"], "lat": imported_data[city]["coord"]["lat"]}
-        df = pd.DataFrame()
-        df["coord"] = [lon_lat] * len(records)
-        df["list"] = [record for record in records]
-        dataframes[city] = df
-        """
-
-    #load_app = Load(data=dataframes, target_table='totemic-client-447220-r1.openweather_etl.pollution_raw', load_strategy=PollutionLoadStrategy())
-    #load_app.load_raw_to_bigquery(data_format='dataframe')
-    load_app = Load(data=dataframes, target_table='totemic-client-447220-r1.openweather_etl.pollution_raw',
-                    load_strategy=PollutionHistoryLoadStrategy())
-    load_app.load_raw_to_bigquery()
-
-@functions_framework.cloud_event
-def export_raw_geo_to_bigquery(cloud_event):
-    try:
-        imported_data = json.loads(base64.b64decode(cloud_event.data["message"]["data"]))
-        if not imported_data:
-            print("No data provided!")
-            return
-    except Exception as e:
-        print("ERROR OCCURED!")
-        print(e)
-
-
-    load_app = Load(data=imported_data, target_table='totemic-client-447220-r1.openweather_etl.geo_raw', load_strategy=GeoLoadStrategy())
-    load_app.load_raw_to_bigquery()
+@create_load_function(target_table='totemic-client-447220-r1.openweather_etl.geo_raw', load_strategy=GeoLoadStrategy())
+def export_raw_geo_to_bigquery():
+    print("Loading raw geo data...")
 
 main()

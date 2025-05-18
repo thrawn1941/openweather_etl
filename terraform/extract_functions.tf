@@ -13,6 +13,7 @@ locals {
       }
       role_type                    = var.functions_invoker_role
       service_account              = var.service_account
+      create_pubsub                = true
     }
     extract_pollution_data = {
       function_description         = "Function for pollution data extraction"
@@ -27,6 +28,7 @@ locals {
       }
       role_type                    = var.functions_invoker_role
       service_account              = var.service_account
+      create_pubsub                = true
     }
     extract_weather_data = {
       function_description         = "Function for weather data extraction"
@@ -41,6 +43,7 @@ locals {
       }
       role_type                    = var.functions_invoker_role
       service_account              = var.service_account
+      create_pubsub                = true
     }
     extract_historical_pollution_data = {
       function_description            = "Function for weather data extraction"
@@ -52,11 +55,12 @@ locals {
       memory                          = "512Mi"
       env_vars                        = {
         OPEN_WEATHER_API_KEY = var.open_weather_api_key
-        get_historical_pollution_data = "projects/${var.project_id}/topics/extract_historical_pollution_data-topic"
+        HISTORICAL_POLLUTION_PUBSUB_TOPIC = "projects/${var.project_id}/topics/extract_historical_pollution_data-topic"
         ACCOUNT_API_KEY = var.gcp_credentials
       }
       role_type                       = var.functions_invoker_role
       service_account                 = var.service_account
+      create_pubsub                   = true
     }
 
   }
@@ -76,4 +80,5 @@ module "extract_functions" {
   env_vars                     = each.value.env_vars
   role_type                    = each.value.role_type
   service_account              = each.value.service_account
+  create_pubsub                = each.value.create_pubsub
 }
