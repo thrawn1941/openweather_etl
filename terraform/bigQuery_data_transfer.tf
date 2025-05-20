@@ -7,7 +7,7 @@ resource "google_bigquery_data_transfer_config" "geo" {
   params = {
     destination_table_name_template = "geo"
     write_disposition               = "WRITE_TRUNCATE"
-    query                           = var.geo_query
+    query                           = file("./support_files/geo_transfer.sql")
   }
 }
 resource "google_bigquery_data_transfer_config" "weather" {
