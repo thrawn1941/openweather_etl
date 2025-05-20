@@ -7,7 +7,7 @@ resource "google_bigquery_data_transfer_config" "geo" {
   params = {
     destination_table_name_template = "geo"
     write_disposition               = "WRITE_TRUNCATE"
-    query                           = var.geo_query
+    query                           = file("./support_files/geo_transfer.sql")
   }
 }
 resource "google_bigquery_data_transfer_config" "weather" {
@@ -19,7 +19,7 @@ resource "google_bigquery_data_transfer_config" "weather" {
   params = {
     destination_table_name_template = "weather"
     write_disposition               = "WRITE_APPEND"
-    query                           = var.weather_query
+    query                           = file("./support_files/weather_transfer.sql")
   }
   schedule_options {
     start_time           = "2025-04-23T11:10:00Z"
@@ -34,7 +34,7 @@ resource "google_bigquery_data_transfer_config" "pollution" {
   params = {
     destination_table_name_template = "pollution"
     write_disposition               = "WRITE_APPEND"
-    query                           = var.pollution_query
+    query                           = file("./support_files/pollution_transfer.sql")
   }
   schedule_options {
     start_time           = "2025-04-23T12:10:00Z"
