@@ -18,6 +18,6 @@ SELECT
   main.pressure as pressure,
   main.grnd_level as ground_level,
   main.sea_level as sea_level,
-  TIMESTAMP_SECONDS(dt) as dt
+  dt as dt
 FROM pre_select
 QUALIFY ROW_NUMBER() OVER (PARTITION BY city ORDER BY dt DESC) = 1
