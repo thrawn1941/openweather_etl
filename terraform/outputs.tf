@@ -1,5 +1,8 @@
-output "dataset_id" {
+output "dataset_dataset_id" {
   value = google_bigquery_dataset.default.dataset_id
+}
+output "dataset_id" {
+  value = google_bigquery_dataset.default.id
 }
 
 locals {
