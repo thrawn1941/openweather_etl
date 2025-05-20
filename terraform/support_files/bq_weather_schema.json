@@ -72,8 +72,8 @@
     },
     {
       "name": "dt",
-      "type": "INTEGER",
-      "mode": "NULLABLE"
+      "type": "TIMESTAMP",
+      "mode": "REQUIRED"
     },
     {
       "name": "sys",
