@@ -23,4 +23,8 @@ resource "google_bigquery_table" "weather" {
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "Weather"
   schema = file("./support_files/bq_weather_schema.json")
+  time_partitioning {
+    type  = "DAY"
+    field = "dt"
+  }
 }
