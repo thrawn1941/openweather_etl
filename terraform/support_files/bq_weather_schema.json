@@ -83,8 +83,8 @@
         { "name": "type", "type": "INTEGER", "mode": "NULLABLE" },
         { "name": "id", "type": "INTEGER", "mode": "NULLABLE" },
         { "name": "country", "type": "STRING", "mode": "NULLABLE" },
-        { "name": "sunrise", "type": "INTEGER", "mode": "NULLABLE" },
-        { "name": "sunset", "type": "INTEGER", "mode": "NULLABLE" }
+        { "name": "sunrise", "type": "TIMESTAMP", "mode": "NULLABLE" },
+        { "name": "sunset", "type": "TIMESTAMP", "mode": "NULLABLE" }
       ]
     },
     {
