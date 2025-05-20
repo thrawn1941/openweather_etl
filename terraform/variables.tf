@@ -35,5 +35,5 @@ variable "service_account" {
 variable "main_py_version" {
   type=number
   description="Crude versioning for .zip file"
-  default = 2
+  default = 3
 }
