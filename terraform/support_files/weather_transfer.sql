@@ -8,8 +8,6 @@ WITH pre_select AS (
 )
 SELECT
   city,
-  coord.lon as lon,
-  coord.lat as lat,
   ROUND(main.temp - 273.15, 2) as temperature,
   ROUND(main.feels_like - 273.15, 2) as feels_like_temperature,
   ROUND(main.temp_max - 273.15, 2) as max_temperature,
@@ -18,6 +16,6 @@ SELECT
   main.pressure as pressure,
   main.grnd_level as ground_level,
   main.sea_level as sea_level,
-  TIMESTAMP_SECONDS(dt) as dt
+  dt as dt
 FROM pre_select
 QUALIFY ROW_NUMBER() OVER (PARTITION BY city ORDER BY dt DESC) = 1

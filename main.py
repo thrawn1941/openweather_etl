@@ -16,7 +16,8 @@ from utils_and_wrappers.functions_generator import create_load_function
 
 load_dotenv()
 API_KEY = os.getenv('OPEN_WEATHER_API_KEY')
-API_KEY2 = os.getenv('ACCOUNT_API_KEY')
+project_id = os.getenv('PROJECT_ID')
+dataset_id = os.getenv('DATASET_ID')
 historical_pollution_pubsub_topic = os.getenv('HISTORICAL_POLLUTION_PUBSUB_TOPIC')
 
 def main():
@@ -80,23 +81,23 @@ def export_raw_weather_to_bigquery(cloud_event):
     load_app = Load(data=imported_data, target_table='totemic-client-447220-r1.openweather_etl.weather_raw', load_strategy=WeatherLoadStrategy())
     load_app.load_raw_to_bigquery()
 """
-@create_load_function(target_table='totemic-client-447220-r1.openweather_etl.weather_raw', load_strategy=WeatherLoadStrategy())
+@create_load_function(target_table=f'{project_id}.{dataset_id}.weather_raw', load_strategy=WeatherLoadStrategy())
 def export_raw_weather_to_bigquery():
     print("Loading raw weather data...")
 
-@create_load_function(target_table='totemic-client-447220-r1.openweather_etl.pollution_raw', load_strategy=PollutionLoadStrategy())
+@create_load_function(target_table=f'{project_id}.{dataset_id}.pollution_raw', load_strategy=PollutionLoadStrategy())
 def export_raw_pollution_to_bigquery():
     print("Loading raw pollution data...")
 
-@create_load_function(target_table='totemic-client-447220-r1.openweather_etl.pollution_raw_backup', load_strategy=PollutionLoadStrategy())
+@create_load_function(target_table=f'{project_id}.{dataset_id}.pollution_raw_backup', load_strategy=PollutionLoadStrategy())
 def export_bcp_pollution_to_bigquery():
     print("Loading raw pollution historical data...")
 
-@create_load_function(target_table='totemic-client-447220-r1.openweather_etl.pollution_raw', load_strategy=PollutionHistoryLoadStrategy())
+@create_load_function(target_table=f'{project_id}.{dataset_id}.pollution_raw', load_strategy=PollutionHistoryLoadStrategy())
 def export_hist_pollution_to_bigquery():
     print("Loading pollution historical data...")
 
-@create_load_function(target_table='totemic-client-447220-r1.openweather_etl.geo_raw', load_strategy=GeoLoadStrategy())
+@create_load_function(target_table=f'{project_id}.{dataset_id}.geo_raw', load_strategy=GeoLoadStrategy())
 def export_raw_geo_to_bigquery():
     print("Loading raw geo data...")
 

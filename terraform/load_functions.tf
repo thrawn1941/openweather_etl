@@ -11,6 +11,8 @@ locals {
       memory                          = "512Mi"
       env_vars                        = {
         OPEN_WEATHER_API_KEY = var.open_weather_api_key
+        DATASET_ID           = google_bigquery_dataset.default.dataset_id
+        PROJECT_ID           = var.project_id
       }
       role_type                       = var.functions_invoker_role
       service_account                 = var.service_account
@@ -26,6 +28,8 @@ locals {
       memory                          = "512Mi"
       env_vars                        = {
         OPEN_WEATHER_API_KEY = var.open_weather_api_key
+        DATASET_ID           = google_bigquery_dataset.default.dataset_id
+        PROJECT_ID           = var.project_id
       }
       role_type                       = var.functions_invoker_role
       service_account                 = var.service_account
@@ -41,6 +45,8 @@ locals {
       memory                          = "512Mi"
       env_vars                        = {
         OPEN_WEATHER_API_KEY = var.open_weather_api_key
+        DATASET_ID           = google_bigquery_dataset.default.dataset_id
+        PROJECT_ID           = var.project_id
       }
       role_type                       = var.functions_invoker_role
       service_account                 = var.service_account
@@ -56,6 +62,8 @@ locals {
       memory                          = "512Mi"
       env_vars                        = {
         OPEN_WEATHER_API_KEY = var.open_weather_api_key
+        DATASET_ID           = google_bigquery_dataset.default.dataset_id
+        PROJECT_ID           = var.project_id
       }
       role_type                       = var.functions_invoker_role
       service_account                 = var.service_account
@@ -71,6 +79,8 @@ locals {
       memory                          = "512Mi"
       env_vars                        = {
         OPEN_WEATHER_API_KEY = var.open_weather_api_key
+        DATASET_ID           = google_bigquery_dataset.default.dataset_id
+        PROJECT_ID           = var.project_id
       }
       role_type                       = var.functions_invoker_role
       service_account                 = var.service_account

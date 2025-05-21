@@ -1,0 +1,13 @@
+[
+  { "name": "city", "type": "STRING", "mode": "REQUIRED" },
+  { "name": "aqi", "type": "INTEGER", "mode": "NULLABLE" },
+  { "name": "co", "type": "FLOAT", "mode": "NULLABLE" },
+  { "name": "no", "type": "FLOAT", "mode": "NULLABLE" },
+  { "name": "no2", "type": "FLOAT", "mode": "NULLABLE" },
+  { "name": "o3", "type": "FLOAT", "mode": "NULLABLE" },
+  { "name": "so2", "type": "FLOAT", "mode": "NULLABLE" },
+  { "name": "pm2_5", "type": "FLOAT", "mode": "NULLABLE" },
+  { "name": "pm10", "type": "FLOAT", "mode": "NULLABLE" },
+  { "name": "nh3", "type": "FLOAT", "mode": "NULLABLE" },
+  { "name": "dt", "type": "TIMESTAMP", "mode": "REQUIRED" }
+]

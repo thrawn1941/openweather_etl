@@ -1,0 +1,12 @@
+[
+  { "name": "city", "type": "STRING", "mode": "REQUIRED" },
+  { "name": "temperature", "type": "FLOAT", "mode": "NULLABLE" },
+  { "name": "feels_like_temperature", "type": "FLOAT", "mode": "NULLABLE" },
+  { "name": "max_temperature", "type": "FLOAT", "mode": "NULLABLE" },
+  { "name": "min_temperature", "type": "FLOAT", "mode": "NULLABLE" },
+  { "name": "humidity", "type": "INTEGER", "mode": "NULLABLE" },
+  { "name": "pressure", "type": "INTEGER", "mode": "NULLABLE" },
+  { "name": "ground_level", "type": "INTEGER", "mode": "NULLABLE" },
+  { "name": "sea_level", "type": "INTEGER", "mode": "NULLABLE" },
+  { "name": "dt", "type": "TIMESTAMP", "mode": "REQUIRED" }
+]
