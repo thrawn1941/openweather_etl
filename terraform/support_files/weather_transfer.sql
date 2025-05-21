@@ -8,8 +8,6 @@ WITH pre_select AS (
 )
 SELECT
   city,
-  coord.lon as lon,
-  coord.lat as lat,
   ROUND(main.temp - 273.15, 2) as temperature,
   ROUND(main.feels_like - 273.15, 2) as feels_like_temperature,
   ROUND(main.temp_max - 273.15, 2) as max_temperature,
