@@ -1,4 +1,4 @@
-# Openweathermap ETL
+# Openweather ETL
 **Work in progress!!!**
 
 ## Temporary Badges
@@ -10,7 +10,8 @@
 ![Static Badge](https://img.shields.io/badge/GitHub_Actions-grey?logo=github%20actions)
 ![Static Badge](https://img.shields.io/badge/pyTest-blue?logo=pytest)
 
-## Context
-This repository is being developed to showcase my skills in working with Python, CI/CD using GitHub Actions, Google Cloud Platform, and Terraform. Using these technologies, I extract data from *openweathermap.org* and load it to BigQuery. The code is designed with the Strategy Design Pattern.
+## Introduction
+Although the project is named "openweather_etl", its current implementation works more accurately as a Python-based connector that loads weather and air quality data from the OpenWeatherMap API into Google BigQuery. As such, the architecture aligns more closely with an ELT (Extract, Load, Transform) pattern rather than a traditional ETL pipeline, although the transform step is, for now, purely conceptual.
 
+In addition to data ingestion, the project also focuses on automation: code deployment is orchestrated via GitHub Actions, while the underlying infrastructure is provisioned using Terraform. This dual approach ensures both data operations and infrastructure management are streamlined and reproducible.
 
