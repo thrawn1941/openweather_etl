@@ -8,9 +8,9 @@ WITH pre_select AS (
 )
 SELECT
   city,
-  `list`[SAFE_OFFSET(0)].main.aqi as ,
+  `list`[SAFE_OFFSET(0)].main.aqi as aqi,
   `list`[SAFE_OFFSET(0)].components.co as co,
-  `list`[SAFE_OFFSET(0)].components.`no` as no,
+  `list`[SAFE_OFFSET(0)].components.`no` as `no`,
   `list`[SAFE_OFFSET(0)].components.no2 as no2,
   `list`[SAFE_OFFSET(0)].components.o3 as o3,
   `list`[SAFE_OFFSET(0)].components.so2 as so2,
