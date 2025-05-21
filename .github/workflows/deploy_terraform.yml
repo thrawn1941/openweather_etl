@@ -2,8 +2,9 @@ name: Terraform deployment
 
 on:
   push:
-    #branches:
-    #  - 'feat/terraform'
+    branches-ignore:
+    # - 'feat/terraform'
+      - 'feat/readme'
 
 jobs:
   deploy_terraform:

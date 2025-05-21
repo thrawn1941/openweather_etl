@@ -4,6 +4,7 @@ on:
   push:
     branches-ignore:
       - 'feat/terraform'
+      - 'feat/readme'
 
 jobs:
   run_ruff:
