@@ -8,7 +8,7 @@ resource "google_cloud_scheduler_job" "openweather_extract_workflow" {
     uri         = "https://workflowexecutions.googleapis.com/v1/${google_workflows_workflow.openweather_workflow.id}/executions"
     http_method = "POST"
     oauth_token {
-      service_account_email = "test-account@totemic-client-447220-r1.iam.gserviceaccount.com"
+      service_account_email = trimprefix(var.service_account, "serviceAccount:")
     }
   }
 }
