@@ -37,3 +37,12 @@ variable "main_py_version" {
   description="Crude versioning for .zip file"
   default = 4
 }
+variable "gcp_service_list" {
+  description ="The list of apis necessary for the project"
+  type = list(string)
+  default = [
+    "run.googleapis.com",
+    "cloudbuild.googleapis.com",
+    "eventarc.googleapis.com",
+  ]
+}
