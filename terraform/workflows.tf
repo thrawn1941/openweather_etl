@@ -6,7 +6,7 @@ resource "google_workflows_workflow" "openweather_workflow" {
   service_account = trimprefix(var.service_account, "serviceAccount:")
 
   source_contents = file("./support_files/openweather_workflow.yml")
-
+  depends_on = [google_project_service.gcp_services]
 }
 ##### workflow for extract raw geo data
 resource "google_workflows_workflow" "geo_workflow" {
@@ -16,5 +16,5 @@ resource "google_workflows_workflow" "geo_workflow" {
   service_account = trimprefix(var.service_account, "serviceAccount:")
 
   source_contents = file("./support_files/geo_workflow.yml")
-
+  depends_on = [google_project_service.gcp_services]
 }
