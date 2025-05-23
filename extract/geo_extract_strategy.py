@@ -10,6 +10,7 @@ class GeoDirectDataStrategy(GetDataStrategy):
 
     def get_data(self, **kwargs):
         city, api_key = kwargs.get('city'), kwargs.get('api_key')
+        print(api_key)
         geo_url = f'http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={api_key}'
         geo_data = requests.get(geo_url).json()
 
