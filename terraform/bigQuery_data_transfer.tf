@@ -9,6 +9,7 @@ resource "google_bigquery_data_transfer_config" "geo" {
     write_disposition               = "WRITE_TRUNCATE"
     query                           = file("./support_files/geo_transfer.sql")
   }
+  depends_on = [google_project_service.gcp_services]
 }
 resource "google_bigquery_data_transfer_config" "weather" {
   display_name           = "weather"
@@ -24,6 +25,7 @@ resource "google_bigquery_data_transfer_config" "weather" {
   schedule_options {
     start_time           = var.weather_transfer_start_time
   }
+  depends_on = [google_project_service.gcp_services]
 }
 resource "google_bigquery_data_transfer_config" "pollution" {
   display_name           = "pollution"
@@ -39,4 +41,5 @@ resource "google_bigquery_data_transfer_config" "pollution" {
   schedule_options {
     start_time           = var.pollution_transfer_start_time
   }
+  depends_on = [google_project_service.gcp_services]
 }

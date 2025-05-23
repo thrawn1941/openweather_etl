@@ -47,7 +47,8 @@ variable "gcp_service_list" {
     "bigquerydatatransfer.googleapis.com",
     "cloudscheduler.googleapis.com",
     "cloudfunctions.googleapis.com",
-    "cloudbuild.googleapis.com"
+    "cloudbuild.googleapis.com",
+    "workflows.googleapis.com"
   ]
 }
 variable "weather_transfer_start_time" {

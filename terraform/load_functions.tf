@@ -105,5 +105,5 @@ module "load_functions" {
   role_type                    = each.value.role_type
   service_account              = each.value.service_account
 
-  depends_on = [module.extract_functions]
+  depends_on = [module.extract_functions, google_project_service.gcp_services]
 }

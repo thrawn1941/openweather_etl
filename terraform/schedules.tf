@@ -11,4 +11,5 @@ resource "google_cloud_scheduler_job" "openweather_extract_workflow" {
       service_account_email = trimprefix(var.service_account, "serviceAccount:")
     }
   }
+  depends_on = [google_project_service.gcp_services]
 }

@@ -80,4 +80,6 @@ module "extract_functions" {
   role_type                    = each.value.role_type
   service_account              = each.value.service_account
   create_pubsub                = each.value.create_pubsub
+
+  depends_on = [google_project_service.gcp_services]
 }
