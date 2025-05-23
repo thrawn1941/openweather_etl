@@ -35,5 +35,26 @@ variable "service_account" {
 variable "main_py_version" {
   type=number
   description="Crude versioning for .zip file"
-  default = 4
+  default = 0
+}
+variable "gcp_service_list" {
+  description ="The list of apis necessary for the project"
+  type = list(string)
+  default = [
+    "run.googleapis.com",
+    "cloudbuild.googleapis.com",
+    "eventarc.googleapis.com",
+    "bigquerydatatransfer.googleapis.com",
+    "cloudscheduler.googleapis.com",
+    "cloudfunctions.googleapis.com",
+    "cloudbuild.googleapis.com"
+  ]
+}
+variable "weather_transfer_start_time" {
+  description = "The ISO 8601 timestamp (e.g. '2024-01-01T00:00:00Z') indicating when to start transferring weather data."
+  type = string
+}
+variable "pollution_transfer_start_time" {
+  description = "The ISO 8601 timestamp (e.g. '2024-01-01T00:00:00Z') indicating when to start transferring pollution data."
+  type = string
 }
