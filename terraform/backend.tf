@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket  = "tf-state-openweather-etl2"
+    bucket  = var.state_bucket_name
     prefix  = "terraform/state"
   }
 }

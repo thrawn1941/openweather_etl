@@ -22,7 +22,7 @@ resource "google_bigquery_data_transfer_config" "weather" {
     query                           = file("./support_files/weather_transfer.sql")
   }
   schedule_options {
-    start_time           = "2025-05-23T11:10:00Z"
+    start_time           = var.weather_transfer_start_time
   }
 }
 resource "google_bigquery_data_transfer_config" "pollution" {
@@ -37,6 +37,6 @@ resource "google_bigquery_data_transfer_config" "pollution" {
     query                           = file("./support_files/pollution_transfer.sql")
   }
   schedule_options {
-    start_time           = "2025-05-23T12:10:00Z"
+    start_time           = var.pollution_transfer_start_time
   }
 }
