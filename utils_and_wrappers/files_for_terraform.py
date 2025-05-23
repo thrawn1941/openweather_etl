@@ -1,5 +1,10 @@
 import os
 
+config_path = os.getcwd().strip("utils_and_wrappers") + "config\\project_id"
+config_path = config_path.replace('\\', '/')
+file = open(config_path,"r")
+current_project = file.read()
+
 path = os.getcwd().strip("utils_and_wrappers") + "terraform\\support_files\\"
 def create_geo_workflow_file(region, project_id, function_name, topic_name):
     file_path=path+"geo_workflow.yml"
@@ -71,6 +76,6 @@ def create_openweather_workflow_file(region, project_id, functions_list):
         file.write(text)
 
 def main():
-    create_geo_workflow_file(region="europe-central2", project_id="openweather-etl", function_name="extract_geo_data", topic_name="extract_geo_data-topic")
-    create_openweather_workflow_file(region="europe-central2", project_id="openweather-etl", functions_list=["extract_pollution_data", "extract_weather_data"])
+    create_geo_workflow_file(region="europe-central2", project_id=current_project, function_name="extract_geo_data", topic_name="extract_geo_data-topic")
+    create_openweather_workflow_file(region="europe-central2", project_id=current_project, functions_list=["extract_pollution_data", "extract_weather_data"])
 main()
