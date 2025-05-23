@@ -1,9 +1,14 @@
 import os
+from utils_and_wrappers.utils import read_config
 
-path = os.getcwd().strip("utils_and_wrappers") + "terraform\\support_files\\"
+config_values = read_config()
+current_project = config_values['project_id']
+bucket_name = config_values['state_bucket_name']
+
+terraform_path = os.getcwd().strip("utils_and_wrappers") + "terraform\\"
+terraform_path = terraform_path.replace('\\', '/')
 def create_geo_workflow_file(region, project_id, function_name, topic_name):
-    file_path=path+"geo_workflow.yml"
-    file_path = file_path.replace('\\', '/')
+    file_path=terraform_path+"support_files/geo_workflow.yml"
 
     text = f"""    main:
       params: [input]
@@ -29,8 +34,7 @@ def create_geo_workflow_file(region, project_id, function_name, topic_name):
         file.write(text)
 
 def create_openweather_workflow_file(region, project_id, functions_list):
-    file_path = path + "openweather_workflow.yml"
-    file_path = file_path.replace('\\', '/')
+    file_path = terraform_path + "support_files/openweather_workflow.yml"
     functions_text=''
     for function in functions_list:
         functions_text+=f'\n                - {function}'
@@ -70,7 +74,22 @@ def create_openweather_workflow_file(region, project_id, functions_list):
     with open(file_path, "w") as file:
         file.write(text)
 
+backend_code="""terraform {
+  backend "gcs" {
+    bucket  = "%s"
+    prefix  = "terraform/state"
+  }
+}"""
+
+def create_backend_file(state_bucket_name):
+    file_path = terraform_path + "backend.tf"
+    final_backend_code =  backend_code % state_bucket_name
+
+    with open(file_path, "w") as file:
+        file.write(final_backend_code)
+
 def main():
-    create_geo_workflow_file(region="europe-central2", project_id="totemic-client-447220-r1", function_name="extract_geo_data", topic_name="extract_geo_data-topic")
-    create_openweather_workflow_file(region="europe-central2", project_id="totemic-client-447220-r1", functions_list=["extract_pollution_data", "extract_weather_data"])
+    create_geo_workflow_file(region="europe-central2", project_id=current_project, function_name="extract_geo_data", topic_name="extract_geo_data-topic")
+    create_openweather_workflow_file(region="europe-central2", project_id=current_project, functions_list=["extract_pollution_data", "extract_weather_data"])
+    create_backend_file(bucket_name)
 main()
