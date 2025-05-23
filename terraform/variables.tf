@@ -35,7 +35,7 @@ variable "service_account" {
 variable "main_py_version" {
   type=number
   description="Crude versioning for .zip file"
-  default = 4
+  default = 0
 }
 variable "gcp_service_list" {
   description ="The list of apis necessary for the project"
