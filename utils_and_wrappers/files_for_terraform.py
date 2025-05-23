@@ -71,6 +71,6 @@ def create_openweather_workflow_file(region, project_id, functions_list):
         file.write(text)
 
 def main():
-    create_geo_workflow_file(region="europe-central2", project_id="totemic-client-447220-r1", function_name="extract_geo_data", topic_name="extract_geo_data-topic")
-    create_openweather_workflow_file(region="europe-central2", project_id="totemic-client-447220-r1", functions_list=["extract_pollution_data", "extract_weather_data"])
+    create_geo_workflow_file(region="europe-central2", project_id="openweather-etl", function_name="extract_geo_data", topic_name="extract_geo_data-topic")
+    create_openweather_workflow_file(region="europe-central2", project_id="openweather-etl", functions_list=["extract_pollution_data", "extract_weather_data"])
 main()
