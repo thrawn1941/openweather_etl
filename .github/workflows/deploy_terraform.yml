@@ -61,7 +61,6 @@ jobs:
           TF_VAR_project_id: ${{ vars.GCP_PROJECT_ID }}
           TF_VAR_open_weather_api_key: ${{ secrets.OPEN_WEATHER_API_KEY }}
           TF_VAR_service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
-          TF_VAR_state_bucket_name: ${{ vars.GCP_STATE_BUCKET_NAME }}
           TF_VAR_weather_transfer_start_time: ${{ vars.TRANSFER_START_DATE }}
           TF_VAR_pollution_transfer_start_time: ${{ vars.TRANSFER_START_DATE }}
 
@@ -79,7 +78,6 @@ jobs:
           TF_VAR_project_id: ${{ vars.GCP_PROJECT_ID }}
           TF_VAR_open_weather_api_key: ${{ secrets.OPEN_WEATHER_API_KEY }}
           TF_VAR_service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
-          TF_VAR_state_bucket_name: ${{ vars.GCP_STATE_BUCKET_NAME }}
           TF_VAR_weather_transfer_start_time: ${{ vars.TRANSFER_START_DATE }}
           TF_VAR_pollution_transfer_start_time: ${{ vars.TRANSFER_START_DATE }}
 

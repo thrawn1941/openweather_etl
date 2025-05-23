@@ -46,10 +46,6 @@ variable "gcp_service_list" {
     "eventarc.googleapis.com",
   ]
 }
-variable "state_bucket_name" {
-  description = "The name of the GCS bucket used to store the remote Terraform state."
-  type = string
-}
 variable "weather_transfer_start_time" {
   description = "The ISO 8601 timestamp (e.g. '2024-01-01T00:00:00Z') indicating when to start transferring weather data."
   type = string

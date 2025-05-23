@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from google.cloud import pubsub_v1
+import os
 
 def get_cities_from_config() -> list[str]:
     cities = []
@@ -7,6 +8,24 @@ def get_cities_from_config() -> list[str]:
         for line in f:
             cities.append(line.strip())
     return cities
+
+def read_config() -> dict:
+    """
+    Loads configuration data from the 'config' file.
+    The function expects to be run from a specific working directory (./utils_and_wrappers).
+
+    :return:
+        dict: Parsed configuration data.
+    """
+    config_path = os.getcwd().strip("utils_and_wrappers") + "config\\config"
+    config_path = config_path.replace('\\', '/')
+    config_values = dict()
+    with open(config_path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.split("=")
+            config_values[line[0]] = line[1].strip("\n")
+
+    return config_values
 
 def string_data_to_timestamp_unix(data: str) -> int:
     """
