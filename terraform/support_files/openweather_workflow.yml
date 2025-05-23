@@ -14,14 +14,14 @@
                   - call_function:
                       call: http.get
                       args:
-                        url: ${"https://europe-central2-openweather-etl.cloudfunctions.net/" + func}
+                        url: ${"https://europe-central2-openweather-etl33.cloudfunctions.net/" + func}
                         auth:
                           type: OIDC
                       result: function_response
                   - publish_to_pubsub:
                       call: googleapis.pubsub.v1.projects.topics.publish
                       args:
-                        topic: ${"projects/openweather-etl/topics/" + func + "-topic"}
+                        topic: ${"projects/openweather-etl33/topics/" + func + "-topic"}
                         body:
                           messages:
                             - data: ${base64.encode(text.encode(function_response.body))}

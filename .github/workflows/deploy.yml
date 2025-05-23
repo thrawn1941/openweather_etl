@@ -9,7 +9,7 @@ on:
 jobs:
   run_ruff:
     runs-on: ubuntu-latest
-    environment: test_env
+    environment: test_env2
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
