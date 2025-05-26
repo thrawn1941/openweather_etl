@@ -15,10 +15,8 @@ Although the project is named "openweather_etl", its current implementation work
 
 In addition to data ingestion, the project also focuses on automation: code deployment is orchestrated via GitHub Actions, while the underlying infrastructure is provisioned using Terraform. This dual approach ensures both data operations and infrastructure management are streamlined and reproducible.
 
-## Getting Started
-Due to the absence of a GCP Organization, full automation of the project provisioning process is currently not possible. Therefore, the steps outlined below must be completed manually beforehand.
-
-Before you proceed with the following steps, make sure you have an active Google Cloud Platform (GCP) account. This is required to provision infrastructure and enable integrations with services like BigQuery and Cloud Storage.
+## How to deploy project on GCP
+This project does not rely on a GCP organization or folder structure, as I currently do not have access to one. While those components are required for fully automated project provisioning with Terraform, this setup has been adjusted to work without them. As a result, the only requirement for getting started is having a valid GCP account.
 
 Once your GCP account is ready, follow the steps below to set up and run the project:
 
@@ -64,3 +62,10 @@ Open the config file inside the config directory.
 ![img_14.png](readme_screenshots/img14.png)
 
 Next, set the appropriate values for the project_id and state_bucket_name parameters (use the name of the bucket created in Step 4).
+
+After that, execute the **files_for_terraform.py** script from within the **utils_and_wrappers** directory.
+![img_15.png](readme_screenshots/img15.png)
+
+Finally, you should update the environment name in both deploy.yml and deploy_terraform.yml to match the one you created in GitHub.
+![img_16.png](readme_screenshots/img16.png)
+### 7) Push these changes to your repository — GitHub Actions will automatically trigger the deployment to GCP.
