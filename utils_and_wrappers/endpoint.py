@@ -1,12 +1,12 @@
 from extract.abstract_extract_strategy import GetDataStrategy
-from utils import get_cities_from_config
+from utils_and_wrappers.utils import get_cities_from_config
 import asyncio
 
 class Endpoint:
     id_list = []
 
-    def __init__(self, get_data_strategy: GetDataStrategy):
-        self.get_data_strategy = get_data_strategy
+    def __init__(self, extract_strategy: GetDataStrategy):
+        self.extract_strategy = extract_strategy
         self.collected_data = dict()
         self.id = 0 if len(Endpoint.id_list) == 0 else max(Endpoint.id_list) + 1
         Endpoint.id_list.append(self.id)
@@ -23,14 +23,14 @@ class Endpoint:
     def return_all_data(self):
         return self.collected_data
 
-    def append_data_from_cities(self, api_key, days=0):
+    def append_data_from_cities(self, api_key, start_date=0, end_date=0, forecast_days=0):
 
         cities = get_cities_from_config()
         if len(cities) < 1:
             raise Exception('The "cities" list should not be empty')
 
         async def async_get_city_data(city_name):
-            data = self.get_data_strategy.get_data(city=city_name, api_key=api_key, days=days)
+            data = self.extract_strategy.get_data(city=city_name, api_key=api_key, start_date=start_date, end_date=end_date, forecast_days=forecast_days)
             self.collected_data[city_name] = data
             return 1
 
@@ -40,3 +40,6 @@ class Endpoint:
             return results
 
         asyncio.run(gather_data())
+
+    def print_data_schema(self):
+        self.extract_strategy.print_schema(self.collected_data)

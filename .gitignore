@@ -8,6 +8,6 @@ fake_main.py
 .terraform.lock.hcl
 .terraform/*
 terraform/infra/*
-terraform/modules/*
+terraform/modules/functions
 notebook_for_testing.ipynb
 .ipynb_checkpoints/

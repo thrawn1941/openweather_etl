@@ -1,0 +1,2 @@
+project_id=openweather-etl
+state_bucket_name=tf-state-openweather-etl2

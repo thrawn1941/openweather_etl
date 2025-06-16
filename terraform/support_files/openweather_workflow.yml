@@ -1,0 +1,33 @@
+    - init:
+        assign:
+            - results : {} # result from each iteration keyed by table name
+            - functions:
+                - extract_pollution_data
+                - extract_weather_data
+    - runQueries:
+        parallel:
+            shared: [results]
+            for:
+                value: func
+                in: ${functions}
+                steps:
+                  - call_function:
+                      call: http.get
+                      args:
+                        url: ${"https://europe-central2-openweather-etl.cloudfunctions.net/" + func}
+                        auth:
+                          type: OIDC
+                      result: function_response
+                  - publish_to_pubsub:
+                      call: googleapis.pubsub.v1.projects.topics.publish
+                      args:
+                        topic: ${"projects/openweather-etl/topics/" + func + "-topic"}
+                        body:
+                          messages:
+                            - data: ${base64.encode(text.encode(function_response.body))}
+                      result: pubsub_response
+                  - returnResult:
+                      assign:
+                          - results[func]: ${pubsub_response}
+    - returnResults:
+        return: ${results}

@@ -7,7 +7,7 @@ class GeoLoadStrategy(LoadDataStrategy):
     def dummy_load(self, data, table_name):
         pass
 
-    def load_data_to_bigquery(self, data, table_name):
+    def load_data_to_bigquery(self, data, table_name, data_format):
         """
                 Takes data for one city and loads it to a BigQuery table.
 
