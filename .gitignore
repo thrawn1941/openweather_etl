@@ -11,3 +11,4 @@ terraform/infra/*
 terraform/modules/functions
 notebook_for_testing.ipynb
 .ipynb_checkpoints/
+.docs/

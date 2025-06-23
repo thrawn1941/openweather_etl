@@ -9,7 +9,7 @@ on:
 jobs:
   deploy_terraform:
     runs-on: ubuntu-latest
-    environment: test_env
+    # environment: test_env
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -23,7 +23,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
         with:
           version: 'latest'
-          project_id: totemic-client-447220-r1
+          project_id: ${{ vars.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_API_KEY }}
 
       - name: Authenticate with service account
